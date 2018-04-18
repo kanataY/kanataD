@@ -13,15 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\GameMain">
+      <UniqueIdentifier>{675acd93-d31f-44e0-b869-924c3a8defdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{cb357672-5b25-41d2-b79f-65226c93bc53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Torch.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameMain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Torch.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\GameMain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
