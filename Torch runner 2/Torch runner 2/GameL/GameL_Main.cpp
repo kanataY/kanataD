@@ -96,12 +96,12 @@ int APIENTRY wWinMain(HINSTANCE hInstance,HINSTANCE hPrevInstance,LPTSTR szCmdLi
 	//マルチスレッド起動
 	CMultiThread::Init(&CSceneManager::GameLoop);
 
-	////初期シーン読み込み
-	//#ifdef SET_GAME_START
-	//	CSceneManager::SetScene(new SET_GAME_START() );
-	//#else
-	//	CSceneManager::SetScene(nullptr);
-	//#endif
+	//初期シーン読み込み
+	#ifdef SET_GAME_START
+		CSceneManager::SetScene(new SET_GAME_START() );
+	#else
+		CSceneManager::SetScene(nullptr);
+	#endif
 
 	//メッセージループ
 	do

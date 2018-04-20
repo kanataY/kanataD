@@ -20,6 +20,7 @@ CSceneMain::CSceneMain()
 
 }
 
+
 //デストラクタ
 CSceneMain::~CSceneMain()
 {
@@ -29,7 +30,15 @@ CSceneMain::~CSceneMain()
 //初期化メソッド
 void CSceneMain::InitScene()
 {
+	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\run.png", 0, TEX_SIZE_64);    //人間仮
 
+	//外部グラフィックファイルを読み込み0番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\back.png", 1, TEX_SIZE_512); //背景仮
+
+	//主人公オブジェクト作成
+	CObjRunner* obj = new CObjRunner();
+	Objs::InsertObj(obj, OBJ_RUNNER, 12);
 }
 
 //実行中メソッド
