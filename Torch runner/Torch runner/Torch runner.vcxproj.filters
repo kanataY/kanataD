@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Torch.cpp">
-      <Filter>ソース ファイル\GameMain</Filter>
-    </ClCompile>
     <ClCompile Include="GameL\Audio.cpp">
       <Filter>リソース ファイル</Filter>
     </ClCompile>
@@ -63,14 +60,14 @@
     <ClCompile Include="SceneMain.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="runner.cpp">
+    <ClCompile Include="ObjRunner.cpp">
+      <Filter>ソース ファイル\GameMain</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjTorch.cpp">
       <Filter>ソース ファイル\GameMain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Torch.h">
-      <Filter>ソース ファイル\GameMain</Filter>
-    </ClInclude>
     <ClInclude Include="GameL\Audio.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
@@ -113,7 +110,10 @@
     <ClInclude Include="SceneMain.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="runner.h">
+    <ClInclude Include="ObjRunner.h">
+      <Filter>ソース ファイル\GameMain</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjTorch.h">
       <Filter>ソース ファイル\GameMain</Filter>
     </ClInclude>
   </ItemGroup>
