@@ -17,8 +17,8 @@ public:
 private:
 	float m_px;		//位置
 	float m_py;
-	float m_bx;     //背景の動く値
-	float m_by;
+	float m_bx1;     //背景の動く値
+	float m_bx2;     //背景の動く値2
 	
 	float m_scroll; //スクロール位置
 };

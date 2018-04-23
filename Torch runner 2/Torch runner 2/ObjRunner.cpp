@@ -32,7 +32,7 @@ void CObjRunner::Action()
 {
 	if (Input::GetVKey('D') == true)
 	{
-		m_vx = 1;
+		m_vx = 10;
 	}
 	else
 		m_vx = 0;
