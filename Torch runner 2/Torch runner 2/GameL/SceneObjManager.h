@@ -19,7 +19,7 @@ namespace GameL
 			CObj();
 			virtual ~CObj(){};
 			virtual void Init()=0;		//イニシャライズ
-			virtual void Action()=0;	//アクション
+			virtual void Action()=0;	//アクションq
 			virtual void Draw()=0;		//ドロー
 			void		 SetPrio(unsigned int prio);	//優先順位変更
 			unsigned int GetPrio();
