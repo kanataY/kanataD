@@ -30,12 +30,28 @@ void CObjRunner::Init()
 //アクション
 void CObjRunner::Action()
 {
-	if (Input::GetVKey('D') == true)
+	int a = 0.0f;
+	//移動ーーーーーーーーーーーーーーーーーーーーー
+	if (Input::GetVKey(VK_RIGHT) == true)
 	{
-		m_vx = 10;
+		m_vx += 0.8f;
 	}
-	else
-		m_vx = 0;
+	if (Input::GetVKey(VK_LEFT) == true)
+	{
+		m_vx += -0.8f;
+	}
+	if (Input::GetVKey(VK_UP) == true)
+	{
+		m_vy += -0.8f;
+	}
+	if (Input::GetVKey(VK_DOWN) == true)
+	{
+		m_vy += 0.8f;
+	}
+	//摩擦
+	m_vx += -(m_vx*0.150);
+	m_vy += -(m_vy*0.150);
+	//---------------------------------------------------
 
 	//位置の更新
 	m_px += m_vx;

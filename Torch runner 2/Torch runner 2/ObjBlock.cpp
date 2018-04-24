@@ -23,7 +23,7 @@ void CObjBlock::Init()
 	m_px = 0.0f;
 	m_py = 0.0f;	//à íu
 	m_bx1 = 0.0f;
-	m_bx2 = 507.0f;
+	m_bx2 = 800.0f;
 
 	m_scroll = 0.0f;
 }
@@ -44,14 +44,55 @@ void CObjBlock::Action()
 
 		//îwåi1ÇÃìÆçÏ
 		m_bx1 -= runner->GetVX();
-		if (m_bx1 < -510.0f)
-			m_bx1 = 510.0f;
+		if (m_bx1 < -800.0f)
+			m_bx1 = 800.0f;
 
 		//îwåi2ÇÃìÆçÏ
 		m_bx2 -= runner->GetVX();
-		if (m_bx2 < -510.0f)
-			m_bx2 = 510.0f;
+		if (m_bx2 < -800.0f)
+			m_bx2 = 800.0f;
+	}
 
+	//å„ï˚
+	if (m_scroll > -1)//ÉXÉNÉçÅ[ÉãÇÃèÍèäÇ…ÇÊÇ¡ÇƒÉXÉNÉçÅ[ÉãÇÃì¸ÇÈèÍèäÇïœÇ¶ÇÈ
+	{
+		if (m_scroll > -1.0f && rx < 50)//èâä˙à íuÇÊÇËÇ‡å„ÇÎÇ…Ç¢ÇØÇ»Ç¢
+		{
+			runner->SetX(50.0f);//èâä˙à íuÇ…ñﬂÇ∑
+		}
+		else if (rx < 50)
+		{
+			runner->SetX(50);			//éÂêlåˆÇÕÉâÉCÉìÇí¥Ç¶Ç»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
+			m_scroll -= runner->GetVX();//éÂêlåˆÇ™ñ{óàìÆÇ≠Ç◊Ç´ï™ÇÃílÇm_scrollÇ…â¡Ç¶ÇÈ
+
+									  //îwåi1ÇÃìÆçÏ
+			m_bx1 -= runner->GetVX();
+			if (m_bx1 > 800.0f)
+				m_bx1 = -800.0f;
+
+			//îwåi2ÇÃìÆçÏ
+			m_bx2 -= runner->GetVX();
+			if (m_bx2 > 800.0f)
+				m_bx2 = -800.0f;
+		}
+	}
+	else
+	{
+		if (rx < 200)
+		{
+			runner->SetX(200);			//éÂêlåˆÇÕÉâÉCÉìÇí¥Ç¶Ç»Ç¢ÇÊÇ§Ç…Ç∑ÇÈ
+			m_scroll -= runner->GetVX();//éÂêlåˆÇ™ñ{óàìÆÇ≠Ç◊Ç´ï™ÇÃílÇm_scrollÇ…â¡Ç¶ÇÈ
+
+			//îwåi1ÇÃìÆçÏ
+			m_bx1 -= runner->GetVX();
+			if (m_bx1 > 800.0f)
+				m_bx1 = -800.0f;
+
+			//îwåi2ÇÃìÆçÏ
+			m_bx2 -= runner->GetVX();
+			if (m_bx2 > 800.0f)
+				m_bx2 = -800.0f;
+		}
 	}
 }
 
@@ -75,8 +116,8 @@ void CObjBlock::Draw()
 	//îwåiÇP
 	dst.m_top = 0.0f ;
 	dst.m_left = 0.0f + m_bx1;
-	dst.m_right = 512.0f + m_bx1;
-	dst.m_bottom = 512.0f ;
+	dst.m_right = 805.0f + m_bx1;
+	dst.m_bottom = 700.0f ;
 
 	//ï`âÊ
 	Draw::Draw(1, &src, &dst, c, 0.0f);
@@ -84,8 +125,8 @@ void CObjBlock::Draw()
 	//îwåiÇQ
 	dst.m_top = 0.0f;
 	dst.m_left = 0.0f + m_bx2;
-	dst.m_right = 512.0f + m_bx2;
-	dst.m_bottom = 512.0f;
+	dst.m_right = 805.0f + m_bx2;
+	dst.m_bottom = 700.0f;
 
 	//ï`âÊ
 	Draw::Draw(1, &src, &dst, c, 0.0f);
