@@ -33,8 +33,8 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\run.png", 0, TEX_SIZE_64);    //人間仮
 
-	//外部グラフィックファイルを読み込み0番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\back1.png", 1, TEX_SIZE_512); //背景仮
+	//外部グラフィックファイルを読み込み0番に登録(1024ピクセル)
+	Draw::LoadImageW(L"Image\\back1.png", 1, TEX_SIZE_1024); //背景仮
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
