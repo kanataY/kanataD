@@ -133,6 +133,7 @@
     <ClCompile Include="GameL\UserData.cpp" />
     <ClCompile Include="GameL\WinInputs.cpp" />
     <ClCompile Include="ObjBlock.cpp" />
+    <ClCompile Include="ObjGauge.cpp" />
     <ClCompile Include="ObjRunner.cpp" />
     <ClCompile Include="SceneMain.cpp" />
   </ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="GameL\WinInputs.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="ObjBlock.h" />
+    <ClInclude Include="ObjGauge.h" />
     <ClInclude Include="ObjRunner.h" />
     <ClInclude Include="SceneMain.h" />
   </ItemGroup>

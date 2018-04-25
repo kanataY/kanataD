@@ -21,37 +21,76 @@ CObjRunner::CObjRunner()
 void CObjRunner::Init()
 {
 	m_px = 0.0f;
-	m_py = 0.0f;	//位置
+	m_py = 500.0f;	//位置
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
-
+	jamp_memo = 0.0f;
+	m_jamp_control = false;
+	qaajamp_memo = 10;
 }
 
 //アクション
 void CObjRunner::Action()
 {
-	int a = 0.0f;
+	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
+
+	if (m_py >= 536) //一番下より下に行かないようにする
+		m_py = 536;
+	if (m_jamp_control == false)          //ジャンプをしてない時
+	{
+		if (m_py <= 277) //道路より上に行かないようにする
+			m_py = 277;
+	}
+
+	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 	//移動ーーーーーーーーーーーーーーーーーーーーー
-	if (Input::GetVKey(VK_RIGHT) == true)
+	if (Input::GetVKey(VK_RIGHT) == true)  //右移動
 	{
 		m_vx += 0.8f;
 	}
-	if (Input::GetVKey(VK_LEFT) == true)
+	if (Input::GetVKey(VK_LEFT) == true)  //左移動
 	{
 		m_vx += -0.8f;
 	}
-	if (Input::GetVKey(VK_UP) == true)
+	if (m_jamp_control == false)          //ジャンプをしてない時
 	{
-		m_vy += -0.8f;
-	}
-	if (Input::GetVKey(VK_DOWN) == true)
-	{
-		m_vy += 0.8f;
+		if (Input::GetVKey(VK_UP) == true && m_py > 277)//上移動
+		{
+			m_vy += -0.8f;
+		}
+		if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//下移動
+		{
+			m_vy += 0.8f;
+		}
 	}
 	//摩擦
 	m_vx += -(m_vx*0.150);
 	m_vy += -(m_vy*0.150);
-	//---------------------------------------------------
+	//移動終了---------------------------------------------------
+
+	//ジャンプ---------------------------
+	//ジャンプしてない時
+	if (m_jamp_control == false)                
+	{
+		if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+		{
+ 			jamp_memo = m_py;	//ジャンプする前の位置を記憶する
+			m_vy = -20;																//終了の数値もいじること。
+			m_jamp_control = true;		//ジャンプしている
+		}
+	}
+	if (m_jamp_control == true)//ジャンプしている
+	{
+		if (m_py >= jamp_memo  && m_vy != -20)		//元居た位置に戻ってきた場合ジャンプ終了
+		{
+			m_jamp_control = false;
+			m_vy = 0;
+		}
+		else 
+			m_vy += 9.8 / (16.0f);//自由落下運動
+		
+	}
+	//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
 	//位置の更新
 	m_px += m_vx;

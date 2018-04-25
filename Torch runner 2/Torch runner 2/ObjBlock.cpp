@@ -26,6 +26,7 @@ void CObjBlock::Init()
 	m_bx2 = 800.0f;
 
 	m_scroll = 0.0f;
+
 }
 
 //ƒAƒNƒVƒ‡ƒ“
@@ -116,7 +117,7 @@ void CObjBlock::Draw()
 	//”wŒi‚P
 	dst.m_top = 0.0f ;
 	dst.m_left = 0.0f + m_bx1;
-	dst.m_right = 805.0f + m_bx1;
+	dst.m_right = 800.0f + m_bx1;
 	dst.m_bottom = 700.0f ;
 
 	//•`‰æ
