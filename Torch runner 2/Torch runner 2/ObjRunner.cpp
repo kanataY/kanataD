@@ -27,6 +27,7 @@ void CObjRunner::Init()
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
 	qaajamp_memo = 10;
+	m_time = 0;
 }
 
 //アクション
@@ -52,44 +53,101 @@ void CObjRunner::Action()
 	{
 		m_vx += -0.8f;
 	}
-	if (m_jamp_control == false)          //ジャンプをしてない時
+	if (Input::GetVKey(VK_UP) == true && m_py > 277)//上移動
 	{
-		if (Input::GetVKey(VK_UP) == true && m_py > 277)//上移動
-		{
-			m_vy += -0.8f;
-		}
-		if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//下移動
-		{
-			m_vy += 0.8f;
-		}
+		m_vy += -0.8f;
 	}
+	if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//下移動
+	{
+		m_vy += 0.8f;
+	}
+	
 	//摩擦
-	m_vx += -(m_vx*0.150);
-	m_vy += -(m_vy*0.150);
+	m_vx += -(m_vx * 0.15f);
+	m_vy += -(m_vy * 0.15f);
 	//移動終了---------------------------------------------------
 
 	//ジャンプ---------------------------
 	//ジャンプしてない時
-	if (m_jamp_control == false)                
+	//if (m_jamp_control == false)                
+	//{
+	//	if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+	//	{
+ //			jamp_memo = m_py;	//ジャンプする前の位置を記憶する
+	//		m_vy = -20;																//終了の数値もいじること。
+	//		m_jamp_control = true;		//ジャンプしている
+	//	}
+	//}
+	//if (m_jamp_control == true)//ジャンプしている
+	//{
+	//	if (m_py >= jamp_memo  && m_vy != -20)		//元居た位置に戻ってきた場合ジャンプ終了
+	//	{
+	//		m_jamp_control = false;
+	//		m_vy = 0;
+	//	}
+	//	else 
+	//		m_vy += 9.8 / (16.0f);//自由落下運動
+	//	
+	//}
+
+	if (m_jamp_control == false)
 	{
 		if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
 		{
- 			jamp_memo = m_py;	//ジャンプする前の位置を記憶する
-			m_vy = -20;																//終了の数値もいじること。
+			//m_time++;
 			m_jamp_control = true;		//ジャンプしている
 		}
 	}
-	if (m_jamp_control == true)//ジャンプしている
-	{
-		if (m_py >= jamp_memo  && m_vy != -20)		//元居た位置に戻ってきた場合ジャンプ終了
+		if (m_jamp_control == true)//ジャンプしている
 		{
-			m_jamp_control = false;
-			m_vy = 0;
+			if (m_time > 20)
+			{
+				
+				m_time++; 
+				if (jamp_memo != 999.0f)
+				{
+					if (Input::GetVKey(VK_UP) == true)//上移動
+					{
+						m_vy += -0.8f;
+					}
+					else
+						m_vy = 5.0f;//自由落下運動
+				}
+				else
+					m_vy = 5.0f;
+			}
+			else
+			{
+				
+				++m_time;
+				if (m_py < 280)//道幅ギリギリ
+				{
+					m_vy = -5.0f;
+					jamp_memo = 999.0f;
+				}
+				else
+				{
+					if (Input::GetVKey(VK_UP) == true)//上移動
+					{
+						m_vy += -0.8f;
+					}
+					else
+						m_vy = -5.0f;//自由落下運動
+				}
+			}
+			if (m_time > 42)//時間が来たらジャンプを終了させる
+			{
+				if (Input::GetVKey(VK_SPACE) == false)   //ジャンプさせない
+				{
+					m_jamp_control = false;
+					
+				}
+				m_vy = 0.0f;
+				m_time = 0;
+			}
 		}
-		else 
-			m_vy += 9.8 / (16.0f);//自由落下運動
-		
-	}
+	
+
 	//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
 	//位置の更新

@@ -108,7 +108,7 @@ void CObjBlock::Draw()
 	RECT_F dst; //•`‰ææ•\¦ˆÊ’u
 
 	//Ø‚èæ‚èˆÊ’u‚Ìİ’è
-	src.m_top = 0.0f;
+	src.m_top =0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 1024.0f;
 	src.m_bottom = 1024.0f;
@@ -117,7 +117,7 @@ void CObjBlock::Draw()
 	//”wŒi‚P
 	dst.m_top = 0.0f ;
 	dst.m_left = 0.0f + m_bx1;
-	dst.m_right = 800.0f + m_bx1;
+	dst.m_right = 805.0f + m_bx1;
 	dst.m_bottom = 700.0f ;
 
 	//•`‰æ
@@ -130,5 +130,5 @@ void CObjBlock::Draw()
 	dst.m_bottom = 700.0f;
 
 	//•`‰æ
-	Draw::Draw(1, &src, &dst, c, 0.0f);
+	Draw::Draw(2, &src, &dst, c, 0.0f);
 }

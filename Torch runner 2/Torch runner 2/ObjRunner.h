@@ -28,4 +28,5 @@ private:
 	float qaajamp_memo;
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる
 	bool m_jamp_control; //ジャンプしているかどうかを調べる（制御する）
+	int   m_time;
 };
