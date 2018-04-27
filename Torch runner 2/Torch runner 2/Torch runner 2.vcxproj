@@ -135,7 +135,9 @@
     <ClCompile Include="ObjBlock.cpp" />
     <ClCompile Include="ObjGauge.cpp" />
     <ClCompile Include="ObjRunner.cpp" />
+    <ClCompile Include="ObjTitle.cpp" />
     <ClCompile Include="SceneMain.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameHead.h" />
@@ -154,7 +156,9 @@
     <ClInclude Include="ObjBlock.h" />
     <ClInclude Include="ObjGauge.h" />
     <ClInclude Include="ObjRunner.h" />
+    <ClInclude Include="ObjTitle.h" />
     <ClInclude Include="SceneMain.h" />
+    <ClInclude Include="SceneTitle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameL\Draw2DTex.hlsl" />

@@ -28,6 +28,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Gauge">
       <UniqueIdentifier>{3c0945a9-1a63-42a4-a6ae-e3f5be871bb8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMETITLE">
+      <UniqueIdentifier>{dcbc51a8-f8b4-46b7-8ffb-f2893a347279}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -77,6 +80,12 @@
     </ClCompile>
     <ClCompile Include="ObjGauge.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTitle.cpp">
+      <Filter>ソース ファイル\GAMETITLE</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjTitle.cpp">
+      <Filter>ソース ファイル\GAMETITLE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="ObjGauge.h">
       <Filter>ソース ファイル\GAMEMAIN\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTitle.h">
+      <Filter>ソース ファイル\GAMETITLE</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjTitle.h">
+      <Filter>ソース ファイル\GAMETITLE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
