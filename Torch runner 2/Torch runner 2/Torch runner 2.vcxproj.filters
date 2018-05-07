@@ -31,6 +31,9 @@
     <Filter Include="ソース ファイル\GAMETITLE">
       <UniqueIdentifier>{dcbc51a8-f8b4-46b7-8ffb-f2893a347279}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Crates">
+      <UniqueIdentifier>{ebb778cc-360b-40cb-867d-18a2609b029c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="ObjTitle.cpp">
       <Filter>ソース ファイル\GAMETITLE</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjCrates.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Crates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="ObjTitle.h">
       <Filter>ソース ファイル\GAMETITLE</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjCrates.h">
+      <Filter>ソース ファイル\GAMEMAIN\Crates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ enum OBJ_NAME
 	OBJ_RUNNER,
 	OBJ_BLOCK,
 	OBJ_GAUGE,
+	OBJ_CRATES,
 };
 //------------------------------------------------
 
@@ -45,10 +46,13 @@ struct UserData
 #include "ObjRunner.h"
 #include "ObjBlock.h"
 #include "ObjGauge.h"
+#include "ObjTitle.h"
+#include "ObjCrates.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------
 #include "SceneMain.h"
+#include "SceneTitle.h"
 //-----------------------------------------------
 
 //シーンスタートクラス---------------------------
