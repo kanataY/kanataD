@@ -66,7 +66,7 @@ void CObjBlock::Action()
 			runner->SetX(50);			//ŽålŒö‚Íƒ‰ƒCƒ“‚ð’´‚¦‚È‚¢‚æ‚¤‚É‚·‚é
 			m_scroll -= runner->GetVX();//ŽålŒö‚ª–{—ˆ“®‚­‚×‚«•ª‚Ì’l‚ðm_scroll‚É‰Á‚¦‚é
 
-									  //”wŒi1‚Ì“®ì
+			//”wŒi1‚Ì“®ì
 			m_bx1 -= runner->GetVX();
 			if (m_bx1 > 800.0f)
 				m_bx1 = -800.0f;

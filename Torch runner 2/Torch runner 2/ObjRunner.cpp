@@ -28,6 +28,9 @@ void CObjRunner::Init()
 	m_jamp_control = false;
 	qaajamp_memo = 10;
 	m_time = 0;
+
+	//HitBox
+	Hits::SetHitBox(this, m_px, m_py, 18, 64, ELEMENT_RUNNER, OBJ_RUNNER, 1);
 }
 
 //アクション
@@ -149,6 +152,13 @@ void CObjRunner::Action()
 	
 
 	//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
+
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	//HitBoxの位置の変更
+	CHitBox* hit = Hits::GetHitBox(this);
+	hit->SetPos(m_px + 25.0f, m_py);
 
 	//位置の更新
 	m_px += m_vx;

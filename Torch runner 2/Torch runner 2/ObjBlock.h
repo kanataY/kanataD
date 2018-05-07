@@ -13,6 +13,9 @@ public:
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
+	
+	void  SetScroll(float s) { m_scroll = s; }
+	float GetScroll() { return m_scroll; }
 
 private:
 	float m_px;		//位置
