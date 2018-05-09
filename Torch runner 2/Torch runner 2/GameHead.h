@@ -10,6 +10,9 @@ enum OBJ_NAME
 	OBJ_BLOCK,
 	OBJ_GAUGE,
 	OBJ_CRATES,
+
+	//補正
+	CORRECTION,
 };
 //------------------------------------------------
 
@@ -30,7 +33,7 @@ enum HIT_ELEMENTS
 struct UserData
 {
 	int mSeveData;	//サンプルセーブデータ
-	
+	int m_stage_count;
 };
 //------------------------------------------------
 
@@ -50,6 +53,9 @@ struct UserData
 #include "ObjGauge.h"
 #include "ObjTitle.h"
 #include "ObjCrates.h"
+
+//補助系
+#include "Correction.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------

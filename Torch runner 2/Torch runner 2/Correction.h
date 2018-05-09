@@ -5,16 +5,15 @@
 using namespace GameL;
 
 //オブジェクト：ゲージ
-class CObjCrates : public CObj
+class CObjCorrection : public CObj
 {
 public:
-	CObjCrates(int x,int y);
-	~CObjCrates() {};
+
+	~CObjCorrection() {};
 	void Init();	//イニシャライズ
-	void Action();  //アクション
-	void Draw();	//ドロー
+	float RangeY(float y); //範囲外にいるときにただす
 
 private:
 	float m_px;		//位置
 	float m_py;
-}; 
+};
