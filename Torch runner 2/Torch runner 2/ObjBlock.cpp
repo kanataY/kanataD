@@ -12,9 +12,10 @@
 using namespace GameL;
 
 //コンストラクタ
-CObjBlock::CObjBlock()
+CObjBlock::CObjBlock(int map[10][MAP_X_MAX])
 {
-
+	//マップデータをコピー
+	memcpy(m_map, map, sizeof(int)*(10 * MAP_X_MAX));
 }
 
 //イニシャライズ
@@ -26,12 +27,13 @@ void CObjBlock::Init()
 	m_bx2 = 800.0f;
 
 	m_scroll = 0.0f;
-
+	((UserData*)Save::GetData())->m_stage_count = 1; // 仮
 }
 
 //アクション
 void CObjBlock::Action()
 {
+	//背景関連ーーーーーーーーーーーーーーーーーーーーーーーー
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 	float rx = runner->GetX();
@@ -66,7 +68,7 @@ void CObjBlock::Action()
 			runner->SetX(50);			//主人公はラインを超えないようにする
 			m_scroll -= runner->GetVX();//主人公が本来動くべき分の値をm_scrollに加える
 
-									  //背景1の動作
+			//背景1の動作
 			m_bx1 -= runner->GetVX();
 			if (m_bx1 > 800.0f)
 				m_bx1 = -800.0f;
@@ -93,6 +95,31 @@ void CObjBlock::Action()
 			m_bx2 -= runner->GetVX();
 			if (m_bx2 > 800.0f)
 				m_bx2 = -800.0f;
+		}
+	}
+
+	//マップ関連ーーーーーーーーーー
+	float line = 0.0f;
+
+	//敵出現ライン
+	//主人公の位置+500を敵出現ラインにする
+	line = rx + (-m_scroll) + 500;
+
+	//敵出現ラインを要素番号化
+	int ex = ((int)line) / 64;
+
+	//敵出現ラインの列を検索
+	for (int i = 0; i < 10; i++)
+	{
+		//列の中から１を探す
+		if (m_map[i][ex] == 1)
+		{
+			//木箱を生成
+			CObjCrates* crates = new CObjCrates(ex*64, i*64);
+			Objs::InsertObj(crates, OBJ_CRATES, 19);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
 		}
 	}
 }

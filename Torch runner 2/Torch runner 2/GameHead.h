@@ -10,6 +10,9 @@ enum OBJ_NAME
 	OBJ_BLOCK,
 	OBJ_GAUGE,
 	OBJ_CRATES,
+
+	//補正
+	CORRECTION,
 };
 //------------------------------------------------
 
@@ -19,7 +22,9 @@ enum HIT_ELEMENTS
 	ELEMENT_NULL,//属性無し 全ての属性と当たり判定が実行される
 	//以下　同じ属性同士では当たり判定は実行されない
 	//属性は追加可能だが、デバック時の色は初期設定分しか無い
-
+	ELEMENT_RUNNER,
+	ELEMENT_ENEMY,
+	ELEMENT_ITEM,
 };
 //------------------------------------------------
 
@@ -28,7 +33,7 @@ enum HIT_ELEMENTS
 struct UserData
 {
 	int mSeveData;	//サンプルセーブデータ
-	
+	int m_stage_count;
 };
 //------------------------------------------------
 
@@ -48,6 +53,9 @@ struct UserData
 #include "ObjGauge.h"
 #include "ObjTitle.h"
 #include "ObjCrates.h"
+
+//補助系
+#include "Correction.h"
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------

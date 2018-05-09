@@ -19,6 +19,8 @@ public:
 	float GetVX() { return m_vx; }
 	void  SetX(float x) { m_px = x; }
 	void  SetY(float y) { m_py = y; }
+	void  SetVX(float x) { m_vx = x; }
+	void  SetVY(float y) { m_vy = y; }
 
 private:
 	float m_px;		//ˆÊ’u

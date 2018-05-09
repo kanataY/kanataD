@@ -34,6 +34,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Crates">
       <UniqueIdentifier>{ebb778cc-360b-40cb-867d-18a2609b029c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Correction">
+      <UniqueIdentifier>{6ccd7a18-9ed9-49af-ae60-4ce57cc00525}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -92,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="ObjCrates.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Crates</Filter>
+    </ClCompile>
+    <ClCompile Include="Correction.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Correction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="ObjCrates.h">
       <Filter>ソース ファイル\GAMEMAIN\Crates</Filter>
+    </ClInclude>
+    <ClInclude Include="Correction.h">
+      <Filter>ソース ファイル\GAMEMAIN\Correction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
