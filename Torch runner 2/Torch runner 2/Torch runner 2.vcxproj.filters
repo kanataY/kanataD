@@ -37,6 +37,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Correction">
       <UniqueIdentifier>{6ccd7a18-9ed9-49af-ae60-4ce57cc00525}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Smartphone">
+      <UniqueIdentifier>{cadbea57-f0e8-4a41-87a0-f27dcbb6d18b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -98,6 +101,9 @@
     </ClCompile>
     <ClCompile Include="Correction.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Correction</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjSmartPhone.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Smartphone</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="Correction.h">
       <Filter>ソース ファイル\GAMEMAIN\Correction</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjSmartPhone.h">
+      <Filter>ソース ファイル\GAMEMAIN\Smartphone</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

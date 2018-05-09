@@ -121,6 +121,16 @@ void CObjBlock::Action()
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;
 		}
+		//列の中から２を探す
+		if (m_map[i][ex] == 2)
+		{
+			//スマホ少年を生成
+			CObjSmartphone* sma = new CObjSmartphone(ex * 64, i * 64);
+			Objs::InsertObj(sma, OBJ_SMARTPHONE, 15);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
 	}
 }
 

@@ -6,13 +6,14 @@ enum OBJ_NAME
 	OBJ_NO_NAME,	//オブジェクト名無し(禁止)
 	//ゲームで使うオブジェクトの名前
 	//OBJ_○○と表記
-	OBJ_RUNNER,
-	OBJ_BLOCK,
-	OBJ_GAUGE,
-	OBJ_CRATES,
+	OBJ_RUNNER,				//ランナー
+	OBJ_BLOCK,				//ブロック
+	OBJ_GAUGE,				//ゲージ
+	OBJ_CRATES,				//木箱
+	OBJ_SMARTPHONE,			//スマホ少年
 
 	//補正
-	CORRECTION,
+	CORRECTION,				//補正
 };
 //------------------------------------------------
 
@@ -33,7 +34,7 @@ enum HIT_ELEMENTS
 struct UserData
 {
 	int mSeveData;	//サンプルセーブデータ
-	int m_stage_count;
+	int m_stage_count;//ステージの種類
 };
 //------------------------------------------------
 
@@ -48,19 +49,20 @@ struct UserData
 //------------------------------------------------
 
 //ゲームシーンオブジェクトヘッダ------------------
-#include "ObjRunner.h"
-#include "ObjBlock.h"
-#include "ObjGauge.h"
-#include "ObjTitle.h"
-#include "ObjCrates.h"
+#include "ObjRunner.h"			//ランナー
+#include "ObjBlock.h"			//ブロック
+#include "ObjGauge.h"			//ゲージ	
+#include "ObjTitle.h"			//タイトル
+#include "ObjCrates.h"			//木箱
+#include "ObjSmartPhone.h"		//スマホ少年
 
 //補助系
-#include "Correction.h"
+#include "Correction.h"			//補正
 //------------------------------------------------
 
 //ゲームシーンクラスヘッダ------------------------
-#include "SceneMain.h"
-#include "SceneTitle.h"
+#include "SceneMain.h"			//シーンタイトル
+#include "SceneTitle.h"			//シーンメイン
 //-----------------------------------------------
 
 //シーンスタートクラス---------------------------

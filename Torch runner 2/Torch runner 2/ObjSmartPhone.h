@@ -4,12 +4,12 @@
 //使用するネームスペース
 using namespace GameL;
 
-//オブジェクト：木箱
-class CObjCrates : public CObj
+//オブジェクト：スマホ少年
+class CObjSmartphone : public CObj
 {
 public:
-	CObjCrates(int x,int y);
-	~CObjCrates() {};
+	CObjSmartphone(int x, int y);
+	~CObjSmartphone() {};
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
@@ -17,4 +17,7 @@ public:
 private:
 	float m_px;		//位置
 	float m_py;
-}; 
+	float m_vx;		//移動量
+	float m_vy;
+	int m_time;
+};
