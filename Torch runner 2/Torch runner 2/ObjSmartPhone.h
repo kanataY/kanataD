@@ -19,5 +19,6 @@ private:
 	float m_py;
 	float m_vx;		//ˆÚ“®—Ê
 	float m_vy;
-	int m_time;
+	int   m_time;     //ƒ^ƒCƒ€
+	bool  m_middle;  //^‚ñ’†‚É‚¢‚È‚¢‚©‚µ‚ç‚×‚é•Ï”
 };
