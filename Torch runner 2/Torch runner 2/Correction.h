@@ -20,4 +20,5 @@ public:
 private:
 	float m_px;		//ˆÊ’u
 	float m_py;
+	
 };

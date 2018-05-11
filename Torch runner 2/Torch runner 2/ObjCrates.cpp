@@ -19,6 +19,9 @@ CObjCrates::CObjCrates(int x,int y)
 //イニシャライズ
 void CObjCrates::Init()
 {
+	m_time = 0;
+	m_fire_control = false;
+
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ITEM, OBJ_CRATES, 1);
 }
@@ -41,7 +44,7 @@ void CObjCrates::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + block->GetScroll(), m_py);
 
-	//ランナーと当たっている場合
+	//当たり判定関係
 	HitBox();
 }
 
@@ -78,9 +81,43 @@ void CObjCrates::HitBox()
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
+	//聖火の位置を取得
+	CObjTorch* torch = (CObjTorch*)Objs::GetObj(OBJ_TORCH);
+
+	//炎の位置を取得
+	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
+
+	//補正の情報を持ってくる
+	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+
 	//Hitboxの情報を調べる
 	CHitBox* hit = Hits::GetHitBox(this);
 
+	//まだ炎がついてない状態
+	if (m_fire_control == false)
+	{
+		//聖火と当たっている場合
+		if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
+		{
+			cor->FireDisplay(m_px, m_py); //炎を発生させる
+			m_fire_control = true;
+		}
+	}
+	//炎がついてる状態
+	if (m_fire_control == true)
+	{
+		if (fire != nullptr)
+		{
+			m_time++; //一定時間たったら木箱を消す。
+			if (m_time > 99)
+			{
+				this->SetStatus(false);		//自身に削除命令を出す
+				Hits::DeleteHitBox(this);	//敵が所有するHitBoxに削除する
+			}
+		}
+	}
+
+	//ランナーと当たっている場合
 	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 	{
 		//木箱とランナーがどの角度で当たっているかを確認

@@ -18,4 +18,8 @@ public:
 private:
 	float m_px;		//位置
 	float m_py;
+	int m_time;     //タイム
+
+	//制御系
+	bool m_fire_control; //火が付いた時の制御
 }; 

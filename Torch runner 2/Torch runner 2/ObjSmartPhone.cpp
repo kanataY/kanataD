@@ -30,7 +30,7 @@ void CObjSmartphone::Init()
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 20; //アニメーション間隔幅
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 32, 32, ELEMENT_ITEM, OBJ_SMARTPHONE, 1);
+	Hits::SetHitBox(this, m_px, m_py, 32, 32, ELEMENT_ENEMY, OBJ_SMARTPHONE, 1);
 }
 
 //アクション

@@ -71,8 +71,8 @@ void CObjFire::Draw()
 
 	//•\Ž¦ˆÊ’u‚ÌÝ’è
 	dst.m_top = 0.0f + m_py;
-	dst.m_left = 0.0f + m_px/* + block->GetScroll()*/;
-	dst.m_right = 50.0f + m_px /*+ block->GetScroll()*/;
+	dst.m_left = 0.0f + m_px + block->GetScroll();
+	dst.m_right = 50.0f + m_px + block->GetScroll();
 	dst.m_bottom = 50.0f + m_py;
 
 	//•`‰æ
