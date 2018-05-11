@@ -57,45 +57,9 @@ void CObjBlock::Action()
 	}
 
 	//後方
-	if (m_scroll > -1)//スクロールの場所によってスクロールの入る場所を変える
+	if (rx < 0) //画面より左側に行けないようにする
 	{
-		if (m_scroll > -1.0f && rx < 50)//初期位置よりも後ろにいけない
-		{
-			runner->SetX(50.0f);//初期位置に戻す
-		}
-		else if (rx < 50)
-		{
-			runner->SetX(50);			//主人公はラインを超えないようにする
-			m_scroll -= runner->GetVX();//主人公が本来動くべき分の値をm_scrollに加える
-
-			//背景1の動作
-			m_bx1 -= runner->GetVX();
-			if (m_bx1 > 800.0f)
-				m_bx1 = -800.0f;
-
-			//背景2の動作
-			m_bx2 -= runner->GetVX();
-			if (m_bx2 > 800.0f)
-				m_bx2 = -800.0f;
-		}
-	}
-	else
-	{
-		if (rx < 200)
-		{
-			runner->SetX(200);			//主人公はラインを超えないようにする
-			m_scroll -= runner->GetVX();//主人公が本来動くべき分の値をm_scrollに加える
-
-			//背景1の動作
-			m_bx1 -= runner->GetVX();
-			if (m_bx1 > 800.5f)
-				m_bx1 = -800.5f;
-
-			//背景2の動作
-			m_bx2 -= runner->GetVX();
-			if (m_bx2 > 800.5f)
-				m_bx2 = -800.5f;
-		}
+		runner->SetX(0);			//主人公はラインを超えないようにする
 	}
 
 	//マップ関連ーーーーーーーーーー
