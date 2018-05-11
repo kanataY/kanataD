@@ -88,13 +88,13 @@ void CObjBlock::Action()
 
 			//”wŒi1‚Ì“®ì
 			m_bx1 -= runner->GetVX();
-			if (m_bx1 > 800.0f)
-				m_bx1 = -800.0f;
+			if (m_bx1 > 800.5f)
+				m_bx1 = -800.5f;
 
 			//”wŒi2‚Ì“®ì
 			m_bx2 -= runner->GetVX();
-			if (m_bx2 > 800.0f)
-				m_bx2 = -800.0f;
+			if (m_bx2 > 800.5f)
+				m_bx2 = -800.5f;
 		}
 	}
 

@@ -140,6 +140,7 @@
     <ClCompile Include="ObjSmartPhone.cpp" />
     <ClCompile Include="ObjTitle.cpp" />
     <ClCompile Include="Correction.cpp" />
+    <ClCompile Include="ObjTorch.cpp" />
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="ObjSmartPhone.h" />
     <ClInclude Include="ObjTitle.h" />
     <ClInclude Include="Correction.h" />
+    <ClInclude Include="ObjTorch.h" />
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="SceneTitle.h" />
   </ItemGroup>

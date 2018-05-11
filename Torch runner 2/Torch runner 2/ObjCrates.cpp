@@ -93,7 +93,7 @@ void CObjCrates::HitBox()
 			if (hit_data[i] != NULL)
 			{
 				//左右に当たったら
-				float r = hit_data[0]->r;
+				float r = hit_data[i]->r;
 
 				//通り抜けないようにする       ※要調整
 				//ランナーが上に当たっていたら

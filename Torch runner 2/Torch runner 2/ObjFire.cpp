@@ -60,7 +60,7 @@ void CObjFire::Draw()
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
 
-				//切り取り位置の設定
+	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f + m_ani_frame * 64;
 	src.m_right = 64.0f +m_ani_frame * 64;
@@ -71,8 +71,8 @@ void CObjFire::Draw()
 
 	//表示位置の設定
 	dst.m_top = 0.0f + m_py;
-	dst.m_left = 0.0f + m_px + block->GetScroll();
-	dst.m_right = 50.0f + m_px + block->GetScroll();
+	dst.m_left = 0.0f + m_px/* + block->GetScroll()*/;
+	dst.m_right = 50.0f + m_px /*+ block->GetScroll()*/;
 	dst.m_bottom = 50.0f + m_py;
 
 	//描画

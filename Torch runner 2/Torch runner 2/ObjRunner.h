@@ -27,6 +27,11 @@ private:
 	float m_py;
 	float m_vx;		//移動ベクトル
 	float m_vy;
+
+	//制御系---------
+	bool m_torch_control;
+
+	//ジャンプ系（調整するので消すor帰る）
 	float qaajamp_memo;
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる
 	bool m_jamp_control; //ジャンプしているかどうかを調べる（制御する）

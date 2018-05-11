@@ -24,6 +24,9 @@ void CObjRunner::Init()
 	m_py = 500.0f;	//位置
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
+
+	m_torch_control = false;
+
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
 	qaajamp_memo = 10;
@@ -76,8 +79,18 @@ void CObjRunner::Action()
 	//聖火をかざす（火をうつす）
 	if (Input::GetVKey('C') == true)  //右移動
 	{
-		//cor->FireDisplay(m_px,m_py);
+		if (m_torch_control == false)
+		{
+			m_torch_control = true;
+			//聖火の情報を持ってくる
+			//CObjTorch* cor = (CObjTorch*)Objs::GetObj(OBJ_TORCH);
+			//聖火を出現させる
+			CObjTorch* torch = new CObjTorch(m_px, m_py);
+			Objs::InsertObj(torch, OBJ_TORCH, 20);
+		}
 	}
+	else
+		m_torch_control = false;
 
 	//ジャンプ---------------------------
 	//ジャンプしてない時
