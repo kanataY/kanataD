@@ -25,8 +25,12 @@ void CObjSmartphone::Init()
 	m_vy = 0.0f;
 	m_time = 0;
 	m_middle = false;
+
+	m_ani_time = 0;
+	m_ani_frame = 0;  //静止フレームを初期にする
+	m_ani_max_time = 20; //アニメーション間隔幅
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 32, 32, ELEMENT_ENEMY, OBJ_SMARTPHONE, 1);
+	Hits::SetHitBox(this, m_px, m_py, 32, 32, ELEMENT_ITEM, OBJ_SMARTPHONE, 1);
 }
 
 //アクション
@@ -37,33 +41,45 @@ void CObjSmartphone::Action()
 	{
 		if (m_middle == true) //ランナー以外のHitBoxに当たった時真ん中よりしたなら
 		{
-			m_vx += 0.25f;    //上に動かせる
-			m_vy += -0.25f;
+			m_vx += 0.15f;    //上に動かせる
+			m_vy += -0.15f;
 		}
 		if (m_middle == false) //ランナー以外のHitBoxに当たった時真ん中より上なら
 		{
-			m_vx += 0.25f;   //下に動かせる
-			m_vy += 0.25f;
+			m_vx += 0.15f;   //下に動かせる
+			m_vy += 0.15f;
 		}
 	}
 	if (m_time > 60 && m_time < 120)//下に移動
 	{
-		m_vx += 0.25f;
-		m_vy += 0.25f;
+		m_vx += 0.15f;
+		m_vy += 0.15f;
 	}
 	if (m_time > 120 && m_time < 240)//上に移動
 	{
-		m_vx += 0.25f;
-		m_vy += -0.25f;
+		m_vx += 0.15f;
+		m_vy += -0.15f;
 	}
 	if (m_time > 240 && m_time < 300)//下に移動
 	{
-		m_vx += 0.25f;
-		m_vy += 0.25f;
+		m_vx += 0.15f;
+		m_vy += 0.15f;
 	}
 	if(m_time > 300)//ループさせる
 		m_time = 60;
-	
+
+	//---------------------
+		m_ani_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	{
+		m_ani_frame++;//フレームを進める
+		m_ani_time = 0;
+	}
+	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+	{
+		m_ani_frame = 0;
+	}
+
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
@@ -107,8 +123,8 @@ void CObjSmartphone::Draw()
 
 	//切り取り位置の設定
 	src.m_top = 0.0f;
-	src.m_left = 0.0f;
-	src.m_right = 64.0f;
+	src.m_left = 0.0f + m_ani_frame * 64;
+	src.m_right = 64.0f + m_ani_frame * 64;
 	src.m_bottom = 256.0f;
 
 	//ブロック情報を持ってくる

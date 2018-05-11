@@ -13,6 +13,7 @@ public:
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
+	void HitBox();  //HitBox関連
 
 private:
 	float m_px;		//位置

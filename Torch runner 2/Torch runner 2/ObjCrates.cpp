@@ -42,58 +42,7 @@ void CObjCrates::Action()
 	hit->SetPos(m_px + block->GetScroll(), m_py);
 
 	//ランナーと当たっている場合
-	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
-	{
-		//木箱とランナーがどの角度で当たっているかを確認
-		HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
-		hit_data = hit->SearchObjNameHit(OBJ_RUNNER);	//hit_dataに木箱と当たっているほか全てのHitBoxとの情報を入れる
-
-		for (int i = 0; i < hit->GetCount(); i++)
-		{
-			//hit_data[i]に情報が入っていたら処理
-			if (hit_data[i] != NULL)
-			{
-				//左右に当たったら
-				float r = hit_data[0]->r;
-
-				//通り抜けないようにする       ※要調整
-				//ランナーが上に当たっていたら
-				if (r >= 45 && r < 135)
-				{
-					if(runner->GetY() > m_py - 35.0f )	//上側を通り抜けれるようにする
-						runner->SetVY(-0.8f);
-				}
-
-				if ((r<45 && r >= 0) || r >= 315)
-				{
-					//右
-					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
-						;
-					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
-						;
-					else
-						runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
-				}
-			
-				if (r >= 135 && r < 220)
-				{
-					//左
-					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
-						;
-					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
-						;
-					else
-						runner->SetVX(-0.8f);//真ん中だから通り抜けれないようにする
-				}
-				if (r >= 220 && r < 315)
-				{
-					//下
-					if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
-						runner->SetVY(0.8f);
-				}
-			}
-		}
-	}
+	HitBox();
 }
 
 //描画
@@ -122,4 +71,66 @@ void CObjCrates::Draw()
 
 	//描画
 	Draw::Draw(4, &src, &dst, c, 0.0f);
+}
+
+void CObjCrates::HitBox()
+{
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//Hitboxの情報を調べる
+	CHitBox* hit = Hits::GetHitBox(this);
+
+	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+	{
+		//木箱とランナーがどの角度で当たっているかを確認
+		HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
+		hit_data = hit->SearchObjNameHit(OBJ_RUNNER);	//hit_dataに木箱と当たっているほか全てのHitBoxとの情報を入れる
+
+		for (int i = 0; i < hit->GetCount(); i++)
+		{
+			//hit_data[i]に情報が入っていたら処理
+			if (hit_data[i] != NULL)
+			{
+				//左右に当たったら
+				float r = hit_data[0]->r;
+
+				//通り抜けないようにする       ※要調整
+				//ランナーが上に当たっていたら
+				if (r >= 45 && r < 135)
+				{
+					if (runner->GetY() > m_py - 35.0f)	//上側を通り抜けれるようにする
+						runner->SetVY(-0.8f);
+				}
+
+				if ((r<45 && r >= 0) || r >= 315)
+				{
+					//右
+					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
+						;
+					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
+						;
+					else
+						runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
+				}
+
+				if (r >= 135 && r < 220)
+				{
+					//左
+					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
+						;
+					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
+						;
+					else
+						runner->SetVX(-0.8f);//真ん中だから通り抜けれないようにする
+				}
+				if (r >= 220 && r < 315)
+				{
+					//下
+					if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
+						runner->SetVY(0.8f);
+				}
+			}
+		}
+	}
 }

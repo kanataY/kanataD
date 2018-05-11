@@ -11,6 +11,7 @@ enum OBJ_NAME
 	OBJ_GAUGE,				//ゲージ
 	OBJ_CRATES,				//木箱
 	OBJ_SMARTPHONE,			//スマホ少年
+	OBJ_FIRE,				//炎
 
 	//補正
 	CORRECTION,				//補正
@@ -55,6 +56,7 @@ struct UserData
 #include "ObjTitle.h"			//タイトル
 #include "ObjCrates.h"			//木箱
 #include "ObjSmartPhone.h"		//スマホ少年
+#include "ObjFire.h"			//炎
 
 //補助系
 #include "Correction.h"			//補正

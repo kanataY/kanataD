@@ -53,6 +53,9 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み4番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Smartphone.png", 5, TEX_SIZE_256);    //スマホ少年
 
+	//外部グラフィックファイルを読み込み4番に登録(320ピクセル)
+	Draw::LoadImageW(L"Image\\object\\Fire.png", 6, TEX_SIZE_320);    //スマホ少年
+
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
@@ -65,9 +68,9 @@ void CSceneMain::InitScene()
 	CObjGauge* gauge = new CObjGauge();
 	Objs::InsertObj(gauge, OBJ_GAUGE, 13);
 
-	//木箱
-	CObjCrates* crates = new CObjCrates(30,620);
-	Objs::InsertObj(crates, OBJ_CRATES, 13);
+	//炎
+	CObjFire* fi = new CObjFire(30.0f, 400.0f);
+	Objs::InsertObj(fi, OBJ_FIRE, 13);
 }
 
 //実行中メソッド

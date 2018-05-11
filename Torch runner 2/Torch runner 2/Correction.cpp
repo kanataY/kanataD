@@ -22,10 +22,24 @@ void CObjCorrection::Init()
 float CObjCorrection::RangeY(float y)
 {
 
-	if (y > 536.0f)  //•à‚¯‚é”ÍˆÍ‚æ‚è‰º‚É‚¢‚éê‡ƒMƒŠƒMƒŠ‚Ü‚Å–ß‚·
-		return 536.0f;
-	else if (y < 277.0f)//•à‚¯‚é”ÍˆÍ‚æ‚èã‚É‚¢‚éê‡ƒMƒŠƒMƒŠ‚Ü‚Å–ß‚·
-		return 277.0f;
+	if (y > OUTOFRANGE_DOWN)  //•à‚¯‚é”ÍˆÍ‚æ‚è‰º‚É‚¢‚éê‡ƒMƒŠƒMƒŠ‚Ü‚Å–ß‚·
+		return OUTOFRANGE_DOWN;
+	else if (y < OUTOFRANGE_UP)//•à‚¯‚é”ÍˆÍ‚æ‚èã‚É‚¢‚éê‡ƒMƒŠƒMƒŠ‚Ü‚Å–ß‚·
+		return OUTOFRANGE_UP;
 
 	return y;
+}
+
+//‰Š‚ð•¡”•\Ž¦‚³‚¹‚é
+void CObjCorrection::FireDisplay(float x, float y)
+{
+	//‰Š
+	CObjFire* fi = new CObjFire(x - 10.0f , y -10.0f);
+	Objs::InsertObj(fi, OBJ_FIRE, 20);
+	//‰Š2
+	CObjFire* fi2 = new CObjFire(x + 30.0f, y + 10.0f);
+	Objs::InsertObj(fi2, OBJ_FIRE, 20);
+	//‰Š3
+	CObjFire* fi3 = new CObjFire(x + 12.0f, y + 35.0f);
+	Objs::InsertObj(fi3, OBJ_FIRE, 20);
 }

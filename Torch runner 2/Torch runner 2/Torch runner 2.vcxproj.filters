@@ -40,6 +40,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Smartphone">
       <UniqueIdentifier>{cadbea57-f0e8-4a41-87a0-f27dcbb6d18b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Fire">
+      <UniqueIdentifier>{c055f333-4f48-4d3d-ae33-27b3ebdb0705}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="ObjSmartPhone.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Smartphone</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjFire.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Fire</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="ObjSmartPhone.h">
       <Filter>ソース ファイル\GAMEMAIN\Smartphone</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFire.h">
+      <Filter>ソース ファイル\GAMEMAIN\Fire</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

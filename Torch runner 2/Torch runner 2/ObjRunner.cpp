@@ -36,6 +36,9 @@ void CObjRunner::Init()
 //アクション
 void CObjRunner::Action()
 {
+	//補正の情報を持ってくる
+	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+
 	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
 	if (m_py >= 536) //一番下より下に行かないようにする
@@ -69,6 +72,12 @@ void CObjRunner::Action()
 	m_vx += -(m_vx * 0.15f);
 	m_vy += -(m_vy * 0.15f);
 	//移動終了---------------------------------------------------
+
+	//聖火をかざす（火をうつす）
+	if (Input::GetVKey('C') == true)  //右移動
+	{
+		//cor->FireDisplay(m_px,m_py);
+	}
 
 	//ジャンプ---------------------------
 	//ジャンプしてない時

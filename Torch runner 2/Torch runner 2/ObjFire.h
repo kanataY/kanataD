@@ -4,25 +4,25 @@
 //使用するネームスペース
 using namespace GameL;
 
-//オブジェクト：スマホ少年
-class CObjSmartphone : public CObj
+//オブジェクト：炎
+class CObjFire : public CObj
 {
 public:
-	CObjSmartphone(int x, int y);
-	~CObjSmartphone() {};
+	CObjFire(float x, float y);
+	~CObjFire() {};
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
+	float GetX() { return m_px; }
+	float GetY() { return m_py; }
+	void  SetX(float x) { m_px = x; }
+	void  SetY(float y) { m_py = y; }
 
 private:
 	float m_px;		//位置
 	float m_py;
-	float m_vx;		//移動量
-	float m_vy;
-	int   m_time;     //タイム
-	bool  m_middle;  //真ん中にいないかしらべる変数
+	int   m_time;   //タイム
 
-	//-アニメーション
 	int m_ani_time; //アニメーションフレーム動作感覚
 	int m_ani_frame;//描画フレーム
 	float m_ani_max_time;   //アニメーション動作間隔最大値
