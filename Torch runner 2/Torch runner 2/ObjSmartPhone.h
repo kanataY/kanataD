@@ -13,6 +13,10 @@ public:
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
+	float GetX() { return m_px; }//m_px,m_pyの値を渡す
+	float GetY() { return m_py; }
+	float GetVY() { return m_vy; }//m_vx,m_vyの値を渡す
+	float GetVX() { return m_vx; }
 
 private:
 	float m_px;		//位置

@@ -76,14 +76,13 @@ void CObjRunner::Action()
 	m_vy += -(m_vy * 0.15f);
 	//移動終了---------------------------------------------------
 
-	//聖火をかざす（火をうつす）
-	if (Input::GetVKey('C') == true)  //右移動
+	//聖火をかざす（火をうつす）---------------------------------------------
+
+	if (Input::GetVKey('C') == true)  
 	{
 		if (m_torch_control == false)
 		{
 			m_torch_control = true;
-			//聖火の情報を持ってくる
-			//CObjTorch* cor = (CObjTorch*)Objs::GetObj(OBJ_TORCH);
 			//聖火を出現させる
 			CObjTorch* torch = new CObjTorch(m_px, m_py);
 			Objs::InsertObj(torch, OBJ_TORCH, 20);
@@ -91,6 +90,8 @@ void CObjRunner::Action()
 	}
 	else
 		m_torch_control = false;
+
+	//聖火をかざす終了-----------------------------------------------------------------------------
 
 	//ジャンプ---------------------------
 	//ジャンプしてない時
@@ -182,6 +183,9 @@ void CObjRunner::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + 25.0f, m_py);
 
+	//当たり判定関連
+	HitBox();
+
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
@@ -210,4 +214,33 @@ void CObjRunner::Draw()
 
 	//描画
 	Draw::Draw(0, &src, &dst, c, 0.0f);
+}
+
+void CObjRunner::HitBox()
+{
+	//HitBoxの位置の変更
+	CHitBox* hit = Hits::GetHitBox(this);
+
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	//スマホ少年の位置を取得
+	CObjSmartphone* sumaho = (CObjSmartphone*)Objs::GetObj(OBJ_SMARTPHONE);
+
+	//スマホ少年と当たった場合
+	if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
+	{
+		if ((sumaho->GetX() + block->GetScroll()) < m_px)
+		{
+			m_vx = 3.6f;//ランナーをずらす
+		}
+		else
+		{
+			m_vx = -5.6f;//ランナーをずらす
+		}
+
+		//ゲージを減らすPを書く------
+
+		//----------------------
+	}
 }

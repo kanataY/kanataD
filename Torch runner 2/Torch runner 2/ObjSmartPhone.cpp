@@ -14,8 +14,8 @@ using namespace GameL;
 //コンストラクタ
 CObjSmartphone::CObjSmartphone(int x, int y)
 {
-	m_px = x;
-	m_py = y;
+	m_px = (float)x;
+	m_py = (float)y;
 }
 
 //イニシャライズ
