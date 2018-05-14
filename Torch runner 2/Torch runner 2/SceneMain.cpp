@@ -54,7 +54,10 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\object\\Smartphone.png", 5, TEX_SIZE_256);    //スマホ少年
 
 	//外部グラフィックファイルを読み込み4番に登録(320ピクセル)
-	Draw::LoadImageW(L"Image\\object\\Fire.png", 6, TEX_SIZE_320);    //スマホ少年
+	Draw::LoadImageW(L"Image\\object\\Fire.png", 6, TEX_SIZE_320);    //炎
+
+	//外部グラフィックファイルを読み込み4番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\object\\Puddle.png", 7, TEX_SIZE_64);    //水たまり
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();

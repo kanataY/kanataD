@@ -13,6 +13,7 @@ enum OBJ_NAME
 	OBJ_SMARTPHONE,			//スマホ少年
 	OBJ_FIRE,				//炎
 	OBJ_TORCH,				//聖火
+	OBJ_PUDDLE,				//水たまり
 
 	//補正
 	CORRECTION,				//補正
@@ -59,6 +60,7 @@ struct UserData
 #include "ObjSmartPhone.h"		//スマホ少年
 #include "ObjFire.h"			//炎
 #include "ObjTorch.h"			//聖火
+#include "ObjPuddle.h"			//水たまり
 
 //補助系
 #include "Correction.h"			//補正

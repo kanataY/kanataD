@@ -16,6 +16,8 @@ CObjBlock::CObjBlock(int map[10][MAP_X_MAX])
 {
 	//マップデータをコピー
 	memcpy(m_map, map, sizeof(int)*(10 * MAP_X_MAX));
+	//マップデータを記録するほうにコピー
+	memcpy(m_map_Record, map, sizeof(int)*(10 * MAP_X_MAX));
 }
 
 //イニシャライズ
@@ -95,6 +97,17 @@ void CObjBlock::Action()
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;
 		}
+
+		//列の中から3を探す
+		if (m_map[i][ex] == 3)
+		{
+			//水たまりを生成
+			CObjPuddle* sma = new CObjPuddle(ex * 64, i * 64);
+			Objs::InsertObj(sma, OBJ_PUDDLE, 15);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
 	}
 }
 
@@ -132,4 +145,14 @@ void CObjBlock::Draw()
 
 	//描画
 	Draw::Draw(2, &src, &dst, c, 0.0f);
+}
+
+//調べたいマップの位置にあるマップ番号を返す
+int CObjBlock::GetMap(int x, int y)
+{
+	if (0 <= y && y < 10 && 0 <= x && x < MAP_X_MAX)
+
+		return m_map_Record[y][x];
+
+	return -99999;//無かった場合
 }
