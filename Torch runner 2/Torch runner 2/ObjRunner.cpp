@@ -24,6 +24,9 @@ void CObjRunner::Init()
 	m_py = 500.0f;	//位置
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
+
+	m_torch_control = false;
+
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
 	qaajamp_memo = 10;
@@ -36,6 +39,9 @@ void CObjRunner::Init()
 //アクション
 void CObjRunner::Action()
 {
+	//補正の情報を持ってくる
+	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+
 	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
 	if (m_py >= 536) //一番下より下に行かないようにする
@@ -69,6 +75,23 @@ void CObjRunner::Action()
 	m_vx += -(m_vx * 0.15f);
 	m_vy += -(m_vy * 0.15f);
 	//移動終了---------------------------------------------------
+
+	//聖火をかざす（火をうつす）---------------------------------------------
+
+	if (Input::GetVKey('C') == true)  
+	{
+		if (m_torch_control == false)
+		{
+			m_torch_control = true;
+			//聖火を出現させる
+			CObjTorch* torch = new CObjTorch(m_px, m_py);
+			Objs::InsertObj(torch, OBJ_TORCH, 20);
+		}
+	}
+	else
+		m_torch_control = false;
+
+	//聖火をかざす終了-----------------------------------------------------------------------------
 
 	//ジャンプ---------------------------
 	//ジャンプしてない時
@@ -160,6 +183,9 @@ void CObjRunner::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + 25.0f, m_py);
 
+	//当たり判定関連
+	HitBox();
+
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
@@ -188,4 +214,33 @@ void CObjRunner::Draw()
 
 	//描画
 	Draw::Draw(0, &src, &dst, c, 0.0f);
+}
+
+void CObjRunner::HitBox()
+{
+	//HitBoxの位置の変更
+	CHitBox* hit = Hits::GetHitBox(this);
+
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	//スマホ少年の位置を取得
+	CObjSmartphone* sumaho = (CObjSmartphone*)Objs::GetObj(OBJ_SMARTPHONE);
+
+	//スマホ少年と当たった場合
+	if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
+	{
+		if ((sumaho->GetX() + block->GetScroll()) < m_px)
+		{
+			m_vx = 3.6f;//ランナーをずらす
+		}
+		else
+		{
+			m_vx = -5.6f;//ランナーをずらす
+		}
+
+		//ゲージを減らすPを書く------
+
+		//----------------------
+	}
 }

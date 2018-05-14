@@ -13,13 +13,14 @@ public:
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
-	float GetX() { return m_px; }
+	void HitBox();  //当たり判定関連
+	float GetX() { return m_px; }//m_px,m_pyの値を渡す
 	float GetY() { return m_py; }
-	float GetVY() { return m_vy; }
+	float GetVY() { return m_vy; }//m_vx,m_vyの値を渡す
 	float GetVX() { return m_vx; }
-	void  SetX(float x) { m_px = x; }
+	void  SetX(float x) { m_px = x; }//m_px,m_pyの値をほかのcppでもいじれるようにする
 	void  SetY(float y) { m_py = y; }
-	void  SetVX(float x) { m_vx = x; }
+	void  SetVX(float x) { m_vx = x; }//m_vx,m_vyの値をほかのcppでもいじれるようにする
 	void  SetVY(float y) { m_vy = y; }
 
 private:
@@ -27,6 +28,11 @@ private:
 	float m_py;
 	float m_vx;		//移動ベクトル
 	float m_vy;
+
+	//制御系---------
+	bool m_torch_control;
+
+	//ジャンプ系（調整するので消すor帰る）
 	float qaajamp_memo;
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる
 	bool m_jamp_control; //ジャンプしているかどうかを調べる（制御する）

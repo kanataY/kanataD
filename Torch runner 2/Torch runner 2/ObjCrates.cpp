@@ -19,6 +19,9 @@ CObjCrates::CObjCrates(int x,int y)
 //イニシャライズ
 void CObjCrates::Init()
 {
+	m_time = 0;
+	m_fire_control = false;
+
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ITEM, OBJ_CRATES, 1);
 }
@@ -41,59 +44,8 @@ void CObjCrates::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + block->GetScroll(), m_py);
 
-	//ランナーと当たっている場合
-	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
-	{
-		//木箱とランナーがどの角度で当たっているかを確認
-		HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
-		hit_data = hit->SearchObjNameHit(OBJ_RUNNER);	//hit_dataに木箱と当たっているほか全てのHitBoxとの情報を入れる
-
-		for (int i = 0; i < hit->GetCount(); i++)
-		{
-			//hit_data[i]に情報が入っていたら処理
-			if (hit_data[i] != NULL)
-			{
-				//左右に当たったら
-				float r = hit_data[0]->r;
-
-				//通り抜けないようにする       ※要調整
-				//ランナーが上に当たっていたら
-				if (r >= 45 && r < 135)
-				{
-					if(runner->GetY() > m_py - 35.0f )	//上側を通り抜けれるようにする
-						runner->SetVY(-0.8f);
-				}
-
-				if ((r<45 && r >= 0) || r >= 315)
-				{
-					//右
-					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
-						;
-					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
-						;
-					else
-						runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
-				}
-			
-				if (r >= 135 && r < 220)
-				{
-					//左
-					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
-						;
-					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
-						;
-					else
-						runner->SetVX(-0.8f);//真ん中だから通り抜けれないようにする
-				}
-				if (r >= 220 && r < 315)
-				{
-					//下
-					if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
-						runner->SetVY(0.8f);
-				}
-			}
-		}
-	}
+	//当たり判定関係
+	HitBox();
 }
 
 //描画
@@ -122,4 +74,100 @@ void CObjCrates::Draw()
 
 	//描画
 	Draw::Draw(4, &src, &dst, c, 0.0f);
+}
+
+void CObjCrates::HitBox()
+{
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//聖火の位置を取得
+	CObjTorch* torch = (CObjTorch*)Objs::GetObj(OBJ_TORCH);
+
+	//炎の位置を取得
+	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
+
+	//補正の情報を持ってくる
+	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+
+	//Hitboxの情報を調べる
+	CHitBox* hit = Hits::GetHitBox(this);
+
+	//まだ炎がついてない状態
+	if (m_fire_control == false)
+	{
+		//聖火と当たっている場合
+		if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
+		{
+			cor->FireDisplay(m_px, m_py); //炎を発生させる
+			m_fire_control = true;
+		}
+	}
+	//炎がついてる状態
+	if (m_fire_control == true)
+	{
+		if (fire != nullptr)
+		{
+			m_time++; //一定時間たったら木箱を消す。
+			if (m_time > 99)
+			{
+				this->SetStatus(false);		//自身に削除命令を出す
+				Hits::DeleteHitBox(this);	//敵が所有するHitBoxに削除する
+			}
+		}
+	}
+
+	//ランナーと当たっている場合
+	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+	{
+		//木箱とランナーがどの角度で当たっているかを確認
+		HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
+		hit_data = hit->SearchObjNameHit(OBJ_RUNNER);	//hit_dataに木箱と当たっているほか全てのHitBoxとの情報を入れる
+
+		for (int i = 0; i < hit->GetCount(); i++)
+		{
+			//hit_data[i]に情報が入っていたら処理
+			if (hit_data[i] != NULL)
+			{
+				//左右に当たったら
+				float r = hit_data[i]->r;
+
+				//通り抜けないようにする       ※要調整
+				//ランナーが上に当たっていたら
+				if (r >= 45 && r < 135)
+				{
+					if (runner->GetY() > m_py - 35.0f)	//上側を通り抜けれるようにする
+						runner->SetVY(-0.8f);
+				}
+
+				if ((r<45 && r >= 0) || r >= 315)
+				{
+					//右
+					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
+						;
+					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
+						;
+					else
+						runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
+				}
+
+				if (r >= 135 && r < 220)
+				{
+					//左
+					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
+						;
+					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
+						;
+					else
+						runner->SetVX(-0.8f);//真ん中だから通り抜けれないようにする
+				}
+				if (r >= 220 && r < 315)
+				{
+					//下
+					if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
+						runner->SetVY(0.8f);
+				}
+			}
+		}
+	}
 }

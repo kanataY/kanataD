@@ -4,22 +4,23 @@
 //使用するネームスペース
 using namespace GameL;
 
-//オブジェクト：木箱
-class CObjCrates : public CObj
+//オブジェクト：聖火
+class CObjTorch : public CObj
 {
 public:
-	CObjCrates(int x,int y);
-	~CObjCrates() {};
+	CObjTorch(float x, float y);
+	~CObjTorch() {};
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
-	void HitBox();  //HitBox関連
+	float GetX() { return m_px; }
+	float GetY() { return m_py; }
+	void  SetX(float x) { m_px = x; }
+	void  SetY(float y) { m_py = y; }
 
 private:
 	float m_px;		//位置
 	float m_py;
-	int m_time;     //タイム
 
-	//制御系
-	bool m_fire_control; //火が付いた時の制御
-}; 
+	int m_time;
+};
