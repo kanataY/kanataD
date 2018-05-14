@@ -35,8 +35,8 @@ void CSceneMain::InitScene()
 	int map[MAP_Y][MAP_X];
 	MapCreate(map);
 
-	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\run.png", 0, TEX_SIZE_64);    //人間仮
+	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\hero1.png", 0, TEX_SIZE_256);    //人間1
 
 	//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 	Draw::LoadImageW(L"Image\\back\\back1.png", 1, TEX_SIZE_1024); //背景仮  1
@@ -58,6 +58,9 @@ void CSceneMain::InitScene()
 
 	//外部グラフィックファイルを読み込み4番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Puddle.png", 7, TEX_SIZE_64);    //水たまり
+
+	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\hero2.png", 8, TEX_SIZE_256);    //人間2
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();

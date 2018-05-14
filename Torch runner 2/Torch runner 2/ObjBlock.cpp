@@ -131,7 +131,7 @@ void CObjBlock::Draw()
 	//”wŒi‚P
 	dst.m_top = 0.0f ;
 	dst.m_left = 0.0f + m_bx1;
-	dst.m_right = 805.0f + m_bx1;
+	dst.m_right = 806.0f + m_bx1;
 	dst.m_bottom = 700.0f ;
 
 	//•`‰æ
@@ -140,7 +140,7 @@ void CObjBlock::Draw()
 	//”wŒi‚Q
 	dst.m_top = 0.0f;
 	dst.m_left = 0.0f + m_bx2;
-	dst.m_right = 805.0f + m_bx2;
+	dst.m_right = 806.0f + m_bx2;
 	dst.m_bottom = 700.0f;
 
 	//•`‰æ

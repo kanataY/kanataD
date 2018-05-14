@@ -82,10 +82,10 @@ void CObjCrates::HitBox()
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
-	//聖火の位置を取得
+	//聖火の情報を取得
 	CObjTorch* torch = (CObjTorch*)Objs::GetObj(OBJ_TORCH);
 
-	//炎の位置を取得
+	//炎の情報を取得
 	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
 
 	//補正の情報を持ってくる
