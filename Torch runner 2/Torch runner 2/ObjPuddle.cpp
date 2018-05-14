@@ -2,6 +2,7 @@
 #include "GameL\DrawTexture.h"
 #include "GameL\WinInputs.h"
 #include "GameL\SceneManager.h"
+#include "GameL\SceneObjManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
 
@@ -25,36 +26,41 @@ void CObjPuddle::Init()
 {
 	m_drow_down = 1;
 	m_map_con = false;
+
+	for (int j = 1; j < 10; j++)  //マップのYの値だけ探す
+	{
+		//ブロック情報を持ってくる
+		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+		//マップ番号を取ってくる　
+		if (block->GetMap(m_rx, m_ry + j) == 3)//水たまりが下にあるなら増やす
+		{
+			m_drow_down++;
+		}
+
+		if (block->GetMap(m_rx, m_ry - j) == 3)//水たまりが上にあるなら下にあるのを消す
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+	}
+	
+	//HitBox
+	Hits::SetHitBox(this, m_px, m_py, 64, 64 * m_drow_down, ELEMENT_ITEM, OBJ_PUDDLE, 1);
 }
 
 //アクション
 void CObjPuddle::Action()
 {
-	//ブロック情報を持ってくる
+	////ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
-	if (m_map_con == false) //一回目ならマップを読み込む
-	{
-		for (int j = 1; j < 10; j++)  //マップのYの値だけ探す
-		{
-			//マップ番号を取ってくる　
-			if (block->GetMap(m_rx, m_ry + j) == 3)//水たまりが下にあるなら増やす
-			{
-				m_drow_down++;
-			}
-
-			if (block->GetMap(m_rx, m_ry - j) == 3)//水たまりが上にあるなら下にあるのを消す
-			{
-				this->SetStatus(false);		//自身に削除命令を出す
-				//Hits::DeleteHitBox(this);	//敵が所有するHitBoxに削除する
-			}
-		}
-	}
-	m_map_con = true;  //マップを読み込めないようにする
 
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 	m_py = cor->RangeYPuddle(m_py); //Yの位置がおかしかったら調整する
+
+	//HitBoxの位置の変更
+	CHitBox* hit = Hits::GetHitBox(this);
+	hit->SetPos(m_px + block->GetScroll(), m_py);
 
 }
 

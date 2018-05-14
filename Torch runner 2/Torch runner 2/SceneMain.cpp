@@ -65,7 +65,7 @@ void CSceneMain::InitScene()
 
 	//背景（ブロック）オブジェクト作成
 	CObjBlock* block = new CObjBlock(map);
-	Objs::InsertObj(block, OBJ_BLOCK, 12);
+	Objs::InsertObj(block, OBJ_BLOCK, 10);
 
 	//ゲージオブジェクト作成
 	CObjGauge* gauge = new CObjGauge();

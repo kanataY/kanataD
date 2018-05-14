@@ -109,6 +109,8 @@ void CObjSmartphone::Action()
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
+
+	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画

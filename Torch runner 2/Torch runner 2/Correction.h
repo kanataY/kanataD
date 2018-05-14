@@ -15,10 +15,10 @@ class CObjCorrection : public CObj
 public:
 
 	~CObjCorrection() {};
-	void Init();	//イニシャライズ
-	float RangeY(float y); //範囲外にいるときにただす
-	float RangeYPuddle(float y); //範囲外にいるときにただす水たまりバージョン
-	void FireDisplay(float x, float y);   //炎を複数表示させる
+	void Init();							//イニシャライズ
+	float RangeY(float y);					//範囲外にいるときにただす
+	float RangeYPuddle(float y);			//範囲外にいるときにただす水たまりバージョン
+	void  FireDisplay(float x, float y);	//炎を複数表示させる
 
 private:
 	float m_px;		//位置

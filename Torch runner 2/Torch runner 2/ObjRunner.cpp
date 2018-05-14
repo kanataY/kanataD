@@ -124,55 +124,55 @@ void CObjRunner::Action()
 			m_jamp_control = true;		//ジャンプしている
 		}
 	}
-		if (m_jamp_control == true)//ジャンプしている
+	if (m_jamp_control == true)//ジャンプしている
+	{
+		if (m_time > 20)
 		{
-			if (m_time > 20)
+
+			m_time++;
+			if (jamp_memo != 999.0f)
 			{
-				
-				m_time++; 
-				if (jamp_memo != 999.0f)
+				if (Input::GetVKey(VK_UP) == true)//上移動
 				{
-					if (Input::GetVKey(VK_UP) == true)//上移動
-					{
-						m_vy += -0.8f;
-					}
-					else
-						m_vy = 5.0f;//自由落下運動
+					m_vy += -0.8f;
 				}
 				else
-					m_vy = 5.0f;
+					m_vy = 5.0f;//自由落下運動
+			}
+			else
+				m_vy = 5.0f;
+		}
+		else
+		{
+
+			++m_time;
+			if (m_py < 280)//道幅ギリギリ
+			{
+				m_vy = -5.0f;
+				jamp_memo = 999.0f;
 			}
 			else
 			{
-				
-				++m_time;
-				if (m_py < 280)//道幅ギリギリ
+				if (Input::GetVKey(VK_UP) == true)//上移動
 				{
-					m_vy = -5.0f;
-					jamp_memo = 999.0f;
+					m_vy += -0.8f;
 				}
 				else
-				{
-					if (Input::GetVKey(VK_UP) == true)//上移動
-					{
-						m_vy += -0.8f;
-					}
-					else
-						m_vy = -5.0f;//自由落下運動
-				}
-			}
-			if (m_time > 42)//時間が来たらジャンプを終了させる
-			{
-				if (Input::GetVKey(VK_SPACE) == false)   //ジャンプさせない
-				{
-					m_jamp_control = false;
-					
-				}
-				m_vy = 0.0f;
-				m_time = 0;
+					m_vy = -5.0f;//自由落下運動
 			}
 		}
-	
+		if (m_time > 42)//時間が来たらジャンプを終了させる
+		{
+			if (Input::GetVKey(VK_SPACE) == false)   //ジャンプさせない
+			{
+				m_jamp_control = false;
+
+			}
+			m_vy = 0.0f;
+			m_time = 0;
+		}
+	}
+
 
 	//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
@@ -189,6 +189,8 @@ void CObjRunner::Action()
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
+
+	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画
@@ -242,5 +244,12 @@ void CObjRunner::HitBox()
 		//ゲージを減らすPを書く------
 
 		//----------------------
+	}
+
+	//水たまりと当たった場合
+	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
+	{
+		//ゲージが減る
+		;
 	}
 }
