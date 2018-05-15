@@ -25,6 +25,8 @@ void CObjSmartphone::Init()
 	m_vy = 0.0f;
 	m_time = 0;
 	m_middle = false;
+	m_time_fire = 0;
+	m_fire_control = false;
 
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
@@ -69,7 +71,8 @@ void CObjSmartphone::Action()
 		m_time = 60;
 
 	//---------------------
-		m_ani_time++;//フレーム動作感覚タイムを進める
+
+	m_ani_time++;//フレーム動作感覚タイムを進める
 	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
 	{
 		m_ani_frame++;//フレームを進める
@@ -102,6 +105,9 @@ void CObjSmartphone::Action()
 		m_vx -= 0.7f; //バックさせる
 		
 	}
+
+	HitBox(); //HitBox関連
+
 	//摩擦
 	m_vx += -(m_vx * 0.15f);
 	m_vy += -(m_vy * 0.15f);
@@ -109,6 +115,8 @@ void CObjSmartphone::Action()
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
+
+	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画
@@ -138,4 +146,43 @@ void CObjSmartphone::Draw()
 
 	//描画
 	Draw::Draw(5, &src, &dst, c, 0.0f);
+}
+
+void CObjSmartphone::HitBox()
+{
+	//HitBoxの情報
+	CHitBox* hit = Hits::GetHitBox(this);
+
+	//補正の情報を持ってくる
+	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+
+	//炎の情報を取得
+	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
+
+	//まだ炎がついてない状態
+	if (m_fire_control == false)
+	{
+		//聖火と当たっている場合
+		if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
+		{
+			cor->FireDisplay(m_px, m_py); //炎を発生させる
+			m_fire_control = true;
+		}
+	}
+	//炎がついてる状態
+	if (m_fire_control == true)
+	{
+		if (fire != nullptr)
+		{
+			m_vx = 0.0f; //火がついてる間は動けなくする
+			m_vy = 0.0f;
+			m_time_fire++; //一定時間たったらスマホ少年を消す。
+			if (m_time_fire > 99)
+			{
+				this->SetStatus(false);		//自身に削除命令を出す
+				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			}
+		}
+	}
+
 }

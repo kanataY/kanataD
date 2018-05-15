@@ -30,16 +30,28 @@ float CObjCorrection::RangeY(float y)
 	return y;
 }
 
+//オブジェクト生成したときにYが歩ける範囲より外か中だったら調整する水たまりバージョン
+float CObjCorrection::RangeYPuddle(float y)
+{
+
+	if (y > OUTOFRANGE_DOWN_PUDDLE)  //歩ける範囲より下にいる場合ギリギリまで戻す
+		return OUTOFRANGE_DOWN_PUDDLE;
+	else if (y < OUTOFRANGE_UP_PUDDLE)//歩ける範囲より上にいる場合ギリギリまで戻す
+		return OUTOFRANGE_UP_PUDDLE;
+
+	return y;
+}
+
 //炎を複数表示させる
 void CObjCorrection::FireDisplay(float x, float y)
 {
 	//炎
 	CObjFire* fi = new CObjFire(x - 10.0f , y -10.0f);
-	Objs::InsertObj(fi, OBJ_FIRE, 20);
+	Objs::InsertObj(fi, OBJ_FIRE, 999);
 	//炎2
 	CObjFire* fi2 = new CObjFire(x + 30.0f, y + 10.0f);
-	Objs::InsertObj(fi2, OBJ_FIRE, 20);
+	Objs::InsertObj(fi2, OBJ_FIRE, 999);
 	//炎3
 	CObjFire* fi3 = new CObjFire(x + 12.0f, y + 35.0f);
-	Objs::InsertObj(fi3, OBJ_FIRE, 20);
+	Objs::InsertObj(fi3, OBJ_FIRE, 999);
 }

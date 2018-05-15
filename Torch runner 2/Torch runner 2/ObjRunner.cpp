@@ -32,6 +32,11 @@ void CObjRunner::Init()
 	qaajamp_memo = 10;
 	m_time = 0;
 
+	m_ani_time = 0;
+	m_ani_frame = 0;  //静止フレームを初期にする
+	m_ani_max_time = 5; //アニメーション間隔幅
+	m_ani_change = 0;
+
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 18, 64, ELEMENT_RUNNER, OBJ_RUNNER, 1);
 }
@@ -82,14 +87,18 @@ void CObjRunner::Action()
 	{
 		if (m_torch_control == false)
 		{
+			m_ani_change = 8;
 			m_torch_control = true;
 			//聖火を出現させる
-			CObjTorch* torch = new CObjTorch(m_px, m_py);
+			CObjTorch* torch = new CObjTorch(m_px + 64.0f, m_py + 28.0f);
 			Objs::InsertObj(torch, OBJ_TORCH, 20);
 		}
 	}
 	else
+	{
 		m_torch_control = false;
+		m_ani_change = 0;
+	}
 
 	//聖火をかざす終了-----------------------------------------------------------------------------
 
@@ -124,57 +133,70 @@ void CObjRunner::Action()
 			m_jamp_control = true;		//ジャンプしている
 		}
 	}
-		if (m_jamp_control == true)//ジャンプしている
+	if (m_jamp_control == true)//ジャンプしている
+	{
+		if (m_time > 20)
 		{
-			if (m_time > 20)
+
+			m_time++;
+			if (jamp_memo != 999.0f)
 			{
-				
-				m_time++; 
-				if (jamp_memo != 999.0f)
+				if (Input::GetVKey(VK_UP) == true)//上移動
 				{
-					if (Input::GetVKey(VK_UP) == true)//上移動
-					{
-						m_vy += -0.8f;
-					}
-					else
-						m_vy = 5.0f;//自由落下運動
+					m_vy += -0.8f;
 				}
 				else
-					m_vy = 5.0f;
+					m_vy = 5.0f;//自由落下運動
+			}
+			else
+				m_vy = 5.0f;
+		}
+		else
+		{
+
+			++m_time;
+			if (m_py < 280)//道幅ギリギリ
+			{
+				m_vy = -5.0f;
+				jamp_memo = 999.0f;
 			}
 			else
 			{
-				
-				++m_time;
-				if (m_py < 280)//道幅ギリギリ
+				if (Input::GetVKey(VK_UP) == true)//上移動
 				{
-					m_vy = -5.0f;
-					jamp_memo = 999.0f;
+					m_vy += -0.8f;
 				}
 				else
-				{
-					if (Input::GetVKey(VK_UP) == true)//上移動
-					{
-						m_vy += -0.8f;
-					}
-					else
-						m_vy = -5.0f;//自由落下運動
-				}
-			}
-			if (m_time > 42)//時間が来たらジャンプを終了させる
-			{
-				if (Input::GetVKey(VK_SPACE) == false)   //ジャンプさせない
-				{
-					m_jamp_control = false;
-					
-				}
-				m_vy = 0.0f;
-				m_time = 0;
+					m_vy = -5.0f;//自由落下運動
 			}
 		}
-	
+		if (m_time > 42)//時間が来たらジャンプを終了させる
+		{
+			if (Input::GetVKey(VK_SPACE) == false)   //ジャンプさせない
+			{
+				m_jamp_control = false;
+
+			}
+			m_vy = 0.0f;
+			m_time = 0;
+		}
+	}
+
 
 	//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
+
+	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+	m_ani_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	{
+		m_ani_frame++;//フレームを進める
+		m_ani_time = 0;
+	}
+	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+	{
+		m_ani_frame = 0;
+	}
+	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
@@ -189,6 +211,8 @@ void CObjRunner::Action()
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
+
+	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画
@@ -200,11 +224,11 @@ void CObjRunner::Draw()
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
 
-				//切り取り位置の設定
+	//切り取り位置の設定
 	src.m_top = 0.0f;
-	src.m_left = 0.0f;
-	src.m_right =  64.0f;
-	src.m_bottom = 64.0f;
+	src.m_left = 0.0f + m_ani_frame * 64;
+	src.m_right =  64.0f + m_ani_frame * 64;
+	src.m_bottom = 256.0f;
 
 	//表示位置の設定
 	dst.m_top = 0.0f + m_py;
@@ -213,7 +237,7 @@ void CObjRunner::Draw()
 	dst.m_bottom = 64.0f + m_py;
 
 	//描画
-	Draw::Draw(0, &src, &dst, c, 0.0f);
+	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 }
 
 void CObjRunner::HitBox()
@@ -242,5 +266,12 @@ void CObjRunner::HitBox()
 		//ゲージを減らすPを書く------
 
 		//----------------------
+	}
+
+	//水たまりと当たった場合
+	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
+	{
+		//ゲージが減る
+		;
 	}
 }

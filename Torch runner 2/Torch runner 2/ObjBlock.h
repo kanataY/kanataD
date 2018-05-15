@@ -20,6 +20,7 @@ public:
 	void  SetScroll(float s) { m_scroll = s; }
 	float GetScroll() { return m_scroll; }
 
+	int  GetMap(int x, int y);//マップ情報の取得
 	void  SetMap(int x, int y, int m) { m_map[y][x] = m; }
 
 
@@ -32,4 +33,5 @@ private:
 	float m_scroll; //スクロール位置
 
 	int m_map[10][MAP_X_MAX];//マップ情報
+	int m_map_Record[10][MAP_X_MAX];//マップ情報記録役
 };

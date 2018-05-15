@@ -37,4 +37,10 @@ private:
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる
 	bool m_jamp_control; //ジャンプしているかどうかを調べる（制御する）
 	int   m_time;
+
+	//-アニメーション
+	int m_ani_time; //アニメーションフレーム動作感覚
+	int m_ani_frame;//描画フレーム
+	float m_ani_max_time;   //アニメーション動作間隔最大値
+	int m_ani_change; //アニメーション変更変数
 };

@@ -13,6 +13,7 @@ public:
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
+	void HitBox();  //HitBox関連
 	float GetX() { return m_px; }//m_px,m_pyの値を渡す
 	float GetY() { return m_py; }
 	float GetVY() { return m_vy; }//m_vx,m_vyの値を渡す
@@ -25,6 +26,11 @@ private:
 	float m_vy;
 	int   m_time;     //タイム
 	bool  m_middle;  //真ん中にいないかしらべる変数
+
+	int m_time_fire;     //タイム
+
+	//制御系
+	bool m_fire_control; //火が付いた時の制御
 
 	//-アニメーション
 	int m_ani_time; //アニメーションフレーム動作感覚

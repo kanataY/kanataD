@@ -46,6 +46,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Torch">
       <UniqueIdentifier>{720db0a2-79c5-496e-bd23-047fd9c48e6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Puddle">
+      <UniqueIdentifier>{63400cf7-12f7-43d9-a77d-0d9712d3030d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -116,6 +119,9 @@
     </ClCompile>
     <ClCompile Include="ObjTorch.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Torch</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjPuddle.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Puddle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="ObjTorch.h">
       <Filter>ソース ファイル\GAMEMAIN\Torch</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjPuddle.h">
+      <Filter>ソース ファイル\GAMEMAIN\Puddle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
