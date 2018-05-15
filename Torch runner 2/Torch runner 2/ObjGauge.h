@@ -17,6 +17,7 @@ public:
 	float GetY() { return m_py; }
 	void  SetX(float x) { m_px = x; }
 	void  SetY(float y) { m_py = y; }
+	void  SetGauge(float g) { m_gauge_decrease += g; }
 
 private:
 	float m_px;		//ˆÊ’u

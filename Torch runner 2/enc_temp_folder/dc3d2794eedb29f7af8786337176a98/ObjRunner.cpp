@@ -272,7 +272,7 @@ void CObjRunner::HitBox()
 		if (m_smart_control == false) //‚Ü‚¾“–‚½‚Á‚Ä‚È‚¯‚ê‚ÎƒQ[ƒW‚ğŒ¸‚ç‚·
 		{
 			//ƒQ[ƒW‚ªŒ¸‚é
-			gauge->SetGauge(1.0f);
+			gauge->SetGauge(5.0f);
 			m_smart_control = true;
 		}
 	}

@@ -30,9 +30,13 @@ void CObjGauge::Init()
 void CObjGauge::Action()
 {
 	m_time++;
-	if (m_time % 60 == 0) //60フレームごとにゲージが減るようにする
+	if (m_time % 16 == 0) //15フレームごとにゲージが減るようにする
 	{
 		m_gauge_decrease++;
+	}
+	if (m_gauge_decrease > 192.0f)
+	{
+		m_gauge_decrease = 192.0f;
 	}
 }
 
