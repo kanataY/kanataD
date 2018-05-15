@@ -62,6 +62,9 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\hero2.png", 8, TEX_SIZE_256);    //人間2
 
+	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\object\\torch.png", 9, TEX_SIZE_64);    //聖火の持つとこ
+
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);

@@ -31,6 +31,7 @@ private:
 
 	//制御系---------
 	bool m_torch_control;   //松明制御
+	int  m_torch_time_control;   //松明制御
 	bool m_puddle_control;  //水たまり制御
 	bool m_smart_control;  //スマホ少年制御
 
