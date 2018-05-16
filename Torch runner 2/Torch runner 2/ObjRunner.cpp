@@ -50,6 +50,9 @@ void CObjRunner::Action()
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 
+	//オカマの情報を持ってくる
+	CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
+
 	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
 	if (m_py >= 536) //一番下より下に行かないようにする
@@ -62,23 +65,39 @@ void CObjRunner::Action()
 
 	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 	//移動ーーーーーーーーーーーーーーーーーーーーー
-	if (Input::GetVKey(VK_RIGHT) == true)  //右移動
+
+	bool okama_hug = false; //オカマに抱きつかれているかどうか調べる
+	if (okama == nullptr)//オカマが生成されているなら調べる
 	{
-		m_vx += 0.8f;
+		okama_hug = false;
 	}
-	if (Input::GetVKey(VK_LEFT) == true)  //左移動
+	else
+		okama_hug = okama->GetHug();
+
+	if (okama_hug == false)//抱きつかれていないなら通常どうり動ける
 	{
-		m_vx += -0.8f;
+		if (Input::GetVKey(VK_RIGHT) == true)  //右移動
+		{
+			m_vx += 0.8f;
+		}
+		if (Input::GetVKey(VK_LEFT) == true)  //左移動
+		{
+			m_vx += -0.8f;
+		}
+		if (Input::GetVKey(VK_UP) == true && m_py > 277)//上移動
+		{
+			m_vy += -0.8f;
+		}
+		if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//下移動
+		{
+			m_vy += 0.8f;
+		}
 	}
-	if (Input::GetVKey(VK_UP) == true && m_py > 277)//上移動
+	else  //抱きつかれている状態なら動けない
 	{
-		m_vy += -0.8f;
+		m_vx = 0.0f;
+		m_vy = 0.0f;
 	}
-	if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//下移動
-	{
-		m_vy += 0.8f;
-	}
-	
 	//摩擦
 	m_vx += -(m_vx * 0.15f);
 	m_vy += -(m_vy * 0.15f);

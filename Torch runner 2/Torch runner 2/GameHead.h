@@ -14,7 +14,8 @@ enum OBJ_NAME
 	OBJ_FIRE,				//炎
 	OBJ_TORCH,				//聖火
 	OBJ_PUDDLE,				//水たまり
-	OBJ_RAIN,
+	OBJ_RAIN,               //雨
+	OBJ_OKAMA,              //オカマ
 
 	//補正
 	CORRECTION,				//補正
@@ -62,7 +63,8 @@ struct UserData
 #include "ObjFire.h"			//炎
 #include "ObjTorch.h"			//聖火
 #include "ObjPuddle.h"			//水たまり
-#include "ObjRain.h"
+#include "ObjRain.h"			//雨
+#include "ObjOkama.h"			//オカマ
 
 //補助系
 #include "Correction.h"			//補正

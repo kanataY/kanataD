@@ -55,6 +55,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Rain">
       <UniqueIdentifier>{75cc774f-791a-47d3-b550-5eea53cd3b07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Okama">
+      <UniqueIdentifier>{5b39c129-7bda-4d8a-be76-bc88714c1164}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="ObjRain.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Rain</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjOkama.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Okama</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="ObjRain.h">
       <Filter>ソース ファイル\GAMEMAIN\Rain</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjOkama.h">
+      <Filter>ソース ファイル\GAMEMAIN\Okama</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

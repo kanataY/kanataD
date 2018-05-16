@@ -25,7 +25,7 @@ void CObjRain::Init()
 
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
-	m_ani_max_time = 4; //アニメーション間隔幅
+	m_ani_max_time = 10; //アニメーション間隔幅
 }
 
 //アクション
