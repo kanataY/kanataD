@@ -273,13 +273,13 @@ void CObjRunner::Draw()
 	}
 	else//˜r‚ğU‚è‰º‚ë‚µ‚Ä‚¢‚é
 	{
-		dst2.m_top = 0.0f + m_py +20.0f;
+		dst2.m_top = 0.0f + m_py +18.0f;
 		dst2.m_left = 0.0f + m_px + 38.0f;
 		dst2.m_right = 20.0f + m_px + 38.0f;
-		dst2.m_bottom = 32.0f + m_py +20.0f;
+		dst2.m_bottom = 32.0f + m_py +18.0f;
 
 		//•`‰æ
-		Draw::Draw(9, &src2, &dst2, c, -140.0f);
+		Draw::Draw(9, &src2, &dst2, c, -100.0f);
 	}
 
 	//||||||||||||||||||‰Š[[[[[[[[[[[[[[
@@ -287,7 +287,7 @@ void CObjRunner::Draw()
 
 	RECT_F src3; //•`‰æŒ³Ø‚èæ‚èˆÊ’u
 	RECT_F dst3; //•`‰ææ•\¦ˆÊ’u
-
+	
 	//Ø‚èæ‚èˆÊ’u‚Ìİ’è
 	src3.m_top = 0.0f;
 	src3.m_left = 0.0f + m_ani_frame * 64;
@@ -308,13 +308,13 @@ void CObjRunner::Draw()
 	else//˜r‚ğU‚è‰º‚ë‚µ‚Ä‚¢‚é
 	{
 		//•\¦ˆÊ’u‚Ìİ’è
-		dst3.m_top = 0.0f + m_py +40.0f;
-		dst3.m_left = 0.0f + m_px + 50.0f;
-		dst3.m_right = 25.0f + m_px + 50.0f;
-		dst3.m_bottom = 25.0f + m_py +40.0f;
+		dst3.m_top = 0.0f + m_py +26.0f;
+		dst3.m_left = 0.0f + m_px + 52.0f;
+		dst3.m_right = 25.0f + m_px + 52.0f;
+		dst3.m_bottom = 25.0f + m_py +26.0f;
 
 		//•`‰æ
-		Draw::Draw(6, &src3, &dst3, c, -140.0f);
+		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
 }
 

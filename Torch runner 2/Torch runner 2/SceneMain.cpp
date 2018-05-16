@@ -65,6 +65,12 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\torch.png", 9, TEX_SIZE_64);    //聖火の持つとこ
 
+																	  //外部グラフィックファイルを読み込み0番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Rain\\rain1.png", 10, TEX_SIZE_800);    //聖火の持つとこ
+
+																	  //外部グラフィックファイルを読み込み0番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Rain\\a3.png", 11, TEX_SIZE_800);    //聖火の持つとこ
+
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
@@ -80,6 +86,10 @@ void CSceneMain::InitScene()
 	//炎
 	CObjFire* fi = new CObjFire(30.0f, 400.0f);
 	Objs::InsertObj(fi, OBJ_FIRE, 13);
+
+	//
+	CObjRain* r = new CObjRain(0.0f, 0.0f);
+	Objs::InsertObj(r, OBJ_RAIN, 1300);
 }
 
 //実行中メソッド

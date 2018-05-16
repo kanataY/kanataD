@@ -28,9 +28,6 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Gauge">
       <UniqueIdentifier>{3c0945a9-1a63-42a4-a6ae-e3f5be871bb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\GAMETITLE">
-      <UniqueIdentifier>{dcbc51a8-f8b4-46b7-8ffb-f2893a347279}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\GAMEMAIN\Crates">
       <UniqueIdentifier>{ebb778cc-360b-40cb-867d-18a2609b029c}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,15 @@
     </Filter>
     <Filter Include="ソース ファイル\GAMEMAIN\Puddle">
       <UniqueIdentifier>{63400cf7-12f7-43d9-a77d-0d9712d3030d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\GAMETITLE">
+      <UniqueIdentifier>{dcbc51a8-f8b4-46b7-8ffb-f2893a347279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\GAMEOVER">
+      <UniqueIdentifier>{e240670f-3519-4d65-93d6-d36b448f704e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Rain">
+      <UniqueIdentifier>{75cc774f-791a-47d3-b550-5eea53cd3b07}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,10 +106,10 @@
       <Filter>ソース ファイル\GAMEMAIN\Gauge</Filter>
     </ClCompile>
     <ClCompile Include="SceneTitle.cpp">
-      <Filter>ソース ファイル\GAMETITLE</Filter>
+      <Filter>ソース ファイル\Scene\GAMETITLE</Filter>
     </ClCompile>
     <ClCompile Include="ObjTitle.cpp">
-      <Filter>ソース ファイル\GAMETITLE</Filter>
+      <Filter>ソース ファイル\Scene\GAMETITLE</Filter>
     </ClCompile>
     <ClCompile Include="ObjCrates.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Crates</Filter>
@@ -122,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="ObjPuddle.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Puddle</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjRain.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Rain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,10 +186,10 @@
       <Filter>ソース ファイル\GAMEMAIN\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="SceneTitle.h">
-      <Filter>ソース ファイル\GAMETITLE</Filter>
+      <Filter>ソース ファイル\Scene\GAMETITLE</Filter>
     </ClInclude>
     <ClInclude Include="ObjTitle.h">
-      <Filter>ソース ファイル\GAMETITLE</Filter>
+      <Filter>ソース ファイル\Scene\GAMETITLE</Filter>
     </ClInclude>
     <ClInclude Include="ObjCrates.h">
       <Filter>ソース ファイル\GAMEMAIN\Crates</Filter>
@@ -199,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="ObjPuddle.h">
       <Filter>ソース ファイル\GAMEMAIN\Puddle</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjRain.h">
+      <Filter>ソース ファイル\GAMEMAIN\Rain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
