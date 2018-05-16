@@ -14,6 +14,7 @@ enum OBJ_NAME
 	OBJ_FIRE,				//âä
 	OBJ_TORCH,				//êπâŒ
 	OBJ_PUDDLE,				//êÖÇΩÇ‹ÇË
+	OBJ_RAIN,
 
 	//ï‚ê≥
 	CORRECTION,				//ï‚ê≥
@@ -61,6 +62,7 @@ struct UserData
 #include "ObjFire.h"			//âä
 #include "ObjTorch.h"			//êπâŒ
 #include "ObjPuddle.h"			//êÖÇΩÇ‹ÇË
+#include "ObjRain.h"
 
 //ï‚èïån
 #include "Correction.h"			//ï‚ê≥

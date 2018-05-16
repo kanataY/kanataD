@@ -30,7 +30,10 @@ private:
 	float m_vy;
 
 	//制御系---------
-	bool m_torch_control;
+	bool m_torch_control;   //松明制御
+	int  m_torch_time_control;   //松明制御
+	bool m_puddle_control;  //水たまり制御
+	bool m_smart_control;  //スマホ少年制御
 
 	//ジャンプ系（調整するので消すor帰る）
 	float qaajamp_memo;

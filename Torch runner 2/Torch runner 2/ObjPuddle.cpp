@@ -45,7 +45,7 @@ void CObjPuddle::Init()
 	}
 	
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 64, 64 * m_drow_down, ELEMENT_ITEM, OBJ_PUDDLE, 1);
+	Hits::SetHitBox(this, m_px, m_py, 55, 45 * (float)m_drow_down, ELEMENT_ITEM, OBJ_PUDDLE, 1);
 }
 
 //アクション
@@ -60,7 +60,7 @@ void CObjPuddle::Action()
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll(), m_py);
+	hit->SetPos(m_px + 5.0f + block->GetScroll(), m_py + 8.0f * m_drow_down);
 
 }
 

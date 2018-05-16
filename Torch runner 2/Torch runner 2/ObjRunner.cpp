@@ -26,6 +26,9 @@ void CObjRunner::Init()
 	m_vy = 0.0f;	//移動ベクトル
 
 	m_torch_control = false;
+	m_torch_time_control = 0;
+	m_puddle_control = false;
+	m_smart_control = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -87,17 +90,26 @@ void CObjRunner::Action()
 	{
 		if (m_torch_control == false)
 		{
-			m_ani_change = 8;
+			m_ani_change = 8; //アニメーションの絵を８番に変える
 			m_torch_control = true;
-			//聖火を出現させる
-			CObjTorch* torch = new CObjTorch(m_px + 64.0f, m_py + 28.0f);
+			//聖火を出現させる 
+			CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
 			Objs::InsertObj(torch, OBJ_TORCH, 20);
 		}
 	}
 	else
 	{
-		m_torch_control = false;
-		m_ani_change = 0;
+		if (m_torch_time_control > 30) //３０フレームたつと次が触れる
+		{
+			m_torch_control = false;
+			m_ani_change = 0;         //ランナーの画像をもとに戻す
+			m_torch_time_control = 0;
+		}
+	}
+
+	if (m_torch_control == true) //降り下ろしてる状態なら
+	{
+		m_torch_time_control++;  //時間を進める。
 	}
 
 	//聖火をかざす終了-----------------------------------------------------------------------------
@@ -203,7 +215,7 @@ void CObjRunner::Action()
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + 25.0f, m_py);
+	hit->SetPos(m_px + 18.0f, m_py);
 
 	//当たり判定関連
 	HitBox();
@@ -223,12 +235,14 @@ void CObjRunner::Draw()
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
+	RECT_F src2; //描画元切り取り位置
+	RECT_F dst2; //描画先表示位置
 
-	//切り取り位置の設定
-	src.m_top = 0.0f;
+	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+	src.m_top = 1.0f;
 	src.m_left = 0.0f + m_ani_frame * 64;
 	src.m_right =  64.0f + m_ani_frame * 64;
-	src.m_bottom = 256.0f;
+	src.m_bottom = 257.0f;
 
 	//表示位置の設定
 	dst.m_top = 0.0f + m_py;
@@ -238,6 +252,70 @@ void CObjRunner::Draw()
 
 	//描画
 	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
+
+	//ーーーーーーーーーーーーーーーーー聖火のもつとこーーーーーーーーーーーー
+	//切り取り位置の設定 
+	src2.m_top = 1.0f;
+	src2.m_left = 0.0f;
+	src2.m_right = 64.0f;
+	src2.m_bottom = 64.0f;
+
+	//表示位置の設定
+	if (m_ani_change == 0) //腕を振り下ろしていない
+	{
+		dst2.m_top = 0.0f + m_py - 10.0f;
+		dst2.m_left = 0.0f + m_px + 40.0f;
+		dst2.m_right = 20.0f + m_px + 40.0f;
+		dst2.m_bottom = 32.0f + m_py - 10.0f;
+
+		//描画
+		Draw::Draw(9, &src2, &dst2, c, 0.0f);
+	}
+	else//腕を振り下ろしている
+	{
+		dst2.m_top = 0.0f + m_py +18.0f;
+		dst2.m_left = 0.0f + m_px + 38.0f;
+		dst2.m_right = 20.0f + m_px + 38.0f;
+		dst2.m_bottom = 32.0f + m_py +18.0f;
+
+		//描画
+		Draw::Draw(9, &src2, &dst2, c, -100.0f);
+	}
+
+	//－－－－－－－－－－－－－－－－－－炎ーーーーーーーーーーーーーー
+	//描画カラー情報
+
+	RECT_F src3; //描画元切り取り位置
+	RECT_F dst3; //描画先表示位置
+	
+	//切り取り位置の設定
+	src3.m_top = 0.0f;
+	src3.m_left = 0.0f + m_ani_frame * 64;
+	src3.m_right = 64.0f + m_ani_frame * 64;
+	src3.m_bottom = 320.0f;
+
+	if (m_ani_change == 0)//腕を振り下ろしていない
+	{
+		//表示位置の設定
+		dst3.m_top = 0.0f + m_py - 30.0f;
+		dst3.m_left = 0.0f + m_px + 37.0f;
+		dst3.m_right = 25.0f + m_px + 37.0f;
+		dst3.m_bottom = 25.0f + m_py - 30.0f;
+
+		//描画
+		Draw::Draw(6, &src3, &dst3, c, 0.0f);
+	}
+	else//腕を振り下ろしている
+	{
+		//表示位置の設定
+		dst3.m_top = 0.0f + m_py +26.0f;
+		dst3.m_left = 0.0f + m_px + 52.0f;
+		dst3.m_right = 25.0f + m_px + 52.0f;
+		dst3.m_bottom = 25.0f + m_py +26.0f;
+
+		//描画
+		Draw::Draw(6, &src3, &dst3, c, -100.0f);
+	}
 }
 
 void CObjRunner::HitBox()
@@ -247,6 +325,9 @@ void CObjRunner::HitBox()
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	//ブロック情報を持ってくる
+	CObjGauge* gauge = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
 
 	//スマホ少年の位置を取得
 	CObjSmartphone* sumaho = (CObjSmartphone*)Objs::GetObj(OBJ_SMARTPHONE);
@@ -263,15 +344,27 @@ void CObjRunner::HitBox()
 			m_vx = -5.6f;//ランナーをずらす
 		}
 
-		//ゲージを減らすPを書く------
-
-		//----------------------
+		//ゲージを減らすーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		if (m_smart_control == false) //まだ当たってなければゲージを減らす
+		{
+			//ゲージが減る
+			gauge->SetGauge(1.0f);
+			m_smart_control = true;
+		}
 	}
+	else
+		m_smart_control = false;//当たってない状態ならゲージを減らせる状態に戻す
 
 	//水たまりと当たった場合
 	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
 	{
-		//ゲージが減る
-		;
+		if (m_puddle_control == false) //まだ当たってなければゲージを減らす
+		{
+			//ゲージが減る
+			gauge->SetGauge(10.0f);
+			m_puddle_control = true;
+		}
 	}
+	else
+		m_puddle_control = false;//当たってない状態ならゲージを減らせる状態に戻す
 }

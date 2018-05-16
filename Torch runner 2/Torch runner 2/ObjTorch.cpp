@@ -43,7 +43,7 @@ void CObjTorch::Action()
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + 64.0f, m_py + 28.0f);
+	hit->SetPos(m_px + 55.0f, m_py + 28.0f);
 	if (m_time > 30)
 	{
 		this->SetStatus(false);		//自身に削除命令を出す
