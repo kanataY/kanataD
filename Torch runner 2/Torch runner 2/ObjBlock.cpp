@@ -108,6 +108,17 @@ void CObjBlock::Action()
 			//“GoŒ»êŠ‚Ì’l‚ğ0‚É‚·‚é
 			m_map[i][ex] = 0;
 		}
+
+		//—ñ‚Ì’†‚©‚ç4‚ğ’T‚·
+		if (m_map[i][ex] == 4)
+		{
+			//ƒIƒJƒ}‚ğ¶¬
+			CObjOkama* sma = new CObjOkama(ex * 64, i * 64);
+			Objs::InsertObj(sma, OBJ_OKAMA, 16);
+
+			//“GoŒ»êŠ‚Ì’l‚ğ0‚É‚·‚é
+			m_map[i][ex] = 0;
+		}
 	}
 }
 
@@ -131,7 +142,7 @@ void CObjBlock::Draw()
 	//”wŒi‚P
 	dst.m_top = 0.0f ;
 	dst.m_left = 0.0f + m_bx1;
-	dst.m_right = 806.0f + m_bx1;
+	dst.m_right = 805.0f + m_bx1;
 	dst.m_bottom = 700.0f ;
 
 	//•`‰æ
@@ -140,7 +151,7 @@ void CObjBlock::Draw()
 	//”wŒi‚Q
 	dst.m_top = 0.0f;
 	dst.m_left = 0.0f + m_bx2;
-	dst.m_right = 806.0f + m_bx2;
+	dst.m_right = 805.0f + m_bx2;
 	dst.m_bottom = 700.0f;
 
 	//•`‰æ

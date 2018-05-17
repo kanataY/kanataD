@@ -16,6 +16,7 @@ void CObjCorrection::Init()
 {
 	m_py = 0.0f;
 	m_px = 0.0f;
+	m_screen_out = false;
 }
 
 //オブジェクト生成したときにYが歩ける範囲より外か中だったら調整する
@@ -54,4 +55,19 @@ void CObjCorrection::FireDisplay(float x, float y)
 	//炎3
 	CObjFire* fi3 = new CObjFire(x + 12.0f, y + 35.0f);
 	Objs::InsertObj(fi3, OBJ_FIRE, 999);
+}
+
+//画面外に行くと消える処理
+bool CObjCorrection::Screen_Out(float x)
+{
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+	
+	//画面外ならtrueを返す
+	if (x + block->GetScroll() < 0)
+	{
+		return true;
+	}
+
+	return false;
 }

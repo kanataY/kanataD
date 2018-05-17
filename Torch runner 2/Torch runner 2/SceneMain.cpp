@@ -95,9 +95,9 @@ void CSceneMain::InitScene()
 	Objs::InsertObj(fi, OBJ_FIRE, 13);
 
 	//オカマバズーカ
-	CObjOkama* o = new CObjOkama(800.0f, 450.0f);
+	/*CObjOkama* o = new CObjOkama(800.0f, 450.0f);
 	Objs::InsertObj(o, OBJ_OKAMA, 13);
-
+*/
 	/*CObjOkama* o2 = new CObjOkama(800.0f, 500.0f);
 	Objs::InsertObj(o2, OBJ_OKAMA, 13);
 
