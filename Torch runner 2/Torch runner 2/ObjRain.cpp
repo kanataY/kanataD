@@ -44,7 +44,7 @@ void CObjRain::Action()
 		m_ani_frame++;//フレームを進める
 		m_ani_time = 0;
 	}
-	if (m_ani_frame == 2)//フレームが最後まで進んだら戻す
+	if (m_ani_frame == 2)//フレームが最後まで進んだら戻
 	{
 		m_ani_frame = 0;
 	}
