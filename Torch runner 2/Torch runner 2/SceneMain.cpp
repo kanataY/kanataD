@@ -110,8 +110,8 @@ void CSceneMain::InitScene()
 	Objs::InsertObj(o6, OBJ_OKAMA, 13);*/
 
 	//
-	//CObjRain* r = new CObjRain(0.0f, 0.0f);
-	//Objs::InsertObj(r, OBJ_RAIN, 1300);
+	CObjRain* r = new CObjRain(0.0f, 0.0f);
+	Objs::InsertObj(r, OBJ_RAIN, 1300);
 }
 
 //実行中メソッド
