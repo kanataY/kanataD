@@ -134,6 +134,7 @@ void CObjOkama::Action()
 	//レバガチャーーーーーーーーーーーーーーーーーー
 	if (m_hug == true) // 抱きついている
 	{
+		m_px = runner->GetX() + 20.0f - block->GetScroll();
 		m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
 		//左右上下を押すとカウントが１増える
@@ -203,9 +204,6 @@ void CObjOkama::Action()
 		this->SetStatus(false);		//自身に削除命令を出す
 		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 	}
-	//摩擦
-	//m_vx += -(m_vx * 0.15f);
-	//m_vy += -(m_vy * 0.15f);
 
 	//位置の更新
 	m_px += m_vx;
