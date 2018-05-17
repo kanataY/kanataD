@@ -71,8 +71,8 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み0番に登録(800ピクセル)
 	Draw::LoadImageW(L"Image\\back\\Rain\\a3.png", 11, TEX_SIZE_800);    //雨２
 
-	//外部グラフィックファイルを読み込み0番に登録(128ピクセル)
-	Draw::LoadImageW(L"Image\\object\\okama.png", 12, TEX_SIZE_128);    //オカマ
+	//外部グラフィックファイルを読み込み0番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\okama.png", 12, TEX_SIZE_512);    //オカマ
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
@@ -109,9 +109,9 @@ void CSceneMain::InitScene()
 	CObjOkama* o6 = new CObjOkama(800.0f, 300.0f);
 	Objs::InsertObj(o6, OBJ_OKAMA, 13);*/
 
-	//
-	//CObjRain* r = new CObjRain(0.0f, 0.0f);
-	//Objs::InsertObj(r, OBJ_RAIN, 1300);
+	/*
+	CObjRain* r = new CObjRain(0.0f, 0.0f);
+	Objs::InsertObj(r, OBJ_RAIN, 1300);*/
 }
 
 //実行中メソッド

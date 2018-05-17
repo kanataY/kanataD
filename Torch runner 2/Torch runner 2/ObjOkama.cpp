@@ -37,7 +37,7 @@ void CObjOkama::Init()
 	m_rebagacha_cotrol_d = false;
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
-	m_ani_max_time = 20; //アニメーション間隔幅
+	m_ani_max_time = 5; //アニメーション間隔幅
 						 //HitBox
 	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ENEMY, OBJ_OKAMA, 1);
 }
@@ -58,16 +58,16 @@ void CObjOkama::Action()
 	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	//アニメーション---------------------
-	//m_ani_time++;//フレーム動作感覚タイムを進める
-	//if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-	//{
-	//	m_ani_frame++;//フレームを進める
-	//	m_ani_time = 0;
-	//}
-	//if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-	//{
-	//	m_ani_frame = 0;
-	//}
+	m_ani_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	{
+		m_ani_frame++;//フレームを進める
+		m_ani_time = 0;
+	}
+	if (m_ani_frame == 7)//フレームが最後まで進んだら戻す
+	{
+		m_ani_frame = 0;
+	}
 
 	//しばらく進んでからホーミングする------------------------------------------------------------
 	if (m_time > 50)
@@ -110,6 +110,8 @@ void CObjOkama::Action()
 			m_vx *= 10; // 移動速度を10べぇにする
 			m_vy *= 10;
 			m_homing = true;
+			//ランナーの方にホーミングしたらアニメーション感覚を1にする
+			m_ani_max_time = 1;
 		}
 	}
 
@@ -224,9 +226,9 @@ void CObjOkama::Draw()
 
 				//切り取り位置の設定
 	src.m_top = 0.0f;
-	src.m_left = 0.0f/* + m_ani_frame * 64*/;
-	src.m_right = 64.0f/* + m_ani_frame * 64*/;
-	src.m_bottom = 128.0f;
+	src.m_left = 0.0f + m_ani_frame * 64;
+	src.m_right = 64.0f + m_ani_frame * 64;
+	src.m_bottom = 512.0f;
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
