@@ -26,12 +26,11 @@ private:
 	float m_vx;		//移動量
 	float m_vy;
 	int   m_time;     //タイム
-	bool m_hug;  //抱きついたか調べる変数
 	int  m_rebagacha;//レバガチャ
 	int  m_r_time;   //レバガチャした後の後ずさる距離に使う
-
 	int m_time_fire;     //タイム
-	
+	bool m_homing_heart;//ホーミングする時に画像変更するための変数
+	bool m_hug;  //抱きついたか調べる変数
 	//制御系
 	bool m_fire_control; //火が付いた時の制御
 	bool m_homing;       //ホーミングする回数を制御
