@@ -7,6 +7,7 @@
 
 #include "GameHead.h"
 #include "ObjOkama.h"
+#include "Correction.h"
 
 //使用するネームスペース
 using namespace GameL;
@@ -44,6 +45,8 @@ void CObjOkama::Init()
 //アクション
 void CObjOkama::Action()
 {
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
@@ -69,7 +72,7 @@ void CObjOkama::Action()
 	//しばらく進んでからホーミングする------------------------------------------------------------
 	if (m_time > 50)
 	{
-		float okax = runner->GetX() - m_px;
+		float okax = runner->GetX() - (m_px + block->GetScroll());
 		float okay = runner->GetY() - m_py;
 
 		//atan2で角度を求める
@@ -115,9 +118,6 @@ void CObjOkama::Action()
 	//補正の情報を持ってくる--------------------------------------------
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
-
-	//ブロック情報を持ってくる
-	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
@@ -193,6 +193,14 @@ void CObjOkama::Action()
 		}
 	}
 
+	//画面外に行くと死ぬ
+	bool m_s_o = cor->Screen_Out(m_px);
+
+	if (m_s_o == 1)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
 	//摩擦
 	//m_vx += -(m_vx * 0.15f);
 	//m_vy += -(m_vy * 0.15f);
