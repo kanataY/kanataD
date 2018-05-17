@@ -221,24 +221,71 @@ void CObjOkama::Draw()
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
+	if (m_hug == false)
+	{
+		if (m_homing == false)
+		{
+			//切り取り位置の設定
+			src.m_top = 0.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 512.0f;
 
-				//切り取り位置の設定
-	src.m_top = 0.0f;
-	src.m_left = 0.0f + m_ani_frame * 64;
-	src.m_right = 64.0f + m_ani_frame * 64;
-	src.m_bottom = 512.0f;
+			//ブロック情報を持ってくる
+			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-	//ブロック情報を持ってくる
-	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+			//表示位置の設定
+			dst.m_top = 0.0f + m_py;
+			dst.m_left = 0.0f + m_px + block->GetScroll();
+			dst.m_right = 64.0f + m_px + block->GetScroll();
+			dst.m_bottom = 64.0f + m_py;
 
-	//表示位置の設定
-	dst.m_top = 0.0f + m_py;
-	dst.m_left = 0.0f + m_px + block->GetScroll();
-	dst.m_right = 64.0f + m_px + block->GetScroll();
-	dst.m_bottom = 64.0f + m_py;
+			//描画
+			Draw::Draw(12, &src, &dst, c, 0.0f);
+		}
+		
+		else
+		{
+			//切り取り位置の設定
+			src.m_top = 0.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 512.0f;
 
-	//描画
-	Draw::Draw(12, &src, &dst, c, 0.0f);
+			//ブロック情報を持ってくる
+			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+			//表示位置の設定
+			dst.m_top = 0.0f + m_py;
+			dst.m_left = 0.0f + m_px + block->GetScroll();
+			dst.m_right = 64.0f + m_px + block->GetScroll();
+			dst.m_bottom = 64.0f + m_py;
+
+			//描画
+			Draw::Draw(13, &src, &dst, c, 0.0f);
+		}
+	}
+	if (m_hug == true)
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f + m_ani_frame * 64;
+		src.m_right = 64.0f + m_ani_frame * 64;
+		src.m_bottom = 512.0f;
+
+		//ブロック情報を持ってくる
+		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px + block->GetScroll();
+		dst.m_right = 64.0f + m_px + block->GetScroll();
+		dst.m_bottom = 64.0f + m_py;
+
+		//描画
+		Draw::Draw(14, &src, &dst, c, 0.0f);
+	}
+
 }
 
 void CObjOkama::HitBox()
