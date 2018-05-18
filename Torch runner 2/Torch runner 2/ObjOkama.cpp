@@ -134,12 +134,13 @@ void CObjOkama::Action()
 	//レバガチャーーーーーーーーーーーーーーーーーー
 	if (m_hug == true) // 抱きついている
 	{
-		m_px = runner->GetX() + 20.0f - block->GetScroll();
+		m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
 		m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
 		//左右上下を押すとカウントが１増える
 		if (Input::GetVKey(VK_RIGHT) == true)  //右
 		{
+			runner->SetVX(0.0f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_r == false)
 			{
 				m_rebagacha++;
@@ -151,6 +152,7 @@ void CObjOkama::Action()
 
 		if (Input::GetVKey(VK_LEFT) == true)  //左
 		{
+			runner->SetVX(0.0f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_l == false)
 			{
 				m_rebagacha++;
@@ -162,6 +164,7 @@ void CObjOkama::Action()
 
 		if (Input::GetVKey(VK_UP) == true)//上
 		{
+			runner->SetVY(0.0f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_u == false)
 			{
 				m_rebagacha++;
@@ -173,6 +176,7 @@ void CObjOkama::Action()
 
 		if (Input::GetVKey(VK_DOWN) == true)//下
 		{
+			runner->SetVY(0.0f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_d == false)
 			{
 				m_rebagacha++;
@@ -185,8 +189,9 @@ void CObjOkama::Action()
 
 	HitBox(); //HitBox関連
 
-	if (m_rebagacha > 5) //レバガチャ50回したら
+	if (m_rebagacha > 25) //レバガチャ50回したら
 	{
+		m_hug = false;
 		m_vx = 100.f; //後ろにぶっ飛ぶ
 		m_r_time++;
 		if (m_r_time > 5) //しばらくしたら消える
@@ -318,7 +323,7 @@ void CObjOkama::HitBox()
 			if (fire != nullptr)
 			{
 				m_time_fire++; //一定時間たったらオカマを消す。
-				if (m_time_fire > 99)
+				if (m_time_fire > 98)
 				{
 					this->SetStatus(false);		//自身に削除命令を出す
 					Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
