@@ -76,7 +76,7 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み12番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\okama2.png", 13, TEX_SIZE_512);    //オカマ(目がハート)
 	//外部グラフィックファイルを読み込み13番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\okama_hug2.png", 14, TEX_SIZE_512);    //オカマハグ
+	Draw::LoadImageW(L"Image\\object\\okama_hug .png", 14, TEX_SIZE_512);    //オカマハグ
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();

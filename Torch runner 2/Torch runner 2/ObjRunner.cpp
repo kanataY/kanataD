@@ -66,38 +66,23 @@ void CObjRunner::Action()
 	//|||||||||||||||||||||||||||||
 	//ˆÚ“®[[[[[[[[[[[[[[[[[[[[[
 
-	bool okama_hug = false; //ƒIƒJƒ}‚É•ø‚«‚Â‚©‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©’²‚×‚é
-	if (okama == nullptr)//ƒIƒJƒ}‚ª¶¬‚³‚ê‚Ä‚¢‚é‚È‚ç’²‚×‚é
+	if (Input::GetVKey(VK_RIGHT) == true)  //‰EˆÚ“®
 	{
-		okama_hug = false;
+		m_vx += 0.8f;
 	}
-	else
-		okama_hug = okama->GetHug();
+	if (Input::GetVKey(VK_LEFT) == true)  //¶ˆÚ“®
+	{
+		m_vx += -0.8f;
+	}
+	if (Input::GetVKey(VK_UP) == true && m_py > 277)//ãˆÚ“®
+	{
+		m_vy += -0.8f;
+	}
+	if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//‰ºˆÚ“®
+	{
+		m_vy += 0.8f;
+	}
 
-	if (okama_hug == false)//•ø‚«‚Â‚©‚ê‚Ä‚¢‚È‚¢‚È‚ç’Êí‚Ç‚¤‚è“®‚¯‚é
-	{
-		if (Input::GetVKey(VK_RIGHT) == true)  //‰EˆÚ“®
-		{
-			m_vx += 0.8f;
-		}
-		if (Input::GetVKey(VK_LEFT) == true)  //¶ˆÚ“®
-		{
-			m_vx += -0.8f;
-		}
-		if (Input::GetVKey(VK_UP) == true && m_py > 277)//ãˆÚ“®
-		{
-			m_vy += -0.8f;
-		}
-		if (Input::GetVKey(VK_DOWN) == true && m_py < 536)//‰ºˆÚ“®
-		{
-			m_vy += 0.8f;
-		}
-	}
-	else  //•ø‚«‚Â‚©‚ê‚Ä‚¢‚éó‘Ô‚È‚ç“®‚¯‚È‚¢
-	{
-		m_vx = 0.0f;
-		m_vy = 0.0f;
-	}
 	//–€C
 	m_vx += -(m_vx * 0.15f);
 	m_vy += -(m_vy * 0.15f);
