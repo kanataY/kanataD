@@ -62,6 +62,15 @@ void CObjPuddle::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + 5.0f + block->GetScroll(), m_py + 8.0f * m_drow_down);
 
+	//画面外に行くと死ぬ
+	bool m_s_o = cor->Screen_Out(m_px);
+
+	if (m_s_o == 1)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
+
 }
 
 //描画

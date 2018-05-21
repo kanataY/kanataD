@@ -47,6 +47,15 @@ void CObjCrates::Action()
 
 	//当たり判定関係
 	HitBox();
+
+	//画面外に行くと死ぬ
+	bool m_s_o = cor->Screen_Out(m_px);
+
+	if (m_s_o == 1)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
 }
 
 //描画
