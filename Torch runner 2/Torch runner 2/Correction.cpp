@@ -64,7 +64,7 @@ bool CObjCorrection::Screen_Out(float x)
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 	
 	//‰æ–ÊŠO‚È‚çtrue‚ð•Ô‚·
-	if (x + block->GetScroll() < 0)
+	if (x + block->GetScroll() < -50)
 	{
 		return true;
 	}

@@ -47,6 +47,15 @@ void CObjCrates::Action()
 
 	//当たり判定関係
 	HitBox();
+
+	//画面外に行くと死ぬ
+	bool m_s_o = cor->Screen_Out(m_px);
+
+	if (m_s_o == 1)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
 }
 
 //描画
@@ -116,6 +125,13 @@ void CObjCrates::HitBox()
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}
 		}
+	}
+
+	//オカマと当たっている場合
+	if (hit->CheckObjNameHit(OBJ_OKAMA) != nullptr)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 	}
 
 	//ランナーと当たっている場合

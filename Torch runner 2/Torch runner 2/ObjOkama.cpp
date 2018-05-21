@@ -138,56 +138,82 @@ void CObjOkama::Action()
 		m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
 		//左右上下を押すとカウントが１増える
-		if (Input::GetVKey(VK_RIGHT) == true)  //右
+		if (Input::GetVKey(VK_RIGHT) == true && Input::GetVKey(VK_LEFT) == true)  //左右同時押し（バグがあるので応急処置）
 		{
-			runner->SetVX(0.0f);//ランナーの移動量を０にする
+			runner->SetVX(-0.0f);//ランナーの移動量を０にする
+			if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
+			{
+				m_rebagacha++;
+				m_rebagacha_cotrol_r = true;
+				m_rebagacha_cotrol_l = true;
+			}
+		}
+
+		else if (Input::GetVKey(VK_RIGHT) == true)  //右
+		{
+			runner->SetVX(-0.8f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_r == false)
 			{
 				m_rebagacha++;
 				m_rebagacha_cotrol_r = true;
 			}
 		}
-		else
-			m_rebagacha_cotrol_r = false;
 
-		if (Input::GetVKey(VK_LEFT) == true)  //左
+		else if (Input::GetVKey(VK_LEFT) == true)  //左
 		{
-			runner->SetVX(0.0f);//ランナーの移動量を０にする
+			runner->SetVX(0.8f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_l == false)
 			{
 				m_rebagacha++;
 				m_rebagacha_cotrol_l = true;
 			}
 		}
-		else
+
+		if (Input::GetVKey(VK_RIGHT) == false)  //右
+			m_rebagacha_cotrol_r = false;
+
+		if (Input::GetVKey(VK_LEFT) == false) 
 			m_rebagacha_cotrol_l = false;
 
-		if (Input::GetVKey(VK_UP) == true)//上
+		if (Input::GetVKey(VK_UP) == true && Input::GetVKey(VK_DOWN) == true)//上下
 		{
 			runner->SetVY(0.0f);//ランナーの移動量を０にする
+			if (m_rebagacha_cotrol_u == false && m_rebagacha_cotrol_d == false)
+			{
+				m_rebagacha++;
+				m_rebagacha_cotrol_u = true;
+				m_rebagacha_cotrol_d = true;
+			}
+		}
+
+		else if (Input::GetVKey(VK_UP) == true)//上
+		{
+			runner->SetVY(0.8f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_u == false)
 			{
 				m_rebagacha++;
 				m_rebagacha_cotrol_u = true;
 			}
 		}
-		else
-			m_rebagacha_cotrol_u = false;
 
-		if (Input::GetVKey(VK_DOWN) == true)//下
+		else if (Input::GetVKey(VK_DOWN) == true)//下
 		{
-			runner->SetVY(0.0f);//ランナーの移動量を０にする
+			runner->SetVY(-0.8f);//ランナーの移動量を０にする
 			if (m_rebagacha_cotrol_d == false)
 			{
 				m_rebagacha++;
 				m_rebagacha_cotrol_d = true;
 			}
 		}
-		else
+
+		if (Input::GetVKey(VK_UP) == false)
+			m_rebagacha_cotrol_u = false;
+
+		if (Input::GetVKey(VK_DOWN) == false)
 			m_rebagacha_cotrol_d = false;
 	}
 
-	HitBox(); //HitBox関連
+	
 
 	if (m_rebagacha > 25) //レバガチャ50回したら
 	{
@@ -213,7 +239,7 @@ void CObjOkama::Action()
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
-
+	HitBox(); //HitBox関連
 	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
@@ -306,7 +332,6 @@ void CObjOkama::HitBox()
 
 	if (m_hug == true) //抱きついている
 	{
-
 		//まだ炎がついてない状態
 		if (m_fire_control == false)
 		{
@@ -317,18 +342,20 @@ void CObjOkama::HitBox()
 				m_fire_control = true;
 			}
 		}
-		//炎がついてる状態
-		if (m_fire_control == true)
-		{
-			if (fire != nullptr)
-			{
-				m_time_fire++; //一定時間たったらオカマを消す。
-				if (m_time_fire > 98)
-				{
-					this->SetStatus(false);		//自身に削除命令を出す
-					Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
-				}
-			}
+	
+	}
+	//炎がついてる状態
+	if (m_fire_control == true)
+	{
+		if (fire != nullptr)
+		{	
+			m_time_fire++; //一定時間たったらオカマを消す。
 		}
+		if (fire == nullptr && m_time_fire > 9) //炎が消えたらオカマも消えるようにする
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+
 	}
 }
