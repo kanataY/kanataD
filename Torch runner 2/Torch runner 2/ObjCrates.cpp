@@ -118,6 +118,13 @@ void CObjCrates::HitBox()
 		}
 	}
 
+	//オカマと当たっている場合
+	if (hit->CheckObjNameHit(OBJ_OKAMA) != nullptr)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
+
 	//ランナーと当たっている場合
 	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 	{
