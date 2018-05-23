@@ -125,95 +125,7 @@ void CObjOkama::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + block->GetScroll(), m_py);
 
-	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr) //ランナーと当たっている
-	{
-		m_vx = 0; m_vy = 0;  //動けないようにする
-		m_hug = true;        //抱きついている
-	}
-
-	//レバガチャーーーーーーーーーーーーーーーーーー
-	if (m_hug == true) // 抱きついている
-	{
-		m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
-		m_py = runner->GetY(); //Yの位置をランナーに合わせる
-
-		//左右上下を押すとカウントが１増える
-		if (Input::GetVKey(VK_RIGHT) == true && Input::GetVKey(VK_LEFT) == true)  //左右同時押し（バグがあるので応急処置）
-		{
-			runner->SetVX(-0.0f);//ランナーの移動量を０にする
-			if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
-			{
-				m_rebagacha++;
-				m_rebagacha_cotrol_r = true;
-				m_rebagacha_cotrol_l = true;
-			}
-		}
-
-		else if (Input::GetVKey(VK_RIGHT) == true)  //右
-		{
-			runner->SetVX(-0.8f);//ランナーの移動量を０にする
-			if (m_rebagacha_cotrol_r == false)
-			{
-				m_rebagacha++;
-				m_rebagacha_cotrol_r = true;
-			}
-		}
-
-		else if (Input::GetVKey(VK_LEFT) == true)  //左
-		{
-			runner->SetVX(0.8f);//ランナーの移動量を０にする
-			if (m_rebagacha_cotrol_l == false)
-			{
-				m_rebagacha++;
-				m_rebagacha_cotrol_l = true;
-			}
-		}
-
-		if (Input::GetVKey(VK_RIGHT) == false)  //右
-			m_rebagacha_cotrol_r = false;
-
-		if (Input::GetVKey(VK_LEFT) == false) 
-			m_rebagacha_cotrol_l = false;
-
-		if (Input::GetVKey(VK_UP) == true && Input::GetVKey(VK_DOWN) == true)//上下
-		{
-			runner->SetVY(0.0f);//ランナーの移動量を０にする
-			if (m_rebagacha_cotrol_u == false && m_rebagacha_cotrol_d == false)
-			{
-				m_rebagacha++;
-				m_rebagacha_cotrol_u = true;
-				m_rebagacha_cotrol_d = true;
-			}
-		}
-
-		else if (Input::GetVKey(VK_UP) == true)//上
-		{
-			runner->SetVY(0.8f);//ランナーの移動量を０にする
-			if (m_rebagacha_cotrol_u == false)
-			{
-				m_rebagacha++;
-				m_rebagacha_cotrol_u = true;
-			}
-		}
-
-		else if (Input::GetVKey(VK_DOWN) == true)//下
-		{
-			runner->SetVY(-0.8f);//ランナーの移動量を０にする
-			if (m_rebagacha_cotrol_d == false)
-			{
-				m_rebagacha++;
-				m_rebagacha_cotrol_d = true;
-			}
-		}
-
-		if (Input::GetVKey(VK_UP) == false)
-			m_rebagacha_cotrol_u = false;
-
-		if (Input::GetVKey(VK_DOWN) == false)
-			m_rebagacha_cotrol_d = false;
-	}
-
-	
+	HitBox(); //HitBox関連
 
 	if (m_rebagacha > 25) //レバガチャ50回したら
 	{
@@ -239,7 +151,8 @@ void CObjOkama::Action()
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
-	HitBox(); //HitBox関連
+
+
 	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
@@ -324,6 +237,12 @@ void CObjOkama::HitBox()
 	//HitBoxの情報
 	CHitBox* hit = Hits::GetHitBox(this);
 
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 
@@ -358,4 +277,96 @@ void CObjOkama::HitBox()
 		}
 
 	}
+	if (runner->GetHoleFallCon() == false)
+	{
+	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr) //ランナーと当たっている
+	{
+		m_vx = 0; m_vy = 0;  //動けないようにする
+		m_hug = true;        //抱きついている
+	}
+
+	
+		//レバガチャーーーーーーーーーーーーーーーーーー
+		if (m_hug == true) // 抱きついている
+		{
+			m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
+			m_py = runner->GetY(); //Yの位置をランナーに合わせる
+
+								   //左右上下を押すとカウントが１増える
+			if (Input::GetVKey(VK_RIGHT) == true && Input::GetVKey(VK_LEFT) == true)  //左右同時押し（バグがあるので応急処置）
+			{
+				runner->SetVX(-0.0f);//ランナーの移動量を０にする
+				if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
+				{
+					m_rebagacha++;
+					m_rebagacha_cotrol_r = true;
+					m_rebagacha_cotrol_l = true;
+				}
+			}
+
+			else if (Input::GetVKey(VK_RIGHT) == true)  //右
+			{
+				runner->SetVX(-0.8f);//ランナーの移動量を０にする
+				if (m_rebagacha_cotrol_r == false)
+				{
+					m_rebagacha++;
+					m_rebagacha_cotrol_r = true;
+				}
+			}
+
+			else if (Input::GetVKey(VK_LEFT) == true)  //左
+			{
+				runner->SetVX(0.8f);//ランナーの移動量を０にする
+				if (m_rebagacha_cotrol_l == false)
+				{
+					m_rebagacha++;
+					m_rebagacha_cotrol_l = true;
+				}
+			}
+
+			if (Input::GetVKey(VK_RIGHT) == false)  //右
+				m_rebagacha_cotrol_r = false;
+
+			if (Input::GetVKey(VK_LEFT) == false)
+				m_rebagacha_cotrol_l = false;
+
+			if (Input::GetVKey(VK_UP) == true && Input::GetVKey(VK_DOWN) == true)//上下
+			{
+				runner->SetVY(0.0f);//ランナーの移動量を０にする
+				if (m_rebagacha_cotrol_u == false && m_rebagacha_cotrol_d == false)
+				{
+					m_rebagacha++;
+					m_rebagacha_cotrol_u = true;
+					m_rebagacha_cotrol_d = true;
+				}
+			}
+
+			else if (Input::GetVKey(VK_UP) == true)//上
+			{
+				runner->SetVY(0.8f);//ランナーの移動量を０にする
+				if (m_rebagacha_cotrol_u == false)
+				{
+					m_rebagacha++;
+					m_rebagacha_cotrol_u = true;
+				}
+			}
+
+			else if (Input::GetVKey(VK_DOWN) == true)//下
+			{
+				runner->SetVY(-0.8f);//ランナーの移動量を０にする
+				if (m_rebagacha_cotrol_d == false)
+				{
+					m_rebagacha++;
+					m_rebagacha_cotrol_d = true;
+				}
+			}
+
+			if (Input::GetVKey(VK_UP) == false)
+				m_rebagacha_cotrol_u = false;
+
+			if (Input::GetVKey(VK_DOWN) == false)
+				m_rebagacha_cotrol_d = false;
+		}
+	}
+
 }

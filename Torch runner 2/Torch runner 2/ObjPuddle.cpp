@@ -62,6 +62,8 @@ void CObjPuddle::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + 5.0f + block->GetScroll(), m_py + 8.0f * m_drow_down);
 
+	HitBox();
+
 	//画面外に行くと死ぬ
 	bool m_s_o = cor->Screen_Out(m_px);
 
@@ -100,4 +102,41 @@ void CObjPuddle::Draw()
 
 	//描画
 	Draw::Draw(7, &src, &dst, c, 0.0f);
+}
+
+//当たり判定関連
+void CObjPuddle::HitBox()
+{
+	//HitBoxの情報
+	CHitBox* hit = Hits::GetHitBox(this);
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//ランナーと当たっている場合
+	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+	{
+		//ランナーの足の位置が水たまりにかかってない場合は判定をなくす
+		if (m_py + (40.0f * ((float)m_drow_down - 1)) > runner->GetY())
+		{
+			if (Input::GetVKey(VK_RIGHT) == true)  //右移動
+			{
+				runner->SetVX(0.5f);//ランナーの移動量を減少させる
+			}
+			if (Input::GetVKey(VK_LEFT) == true)  //左移動
+			{
+				runner->SetVX(-0.5f);//ランナーの移動量を減少させる
+			}
+			if (Input::GetVKey(VK_UP) == true)//上移動
+			{
+				runner->SetVY(0.5f);//ランナーの移動量を減少させる
+			}
+			if (Input::GetVKey(VK_DOWN) == true)//下移動
+			{
+				runner->SetVY(-0.5f);//ランナーの移動量を減少させる
+			}
+		}
+	}
+
 }

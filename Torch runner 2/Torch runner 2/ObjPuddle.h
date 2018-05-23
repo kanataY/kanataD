@@ -13,6 +13,7 @@ public:
 	void Init();	//イニシャライズ
 	void Action();  //アクション
 	void Draw();	//ドロー
+	void HitBox();  //当たり判定関連
 	float GetX() { return m_px; }
 	float GetY() { return m_py; }
 	void  SetX(float x) { m_px = x; }
