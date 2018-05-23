@@ -22,6 +22,8 @@ public:
 	void  SetY(float y) { m_py = y; }
 	void  SetVX(float x) { m_vx = x; }//m_vx,m_vyの値をほかのcppでもいじれるようにする
 	void  SetVY(float y) { m_vy = y; }
+	void  SetHoleFall(float f) { m_hole_fall += f; } //穴に落ちた時描画を変えるようSetHoleFallCon
+	void  SetHoleFallCon(bool b) { m_hole_control += b; } //穴に落ちた時描画を変えるよう
 
 private:
 	float m_px;		//位置
@@ -29,11 +31,15 @@ private:
 	float m_vx;		//移動ベクトル
 	float m_vy;
 
+	//描画関連
+	float m_hole_fall;  //穴に落ちた時の描画するところを変える変数
+
 	//制御系---------
-	bool m_torch_control;   //松明制御
-	int  m_torch_time_control;   //松明制御
-	bool m_puddle_control;  //水たまり制御
-	bool m_smart_control;  //スマホ少年制御
+	bool m_torch_control;			//松明制御
+	int  m_torch_time_control;		//松明制御
+	bool m_puddle_control;			//水たまり制御
+	bool m_smart_control;			//スマホ少年制御
+	bool m_hole_control;			//穴制御
 
 	//ジャンプ系（調整するので消すor帰る）
 	float qaajamp_memo;

@@ -25,10 +25,13 @@ void CObjRunner::Init()
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
 
+	m_hole_fall = 0.0f;
+
 	m_torch_control = false;
 	m_torch_time_control = 0;
 	m_puddle_control = false;
 	m_smart_control = false;
+	m_hole_control = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -50,8 +53,11 @@ void CObjRunner::Action()
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 
+	//穴情報を持ってくる
+	CObjHole* hole = (CObjHole*)Objs::GetObj(OBJ_HOLE);
+
 	//オカマの情報を持ってくる
-	CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
+	//CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
 
 	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
@@ -218,6 +224,23 @@ void CObjRunner::Action()
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
+	if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+	{
+		m_vx = 0.0f; //ランナーを移動させないようにする。
+		m_vy = 0.0f;
+	}
+
+	if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
+	{
+		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
+		if (m_px < 200)       //ランナーの位置を穴から近い位置に移動させる
+			m_px += 60.0f;
+		else
+			m_px -= 60.0f;
+		m_py -= 10.0f;        //ランナーのYの位置をずらして穴のY軸の真ん中に近い位置で復活させる
+		m_hole_control = false;
+	}
+
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + 18.0f, m_py);
@@ -247,13 +270,13 @@ void CObjRunner::Draw()
 	src.m_top = 1.0f;
 	src.m_left = 0.0f + m_ani_frame * 64;
 	src.m_right =  64.0f + m_ani_frame * 64;
-	src.m_bottom = 257.0f;
+	src.m_bottom = 257.0f ;
 
 	//表示位置の設定
-	dst.m_top = 0.0f + m_py;
-	dst.m_left = 0.0f+ m_px;
-	dst.m_right = 64.0f + m_px;
-	dst.m_bottom = 64.0f + m_py;
+	dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
+	dst.m_left = 0.0f+ m_px + (m_hole_fall / 3);
+	dst.m_right = 64.0f + m_px - m_hole_fall;
+	dst.m_bottom = 64.0f + m_py - m_hole_fall;
 
 	//描画
 	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
@@ -268,20 +291,30 @@ void CObjRunner::Draw()
 	//表示位置の設定
 	if (m_ani_change == 0) //腕を振り下ろしていない
 	{
-		dst2.m_top = 0.0f + m_py - 10.0f;
-		dst2.m_left = 0.0f + m_px + 40.0f;
-		dst2.m_right = 20.0f + m_px + 40.0f;
-		dst2.m_bottom = 32.0f + m_py - 10.0f;
+		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+		{
+			dst2.m_top = 0.0f + m_py - 10.0f + (m_hole_fall / 2);
+			dst2.m_left = 0.0f + m_px + 25.0f;
+			dst2.m_right = 20.0f + m_px + 40.0f - (m_hole_fall / 2) - 10.0f;
+			dst2.m_bottom = 32.0f + m_py - 10.0f;
+		}
+		else
+		{
+			dst2.m_top = 0.0f + m_py - 10.0f;
+			dst2.m_left = 0.0f + m_px + 40.0f;
+			dst2.m_right = 20.0f + m_px + 40.0f;
+			dst2.m_bottom = 32.0f + m_py - 10.0f;
+		}
 
 		//描画
 		Draw::Draw(9, &src2, &dst2, c, 0.0f);
 	}
-	else//腕を振り下ろしている
+	else //腕を振り下ろしている
 	{
 		dst2.m_top = 0.0f + m_py +18.0f;
 		dst2.m_left = 0.0f + m_px + 38.0f;
-		dst2.m_right = 20.0f + m_px + 38.0f;
-		dst2.m_bottom = 32.0f + m_py +18.0f;
+		dst2.m_right = 20.0f + m_px + 38.0f - m_hole_fall;
+		dst2.m_bottom = 32.0f + m_py +18.0f - m_hole_fall;
 
 		//描画
 		Draw::Draw(9, &src2, &dst2, c, -100.0f);
@@ -301,11 +334,22 @@ void CObjRunner::Draw()
 
 	if (m_ani_change == 0)//腕を振り下ろしていない
 	{
-		//表示位置の設定
-		dst3.m_top = 0.0f + m_py - 30.0f;
-		dst3.m_left = 0.0f + m_px + 37.0f;
-		dst3.m_right = 25.0f + m_px + 37.0f;
-		dst3.m_bottom = 25.0f + m_py - 30.0f;
+		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+		{
+			//表示位置の設定
+			dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
+			dst3.m_left = 0.0f + m_px + 27.0f;
+			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5) - 10.0f;
+			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2);
+		}
+		else
+		{
+			//表示位置の設定
+			dst3.m_top = 0.0f + m_py - 30.0f;
+			dst3.m_left = 0.0f + m_px + 37.0f;
+			dst3.m_right = 25.0f + m_px + 37.0f;
+			dst3.m_bottom = 25.0f + m_py - 30.0f;
+		}
 
 		//描画
 		Draw::Draw(6, &src3, &dst3, c, 0.0f);
@@ -315,8 +359,8 @@ void CObjRunner::Draw()
 		//表示位置の設定
 		dst3.m_top = 0.0f + m_py +26.0f;
 		dst3.m_left = 0.0f + m_px + 52.0f;
-		dst3.m_right = 25.0f + m_px + 52.0f;
-		dst3.m_bottom = 25.0f + m_py +26.0f;
+		dst3.m_right = 25.0f + m_px + 52.0f - m_hole_fall;
+		dst3.m_bottom = 25.0f + m_py +26.0f - m_hole_fall;
 
 		//描画
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
@@ -331,7 +375,7 @@ void CObjRunner::HitBox()
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-	//ブロック情報を持ってくる
+	//ゲージ情報を持ってくる
 	CObjGauge* gauge = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
 
 	//スマホ少年の位置を取得
@@ -372,4 +416,5 @@ void CObjRunner::HitBox()
 	}
 	else
 		m_puddle_control = false;//当たってない状態ならゲージを減らせる状態に戻す
+
 }

@@ -87,6 +87,10 @@ void CSceneMain::InitScene()
 	CObjFire* fi = new CObjFire(30.0f, 400.0f);
 	Objs::InsertObj(fi, OBJ_FIRE, 13);
 
+	////穴
+	//CObjHole* fi = new CObjHole(30.0f, 400.0f);
+	//Objs::InsertObj(fi, OBJ_HOLE, 13);
+
 	//オカマバズーカ
 	/*CObjOkama* o = new CObjOkama(800.0f, 450.0f);
 	Objs::InsertObj(o, OBJ_OKAMA, 13);
