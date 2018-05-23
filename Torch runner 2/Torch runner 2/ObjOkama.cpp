@@ -346,7 +346,7 @@ void CObjOkama::HitBox()
 			m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
 								   //左右上下を押すとカウントが１増える
-			if (Input::GetVKey(VK_RIGHT) == true && Input::GetVKey(VK_LEFT) == true)  //左右同時押し（バグがあるので応急処置）
+			if (Input::GetVKey('D') == true && Input::GetVKey('A') == true)  //左右同時押し（バグがあるので応急処置）
 			{
 				runner->SetVX(-0.0f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
@@ -357,7 +357,7 @@ void CObjOkama::HitBox()
 				}
 			}
 
-			else if (Input::GetVKey(VK_RIGHT) == true)  //右
+			else if (Input::GetVKey('D') == true)  //右
 			{
 				runner->SetVX(-0.8f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_r == false)
@@ -367,7 +367,7 @@ void CObjOkama::HitBox()
 				}
 			}
 
-			else if (Input::GetVKey(VK_LEFT) == true)  //左
+			else if (Input::GetVKey('A') == true)  //左
 			{
 				runner->SetVX(0.8f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_l == false)
@@ -377,13 +377,13 @@ void CObjOkama::HitBox()
 				}
 			}
 
-			if (Input::GetVKey(VK_RIGHT) == false)  //右
+			if (Input::GetVKey('D') == false)  //右
 				m_rebagacha_cotrol_r = false;
 
-			if (Input::GetVKey(VK_LEFT) == false)
+			if (Input::GetVKey('A') == false)
 				m_rebagacha_cotrol_l = false;
 
-			if (Input::GetVKey(VK_UP) == true && Input::GetVKey(VK_DOWN) == true)//上下
+			if (Input::GetVKey('W') == true && Input::GetVKey('S') == true)//上下
 			{
 				runner->SetVY(0.0f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_u == false && m_rebagacha_cotrol_d == false)
@@ -394,7 +394,7 @@ void CObjOkama::HitBox()
 				}
 			}
 
-			else if (Input::GetVKey(VK_UP) == true)//上
+			else if (Input::GetVKey('W') == true)//上
 			{
 				runner->SetVY(0.8f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_u == false)
@@ -404,7 +404,7 @@ void CObjOkama::HitBox()
 				}
 			}
 
-			else if (Input::GetVKey(VK_DOWN) == true)//下
+			else if (Input::GetVKey('S') == true)//下
 			{
 				runner->SetVY(-0.8f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_d == false)
@@ -414,10 +414,10 @@ void CObjOkama::HitBox()
 				}
 			}
 
-			if (Input::GetVKey(VK_UP) == false)
+			if (Input::GetVKey('W') == false)
 				m_rebagacha_cotrol_u = false;
 
-			if (Input::GetVKey(VK_DOWN) == false)
+			if (Input::GetVKey('S') == false)
 				m_rebagacha_cotrol_d = false;
 		}
 	}

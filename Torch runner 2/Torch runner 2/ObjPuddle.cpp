@@ -120,19 +120,19 @@ void CObjPuddle::HitBox()
 		//ランナーの足の位置が水たまりにかかってない場合は判定をなくす
 		if (m_py + (40.0f * ((float)m_drow_down - 1)) > runner->GetY())
 		{
-			if (Input::GetVKey(VK_RIGHT) == true)  //右移動
+			if (Input::GetVKey('D') == true)  //右移動
 			{
 				runner->SetVX(0.5f);//ランナーの移動量を減少させる
 			}
-			if (Input::GetVKey(VK_LEFT) == true)  //左移動
+			if (Input::GetVKey('A') == true)  //左移動
 			{
 				runner->SetVX(-0.5f);//ランナーの移動量を減少させる
 			}
-			if (Input::GetVKey(VK_UP) == true)//上移動
+			if (Input::GetVKey('W') == true)//上移動
 			{
 				runner->SetVY(0.5f);//ランナーの移動量を減少させる
 			}
-			if (Input::GetVKey(VK_DOWN) == true)//下移動
+			if (Input::GetVKey('S') == true)//下移動
 			{
 				runner->SetVY(-0.5f);//ランナーの移動量を減少させる
 			}
