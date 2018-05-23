@@ -16,6 +16,7 @@ enum OBJ_NAME
 	OBJ_PUDDLE,				//水たまり
 	OBJ_RAIN,               //雨
 	OBJ_OKAMA,              //オカマ
+	OBJ_HOLE,				//穴
 
 	//補正
 	CORRECTION,				//補正
@@ -65,6 +66,7 @@ struct UserData
 #include "ObjPuddle.h"			//水たまり
 #include "ObjRain.h"			//雨
 #include "ObjOkama.h"			//オカマ
+#include "ObjHole.h"			//穴
 
 //補助系
 #include "Correction.h"			//補正

@@ -136,6 +136,7 @@
     <ClCompile Include="ObjBlock.cpp" />
     <ClCompile Include="ObjFire.cpp" />
     <ClCompile Include="ObjGauge.cpp" />
+    <ClCompile Include="ObjHole.cpp" />
     <ClCompile Include="ObjOkama.cpp" />
     <ClCompile Include="ObjPuddle.cpp" />
     <ClCompile Include="ObjRain.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="ObjBlock.h" />
     <ClInclude Include="ObjFire.h" />
     <ClInclude Include="ObjGauge.h" />
+    <ClInclude Include="ObjHole.h" />
     <ClInclude Include="ObjOkama.h" />
     <ClInclude Include="ObjPuddle.h" />
     <ClInclude Include="ObjRain.h" />

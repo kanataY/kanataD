@@ -57,6 +57,20 @@ void CObjCorrection::FireDisplay(float x, float y)
 	Objs::InsertObj(fi3, OBJ_FIRE, 999);
 }
 
+//炎を複数表示させる 追尾バージョン
+//void CObjCorrection::FireDisplayTracking(float x, float y)
+//{
+//	//炎
+//	CObjFire* fi = new CObjFire(x - 10.0f, y - 10.0f);
+//	Objs::InsertObj(fi, OBJ_FIRE, 999);
+//	//炎2
+//	CObjFire* fi2 = new CObjFire(x + 30.0f, y + 10.0f);
+//	Objs::InsertObj(fi2, OBJ_FIRE, 999);
+//	//炎3
+//	CObjFire* fi3 = new CObjFire(x + 12.0f, y + 35.0f);
+//	Objs::InsertObj(fi3, OBJ_FIRE, 999);
+//}
+
 //画面外に行くと消える処理
 bool CObjCorrection::Screen_Out(float x)
 {

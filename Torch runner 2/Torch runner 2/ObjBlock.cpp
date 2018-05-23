@@ -101,9 +101,13 @@ void CObjBlock::Action()
 		//—ñ‚Ì’†‚©‚ç3‚ğ’T‚·
 		if (m_map[i][ex] == 3)
 		{
-			//…‚½‚Ü‚è‚ğ¶¬
-			CObjPuddle* sma = new CObjPuddle(ex * 64, i * 64);
-			Objs::InsertObj(sma, OBJ_PUDDLE, 15);
+			////…‚½‚Ü‚è‚ğ¶¬
+			//CObjPuddle* pu = new CObjPuddle(ex * 64, i * 64);
+			//Objs::InsertObj(pu, OBJ_PUDDLE, 15);
+			//ŒŠ‚ğ¶¬
+			CObjHole* hole = new CObjHole(ex * 64, i * 64);
+			Objs::InsertObj(hole, OBJ_HOLE, 15);
+
 
 			//“GoŒ»êŠ‚Ì’l‚ğ0‚É‚·‚é
 			m_map[i][ex] = 0;

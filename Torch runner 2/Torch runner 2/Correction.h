@@ -15,11 +15,12 @@ class CObjCorrection : public CObj
 public:
 
 	~CObjCorrection() {};
-	void Init();							//イニシャライズ
-	float RangeY(float y);					//範囲外にいるときにただす
-	float RangeYPuddle(float y);			//範囲外にいるときにただす水たまりバージョン
-	void  FireDisplay(float x, float y);	//炎を複数表示させる
-	bool  Screen_Out(float x);				//画面外に行くと消える処理
+	void Init();									//イニシャライズ
+	float RangeY(float y);							//範囲外にいるときにただす
+	float RangeYPuddle(float y);					//範囲外にいるときにただす水たまりバージョン
+	void  FireDisplay(float x, float y);			//炎を複数表示させる
+	void  FireDisplayTracking(float x, float y);		//炎を複数表示させる追尾バージョン
+	bool  Screen_Out(float x);						//画面外に行くと消える処理
 private:
 	float m_px;		//位置
 	float m_py;

@@ -80,6 +80,7 @@ void CSceneMain::InitScene()
 
 	//外部グラフィックファイルを読み込み13番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\hole.png", 15, TEX_SIZE_64);    //穴
+
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
@@ -95,6 +96,10 @@ void CSceneMain::InitScene()
 	//炎
 	CObjFire* fi = new CObjFire(30.0f, 400.0f);
 	Objs::InsertObj(fi, OBJ_FIRE, 13);
+
+	////穴
+	//CObjHole* fi = new CObjHole(30.0f, 400.0f);
+	//Objs::InsertObj(fi, OBJ_HOLE, 13);
 
 	//オカマバズーカ
 	/*CObjOkama* o = new CObjOkama(800.0f, 450.0f);
