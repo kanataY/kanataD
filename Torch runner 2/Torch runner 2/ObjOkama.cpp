@@ -42,7 +42,7 @@ void CObjOkama::Init()
 	//十字キーのアニメーション変数
 	m_ani_crosskey_time = 0;
 	m_ani_crosskey_frame = 0;  //静止フレームを初期にする
-	m_ani_crosskey_max_time = 10; //アニメーション間隔幅
+	m_ani_crosskey_max_time = 5; //アニメーション間隔幅
 						 //HitBox
 	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ENEMY, OBJ_OKAMA, 1);
 }
