@@ -43,4 +43,7 @@ private:
 	int m_ani_time; //アニメーションフレーム動作感覚
 	int m_ani_frame;//描画フレーム
 	float m_ani_max_time;   //アニメーション動作間隔最大値
+	int m_ani_crosskey_time; //十字キーのアニメーションフレーム動作感覚
+	int m_ani_crosskey_frame;//十字キーの描画フレーム
+	float m_ani_crosskey_max_time;   //十字キーのアニメーション動作間隔最大値
 };
