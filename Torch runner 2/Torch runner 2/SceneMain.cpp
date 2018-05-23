@@ -71,8 +71,6 @@ void CSceneMain::InitScene()
     //外部グラフィックファイルを読み込み17番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\object\\battered.png", 17, TEX_SIZE_256);    //押せ！！！の文字
 
-	//外部グラフィックファイルを読み込み13番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\hole.png", 15, TEX_SIZE_64);    //穴
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
