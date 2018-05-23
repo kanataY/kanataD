@@ -34,53 +34,45 @@ void CSceneMain::InitScene()
 	//マップ作製
 	int map[MAP_Y][MAP_X];
 	MapCreate(map);
-
 	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\hero1.png", 0, TEX_SIZE_256);    //人間1
-
 	//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 	Draw::LoadImageW(L"Image\\back\\back1.png", 1, TEX_SIZE_1024); //背景仮  1
-
 	//外部グラフィックファイルを読み込み2番に登録(1024ピクセル)
 	Draw::LoadImageW(L"Image\\back\\back2.png", 2, TEX_SIZE_1024); //背景仮   2
-
 	//外部グラフィックファイルを読み込み3番に登録(192ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Fire Gauge.png", 3, TEX_SIZE_192);    //ゲージ
-
 	//外部グラフィックファイルを読み込み4番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Cratesx64.png", 4, TEX_SIZE_64);    //木箱
-
-	//外部グラフィックファイルを読み込み4番に登録(256ピクセル)
+	//外部グラフィックファイルを読み込み5番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Smartphone.png", 5, TEX_SIZE_256);    //スマホ少年
-
-	//外部グラフィックファイルを読み込み4番に登録(320ピクセル)
+	//外部グラフィックファイルを読み込み6番に登録(320ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Fire.png", 6, TEX_SIZE_320);    //炎
-
-	//外部グラフィックファイルを読み込み4番に登録(64ピクセル)
+	//外部グラフィックファイルを読み込み7番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Puddle.png", 7, TEX_SIZE_64);    //水たまり
-
-	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
+	//外部グラフィックファイルを読み込み8番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\hero2.png", 8, TEX_SIZE_256);    //人間2
-
-	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
+	//外部グラフィックファイルを読み込み9番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\torch.png", 9, TEX_SIZE_64);    //聖火の持つとこ
-
-	//外部グラフィックファイルを読み込み0番に登録(800ピクセル)
+	//外部グラフィックファイルを読み込み10番に登録(800ピクセル)
 	Draw::LoadImageW(L"Image\\back\\Rain\\rain1.png", 10, TEX_SIZE_800);    //雨１
-
-	//外部グラフィックファイルを読み込み0番に登録(800ピクセル)
+	//外部グラフィックファイルを読み込み11番に登録(800ピクセル)
 	Draw::LoadImageW(L"Image\\back\\Rain\\a3.png", 11, TEX_SIZE_800);    //雨２
-
 	//外部グラフィックファイルを読み込み12番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\okama.png", 12, TEX_SIZE_512);    //オカマ
-	//外部グラフィックファイルを読み込み12番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\okama2.png", 13, TEX_SIZE_512);    //オカマ(目がハート)
 	//外部グラフィックファイルを読み込み13番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\okama2.png", 13, TEX_SIZE_512);    //オカマ(目がハート)
+	//外部グラフィックファイルを読み込み14番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\okama_hug.png", 14, TEX_SIZE_512);    //オカマハグ
+	//外部グラフィックファイルを読み込み15番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\object\\hole.png", 15, TEX_SIZE_64);    //穴
+	//外部グラフィックファイルを読み込み16番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\object\\crosskey.png", 16, TEX_SIZE_256);    //十字キー
+    //外部グラフィックファイルを読み込み17番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\object\\battered.png", 17, TEX_SIZE_256);    //押せ！！！の文字
 
 	//外部グラフィックファイルを読み込み13番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\hole.png", 15, TEX_SIZE_64);    //穴
-
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
