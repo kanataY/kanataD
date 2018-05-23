@@ -94,18 +94,6 @@ void CObjSmartphone::Action()
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + 16.0f + block->GetScroll(), m_py+16.0f);
 
-	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr) //木箱と当たっている
-	{
-		if (m_py >= 406.5f) //真ん中より下ならフラグをONにする
-			m_middle = true;
-		if (m_py < 406.5f)  //真ん中より上ならフラグをOFFにする
-			m_middle = false;
-
-		m_time = -60; //タイムを最初より前に戻して動かない時間を作る
-		m_vx -= 0.7f; //バックさせる
-		
-	}
-
 	HitBox(); //HitBox関連
 
 	//摩擦
@@ -158,6 +146,18 @@ void CObjSmartphone::HitBox()
 
 	//炎の情報を取得
 	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
+
+	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr) //木箱と当たっている
+	{
+		if (m_py >= 406.5f) //真ん中より下ならフラグをONにする
+			m_middle = true;
+		if (m_py < 406.5f)  //真ん中より上ならフラグをOFFにする
+			m_middle = false;
+
+		m_time = -60; //タイムを最初より前に戻して動かない時間を作る
+		m_vx -= 0.7f; //バックさせる
+
+	}
 
 	//まだ炎がついてない状態
 	if (m_fire_control == false)

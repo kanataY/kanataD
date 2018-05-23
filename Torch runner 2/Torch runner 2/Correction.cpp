@@ -11,12 +11,28 @@
 //使用するネームスペース
 using namespace GameL;
 
+CObjCorrection::CObjCorrection()
+{
+
+}
+
 //イニシャライズ
 void CObjCorrection::Init()
 {
 	m_py = 0.0f;
 	m_px = 0.0f;
 	m_screen_out = false;
+	m_hole_control = false;
+}
+
+void CObjCorrection::Action()
+{
+
+}
+
+void CObjCorrection::Draw()
+{
+
 }
 
 //オブジェクト生成したときにYが歩ける範囲より外か中だったら調整する

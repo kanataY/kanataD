@@ -117,6 +117,7 @@ void CObjHole::HitBox()
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
 	//ランナーと当たっている場合
 	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 	{
@@ -128,9 +129,8 @@ void CObjHole::HitBox()
 
 		if (m_hole_fall == true) //ランナーが穴に落ちている場合
 		{
-			runner->SetHoleFall(1.0f);							//ランナーのほうで描画を小さくする
-			runner->SetHoleFallCon(true);						//ランナーのほうで描画を小さくできるようにする
-			runner->SetX(m_px + block->GetScroll() + 15.0f);	//ランナーの位置を穴の真ん中にするようにする
+			runner->SetHoleFall(1.0f);									 //ランナーのほうで描画を小さくする
+			runner->SetX(m_px + block->GetScroll() + 15.0f);			 //ランナーの位置を穴の真ん中にするようにする
 
 			if (m_drow_down >= 4)//穴が四個分いじょうの大きさなら
 				runner->SetY(m_py + 35.0f   * ((float)m_drow_down - 1)); //ランナーのｙ位置を真ん中に調整する
@@ -140,7 +140,6 @@ void CObjHole::HitBox()
 	}
 	else
 	{
-		runner->SetHoleFallCon(false); //ランナーに穴に落ちてないと渡す
 		m_hole_fall = false;
 	}
 }

@@ -97,24 +97,27 @@ void CObjRunner::Action()
 
 	//聖火をかざす（火をうつす）---------------------------------------------
 
-	if (Input::GetVKey('C') == true)  
+	if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 	{
-		if (m_torch_control == false)
+		if (Input::GetVKey('C') == true)
 		{
-			m_ani_change = 8; //アニメーションの絵を８番に変える
-			m_torch_control = true;
-			//聖火を出現させる 
-			CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
-			Objs::InsertObj(torch, OBJ_TORCH, 20);
+			if (m_torch_control == false)
+			{
+				m_ani_change = 8; //アニメーションの絵を８番に変える
+				m_torch_control = true;
+				//聖火を出現させる 
+				CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
+				Objs::InsertObj(torch, OBJ_TORCH, 20);
+			}
 		}
-	}
-	else
-	{
-		if (m_torch_time_control > 30) //３０フレームたつと次が触れる
+		else
 		{
-			m_torch_control = false;
-			m_ani_change = 0;         //ランナーの画像をもとに戻す
-			m_torch_time_control = 0;
+			if (m_torch_time_control > 30) //３０フレームたつと次が触れる
+			{
+				m_torch_control = false;
+				m_ani_change = 0;         //ランナーの画像をもとに戻す
+				m_torch_time_control = 0;
+			}
 		}
 	}
 
@@ -226,12 +229,19 @@ void CObjRunner::Action()
 
 	if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 	{
+		m_ani_change = 0;
 		m_vx = 0.0f; //ランナーを移動させないようにする。
 		m_vy = 0.0f;
 	}
 
+	if (m_hole_fall > 3)
+	{
+		m_hole_control = true;
+	}
+
 	if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
 	{
+		m_ani_change = 0;
 		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
 		if (m_px < 200)       //ランナーの位置を穴から近い位置に移動させる
 			m_px += 60.0f;
@@ -381,40 +391,29 @@ void CObjRunner::HitBox()
 	//スマホ少年の位置を取得
 	CObjSmartphone* sumaho = (CObjSmartphone*)Objs::GetObj(OBJ_SMARTPHONE);
 
-	//スマホ少年と当たった場合
-	if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
+	if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 	{
-		if ((sumaho->GetX() + block->GetScroll()) < m_px)
+		//スマホ少年と当たった場合
+		if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
 		{
-			m_vx = 3.6f;//ランナーをずらす
+			if ((sumaho->GetX() + block->GetScroll()) < m_px)
+			{
+				m_vx = 3.6f;//ランナーをずらす
+			}
+			else
+			{
+				m_vx = -5.6f;//ランナーをずらす
+			}
+
+			//ゲージを減らすーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+			if (m_smart_control == false) //まだ当たってなければゲージを減らす
+			{
+				//ゲージが減る
+				gauge->SetGauge(1.0f);
+				m_smart_control = true;
+			}
 		}
 		else
-		{
-			m_vx = -5.6f;//ランナーをずらす
-		}
-
-		//ゲージを減らすーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-		if (m_smart_control == false) //まだ当たってなければゲージを減らす
-		{
-			//ゲージが減る
-			gauge->SetGauge(1.0f);
-			m_smart_control = true;
-		}
+			m_smart_control = false;//当たってない状態ならゲージを減らせる状態に戻す
 	}
-	else
-		m_smart_control = false;//当たってない状態ならゲージを減らせる状態に戻す
-
-	//水たまりと当たった場合
-	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
-	{
-		if (m_puddle_control == false) //まだ当たってなければゲージを減らす
-		{
-			//ゲージが減る
-			gauge->SetGauge(10.0f);
-			m_puddle_control = true;
-		}
-	}
-	else
-		m_puddle_control = false;//当たってない状態ならゲージを減らせる状態に戻す
-
 }

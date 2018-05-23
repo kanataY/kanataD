@@ -83,6 +83,10 @@ void CSceneMain::InitScene()
 	CObjGauge* gauge = new CObjGauge();
 	Objs::InsertObj(gauge, OBJ_GAUGE, 13);
 
+	//補正オブジェクト作成
+	CObjCorrection* cor = new CObjCorrection();
+	Objs::InsertObj(cor, CORRECTION, 13);
+
 	//炎
 	CObjFire* fi = new CObjFire(30.0f, 400.0f);
 	Objs::InsertObj(fi, OBJ_FIRE, 13);
