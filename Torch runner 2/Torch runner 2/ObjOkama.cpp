@@ -40,9 +40,9 @@ void CObjOkama::Init()
 	m_ani_max_time = 5; //アニメーション間隔幅
 
 	//十字キーのアニメーション変数
-	m_ani_crosskey_time = 0;
-	m_ani_crosskey_frame = 0;  //静止フレームを初期にする
-	m_ani_crosskey_max_time = 5; //アニメーション間隔幅
+	m_ani_key_time = 0;
+	m_ani_key_frame = 0;  //静止フレームを初期にする
+	m_ani_key_max_time = 5; //アニメーション間隔幅
 						 //HitBox
 	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ENEMY, OBJ_OKAMA, 1);
 }
@@ -74,16 +74,16 @@ void CObjOkama::Action()
 		m_ani_frame = 0;
 	}
 	
-	//十字キー用アニメーション
-	m_ani_crosskey_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_crosskey_time > m_ani_crosskey_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	//キーボード表示用アニメーション
+	m_ani_key_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_key_time > m_ani_key_max_time)//フレーム動作感覚タイムが最大まで行ったら
 	{
-		m_ani_crosskey_frame++;//フレームを進める
-		m_ani_crosskey_time = 0;
+		m_ani_key_frame++;//フレームを進める
+		m_ani_key_time = 0;
 	}
-	if (m_ani_crosskey_frame == 4)//フレームが最後まで進んだら戻す
+	if (m_ani_key_frame == 4)//フレームが最後まで進んだら戻す
 	{
-		m_ani_crosskey_frame = 0;
+		m_ani_key_frame = 0;
 	}
 
 	//しばらく進んでからホーミングする------------------------------------------------------------
@@ -251,8 +251,8 @@ void CObjOkama::Draw()
 		//十字キーの描画-------------------------------------------------------------
 		//切り取り位置の設定
 		src.m_top = 0.0f;
-		src.m_left = 0.0f + m_ani_crosskey_frame * 64;
-		src.m_right = 64.0f + m_ani_crosskey_frame * 64;
+		src.m_left = 0.0f + m_ani_key_frame * 64;
+		src.m_right = 64.0f + m_ani_key_frame * 64;
 		src.m_bottom = 256.0f;
 
 		//表示位置の設定
@@ -274,8 +274,8 @@ void CObjOkama::Draw()
 
 		//表示位置の設定
 		dst.m_top = -256.0f + m_py;
-		dst.m_left = -100.0f + m_px + block->GetScroll();
-		dst.m_right = 156.0f + m_px + block->GetScroll();
+		dst.m_left = -90.0f + m_px + block->GetScroll();
+		dst.m_right = 166.0f + m_px + block->GetScroll();
 		dst.m_bottom = 0.0f + m_py;
 
 		//連打！！の画像描画

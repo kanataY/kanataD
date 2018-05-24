@@ -67,7 +67,7 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み15番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\hole.png", 15, TEX_SIZE_64);    //穴
 	//外部グラフィックファイルを読み込み16番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\object\\crosskey.png", 16, TEX_SIZE_256);    //十字キー
+	Draw::LoadImageW(L"Image\\object\\characterkey.png", 16, TEX_SIZE_256);    //文字キー
     //外部グラフィックファイルを読み込み17番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\object\\battered.png", 17, TEX_SIZE_256);    //押せ！！！の文字
 
