@@ -61,6 +61,12 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Hole">
       <UniqueIdentifier>{c368f1b2-c151-4f65-9dcb-558aaa3ee035}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\GAMEMENU">
+      <UniqueIdentifier>{4e77670b-5892-4635-b414-911d953cc45e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\RANKING">
+      <UniqueIdentifier>{42e9063c-17f5-4bce-ad37-ab55ed91f50a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
