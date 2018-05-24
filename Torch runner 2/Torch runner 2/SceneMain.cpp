@@ -35,7 +35,7 @@ void CSceneMain::InitScene()
 	int map[MAP_Y][MAP_X];
 	MapCreate(map);
 	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\hero1.png", 0, TEX_SIZE_256);    //人間1
+	Draw::LoadImageW(L"Image\\hero\\runner.png", 0, TEX_SIZE_256);    //第一走者
 	//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 	Draw::LoadImageW(L"Image\\back\\back1.png", 1, TEX_SIZE_1024); //背景仮  1
 	//外部グラフィックファイルを読み込み2番に登録(1024ピクセル)
@@ -51,7 +51,7 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み7番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Puddle.png", 7, TEX_SIZE_64);    //水たまり
 	//外部グラフィックファイルを読み込み8番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\hero2.png", 8, TEX_SIZE_256);    //人間2
+	Draw::LoadImageW(L"Image\\hero\\runner_transfer.png", 8, TEX_SIZE_256);    //一走者の火をうつすモーション
 	//外部グラフィックファイルを読み込み9番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\torch.png", 9, TEX_SIZE_64);    //聖火の持つとこ
 	//外部グラフィックファイルを読み込み10番に登録(800ピクセル)

@@ -43,7 +43,8 @@ void CObjOkama::Init()
 	m_ani_key_time = 0;
 	m_ani_key_frame = 0;  //静止フレームを初期にする
 	m_ani_key_max_time = 5; //アニメーション間隔幅
-						 //HitBox
+
+	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ENEMY, OBJ_OKAMA, 1);
 }
 
@@ -267,16 +268,16 @@ void CObjOkama::Draw()
 
 		//連打！！！の描画------------------------------------------------------------------
 		//切り取り位置の設定
-		src.m_top = 0.0f;
-		src.m_left = 0.0f;
-		src.m_right = 256.0f;
+		src.m_top =      0.0f;
+		src.m_left =     0.0f;
+		src.m_right =  256.0f;
 		src.m_bottom = 256.0f;
 
 		//表示位置の設定
-		dst.m_top = -256.0f + m_py;
-		dst.m_left = -90.0f + m_px + block->GetScroll();
+		dst.m_top =  -256.0f + m_py;
+		dst.m_left =  -90.0f + m_px + block->GetScroll();
 		dst.m_right = 166.0f + m_px + block->GetScroll();
-		dst.m_bottom = 0.0f + m_py;
+		dst.m_bottom =  0.0f + m_py;
 
 		//連打！！の画像描画
 		Draw::Draw(17, &src, &dst, c, 0.0f);
