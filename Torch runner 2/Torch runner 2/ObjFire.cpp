@@ -26,26 +26,16 @@ void CObjFire::Init()
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 4; //アニメーション間隔幅
-
-	Hits::SetHitBox(this, m_px, m_py, 50, 50, ELEMENT_NULL, OBJ_FIRE, 1);
 }
 
 //アクション
 void CObjFire::Action()
 {
-	//ブロック情報を持ってくる
-	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
 	m_time++; //タイムを進める
-
-	//HitBoxの位置の変更
-	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll(), m_py);
 
 	if (m_time > 101)//一定時間たったら消す
 	{
 		this->SetStatus(false);		//自身に削除命令を出す
-		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 	}
 
 	m_ani_time++;//フレーム動作感覚タイムを進める
@@ -58,9 +48,6 @@ void CObjFire::Action()
 	{
 		m_ani_frame = 0;
 	}
-
-	
-
 }
 
 //描画

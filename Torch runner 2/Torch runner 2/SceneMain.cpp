@@ -88,8 +88,8 @@ void CSceneMain::InitScene()
 	Objs::InsertObj(cor, CORRECTION, 13);
 
 	//‰Š
-	CObjFire* fi = new CObjFire(30.0f, 400.0f);
-	Objs::InsertObj(fi, OBJ_FIRE, 13);
+	//CObjFire* fi = new CObjFire(30.0f, 400.0f);
+	//Objs::InsertObj(fi, OBJ_FIRE, 13);
 
 	////ŒŠ
 	//CObjHole* fi = new CObjHole(30.0f, 400.0f);
