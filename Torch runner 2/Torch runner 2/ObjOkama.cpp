@@ -144,7 +144,7 @@ void CObjOkama::Action()
 
 	HitBox(); //HitBox関連
 
-	if (m_rebagacha > 25) //レバガチャ50回したら
+	if (m_rebagacha > 25) //レバガチャ25回したら
 	{
 		m_hug = false;
 		m_vx = 100.f; //後ろにぶっ飛ぶ

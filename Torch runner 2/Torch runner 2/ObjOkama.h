@@ -19,6 +19,7 @@ public:
 	float GetVY() { return m_vy; }//m_vx,m_vy‚Ì’l‚ğ“n‚·
 	float GetVX() { return m_vx; }
 	bool  GetHug() { return m_hug; } //•ø‚«‚Â‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ“n‚·
+	int   GetRebagacha() { return m_rebagacha; } //ƒŒƒoƒKƒ`ƒƒ‚Ì‰ñ”‚ğ“n‚·
 
 private:
 	float m_px;		//ˆÊ’u

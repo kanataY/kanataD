@@ -57,7 +57,7 @@ void CObjRunner::Action()
 	CObjHole* hole = (CObjHole*)Objs::GetObj(OBJ_HOLE);
 
 	//オカマの情報を持ってくる
-	//CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
+	CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
 
 	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
@@ -132,13 +132,19 @@ void CObjRunner::Action()
 	//聖火をかざす終了-----------------------------------------------------------------------------
 
 	//ジャンプ---------------------------
+	bool m_hag = false;
+	if(okama != nullptr)
+		m_hag = okama->GetHug();
 
 	if (m_jamp_control == false)
 	{
-		if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+		if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
 		{
-			m_jamp_control = true;		//ジャンプしている
-			m_jamp_control_2 = true;
+			if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+			{
+				m_jamp_control = true;		//ジャンプしている
+				m_jamp_control_2 = true;
+			}
 		}
 	}
 	if (m_jamp_control == true)//ジャンプしている
@@ -146,7 +152,7 @@ void CObjRunner::Action()
 		m_time++;
 		if (m_time > 20 && m_time < 45) //ジャンプして最高点に到達
 		{
-			if (jamp_memo != 999.0f)  //ジャンプするとき上のほうにいなければWで少し移動できる
+			if (jamp_memo != 999.0f)    //ジャンプするとき上のほうにいなければWで少し移動できる
 			{
 				if (Input::GetVKey('W') == true)//上移動
 				{

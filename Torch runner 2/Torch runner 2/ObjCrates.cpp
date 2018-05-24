@@ -23,7 +23,7 @@ void CObjCrates::Init()
 	m_fire_control = false;
 
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ITEM, OBJ_CRATES, 1);
+	Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_ENEMY, OBJ_CRATES, 1);
 }
 
 //ƒAƒNƒVƒ‡ƒ“
