@@ -67,6 +67,9 @@
     <Filter Include="ソース ファイル\Scene\RANKING">
       <UniqueIdentifier>{42e9063c-17f5-4bce-ad37-ab55ed91f50a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\GAMECLEAR">
+      <UniqueIdentifier>{11dc65d4-5793-4067-8ef0-1d11abb865f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -149,6 +152,30 @@
     </ClCompile>
     <ClCompile Include="ObjHole.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Hole</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjGameOver.cpp">
+      <Filter>ソース ファイル\Scene\GAMEOVER</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGameOver.cpp">
+      <Filter>ソース ファイル\Scene\GAMEOVER</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjMenu.cpp">
+      <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMenu.cpp">
+      <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGameClear.cpp">
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjGameClear.cpp">
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjRanking.cpp">
+      <Filter>ソース ファイル\Scene\RANKING</Filter>
+    </ClCompile>
+    <ClCompile Include="ScenRanking.cpp">
+      <Filter>ソース ファイル\Scene\RANKING</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +262,30 @@
     </ClInclude>
     <ClInclude Include="ObjHole.h">
       <Filter>ソース ファイル\GAMEMAIN\Hole</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjGameOver.h">
+      <Filter>ソース ファイル\Scene\GAMEOVER</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGameOver.h">
+      <Filter>ソース ファイル\Scene\GAMEOVER</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMenu.h">
+      <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMenu.h">
+      <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGameClear.h">
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjGameClear.h">
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjRanking.h">
+      <Filter>ソース ファイル\Scene\RANKING</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRanking.h">
+      <Filter>ソース ファイル\Scene\RANKING</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

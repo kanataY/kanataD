@@ -4,48 +4,46 @@
 
 //GameLで使用するヘッダー
 #include "GameL\SceneObjManager.h"
-#include "GameL\DrawTexture.h"
 #include "GameL\DrawFont.h"
+#include "GameL\DrawTexture.h"
 #include "GameL\Audio.h"
 
 //使用するネームスペース
 using namespace GameL;
 
 //使用ヘッダー
-#include "SceneTitle.h"
+#include "SceneMenu.h"
 #include "GameHead.h"
 
 //コンストラクタ
-CSceneTitle::CSceneTitle()
+CSceneMenu::CSceneMenu()
 {
 
 }
 
 //デストラクタ
-CSceneTitle::~CSceneTitle()
+CSceneMenu::~CSceneMenu()
 {
 
 }
 
 //ゲームメイン初期化メソッド
-void CSceneTitle::InitScene()
+void CSceneMenu::InitScene()
 {
 	//外部グラフィックファイルを読み込み0番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\Title\\TitleBack.png", 0, TEX_SIZE_512);
-
-	//音楽情報の読み込み
+	Draw::LoadImageW(L"Image\\Menu\\MenuBack.png", 0, TEX_SIZE_512);
 
 	//バックミュージックスタート
 	//float Volume = Audio::VolumeMaster(0.0f);
 	//Audio::Start(0); //音楽スタート
 
-	//タイトルオブジェクト作成
-	CObjTitle* obj = new CObjTitle();
-	Objs::InsertObj(obj, OBJ_TITLE, 10);
+	//メニューオブジェクト作成
+	CObjMenu* obj = new CObjMenu();		//メニューオブジェクト作成
+	Objs::InsertObj(obj, OBJ_MENU, 10);  //主人公オブジェクト登録
 }
 
 //ゲームメイン実行中メソッド
-void CSceneTitle::Scene()
+void CSceneMenu::Scene()
 {
 
 }

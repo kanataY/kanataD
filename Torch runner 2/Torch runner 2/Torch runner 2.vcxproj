@@ -135,18 +135,26 @@
     <ClCompile Include="GameL\WinInputs.cpp" />
     <ClCompile Include="ObjBlock.cpp" />
     <ClCompile Include="ObjFire.cpp" />
+    <ClCompile Include="ObjGameClear.cpp" />
+    <ClCompile Include="ObjMenu.cpp" />
+    <ClCompile Include="ObjGameOver.cpp" />
     <ClCompile Include="ObjGauge.cpp" />
     <ClCompile Include="ObjHole.cpp" />
     <ClCompile Include="ObjOkama.cpp" />
     <ClCompile Include="ObjPuddle.cpp" />
     <ClCompile Include="ObjRain.cpp" />
+    <ClCompile Include="ObjRanking.cpp" />
     <ClCompile Include="ObjRunner.cpp" />
     <ClCompile Include="ObjSmartPhone.cpp" />
     <ClCompile Include="ObjTitle.cpp" />
     <ClCompile Include="Correction.cpp" />
     <ClCompile Include="ObjTorch.cpp" />
+    <ClCompile Include="SceneGameClear.cpp" />
+    <ClCompile Include="SceneGameOver.cpp" />
     <ClCompile Include="SceneMain.cpp" />
+    <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="ScenRanking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjCrates.h" />
@@ -165,17 +173,25 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="ObjBlock.h" />
     <ClInclude Include="ObjFire.h" />
+    <ClInclude Include="ObjGameClear.h" />
+    <ClInclude Include="ObjGameOver.h" />
     <ClInclude Include="ObjGauge.h" />
     <ClInclude Include="ObjHole.h" />
+    <ClInclude Include="ObjMenu.h" />
     <ClInclude Include="ObjOkama.h" />
     <ClInclude Include="ObjPuddle.h" />
     <ClInclude Include="ObjRain.h" />
+    <ClInclude Include="ObjRanking.h" />
     <ClInclude Include="ObjRunner.h" />
     <ClInclude Include="ObjSmartPhone.h" />
     <ClInclude Include="ObjTitle.h" />
     <ClInclude Include="Correction.h" />
     <ClInclude Include="ObjTorch.h" />
+    <ClInclude Include="SceneGameClear.h" />
+    <ClInclude Include="SceneGameOver.h" />
     <ClInclude Include="SceneMain.h" />
+    <ClInclude Include="SceneMenu.h" />
+    <ClInclude Include="SceneRanking.h" />
     <ClInclude Include="SceneTitle.h" />
   </ItemGroup>
   <ItemGroup>

@@ -20,6 +20,13 @@ enum OBJ_NAME
 
 	//補正
 	CORRECTION,				//補正
+
+	//シーン
+	OBJ_TITLE,				//タイトル
+	OBJ_GAME_OVER,			//ゲームオーバー
+	OBJ_GAME_CLEAR,			//ゲームクリア
+	OBJ_RANKING,			//ランキング
+	OBJ_MENU,				//メニュー
 };
 //------------------------------------------------
 
@@ -41,6 +48,10 @@ struct UserData
 {
 	int mSeveData;	//サンプルセーブデータ
 	int m_stage_count;//ステージの種類
+	int m_ranking[10];	//ランキング格納配列
+	int m_zainki;       //残機
+	int m_point;		//GameMainで得たポイント
+	
 };
 //------------------------------------------------
 
@@ -68,6 +79,12 @@ struct UserData
 #include "ObjOkama.h"			//オカマ
 #include "ObjHole.h"			//穴
 
+#include "ObjTitle.h"			//タイトル
+#include "ObjGameOver.h"		//ゲームオーバー
+#include "ObjRanking.h"			//ランキング
+#include "ObjMenu.h"			//メニュー
+#include "ObjGameClear.h"		//クリア
+
 //補助系
 #include "Correction.h"			//補正
 //------------------------------------------------
@@ -75,6 +92,11 @@ struct UserData
 //ゲームシーンクラスヘッダ------------------------
 #include "SceneMain.h"			//シーンタイトル
 #include "SceneTitle.h"			//シーンメイン
+#include "SceneGameOver.h"		//シーンゲームオーバー
+#include "SceneMenu.h"			//シーンメニュー
+#include "SceneRanking.h"		//シーンランキング
+#include "SceneGameClear.h"		//シーンクリア
+
 //-----------------------------------------------
 
 //シーンスタートクラス---------------------------
