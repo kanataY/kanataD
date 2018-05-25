@@ -42,10 +42,12 @@ void CObjBlock::Action()
 	float rx = runner->GetX();
 	float ry = runner->GetY();
 
+	
+
 	//前方スクロールライン
-	if (rx > -50)
+	if (rx > -50 && runner->GetHoleFallCon() == false)
 	{
-		//.runner->SetVX(-0.3f);		//主人公はラインを超えないようにする
+
 		m_scroll -= 2.0f;//主人公が本来動くべき分の値をm_scrollに加える
 
 		//背景1の動作
@@ -60,9 +62,13 @@ void CObjBlock::Action()
 	}
 
 	//後方
-	if (rx < -50) //画面より左側に行けないようにする
+	if (rx < -50 || runner->GetHoleFallCon() == true) //画面より左側に行けないようにする
 	{
-		runner->SetX(0);			//主人公はラインを超えないようにする
+		//背景1の動作
+		m_bx1 -= 0.0f;
+
+		//背景2の動作
+		m_bx2 -= 0.0f;
 	}
 
 	//マップ関連ーーーーーーーーーー

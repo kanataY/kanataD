@@ -115,26 +115,30 @@ void CObjPuddle::HitBox()
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
 	//ランナーと当たっている場合
-	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+
+	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。
 	{
-		//ランナーの足の位置が水たまりにかかってない場合は判定をなくす
-		if (m_py + (40.0f * ((float)m_drow_down - 1)) > runner->GetY())
+		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 		{
-			if (Input::GetVKey('D') == true)  //右移動
+			//ランナーの足の位置が水たまりにかかってない場合は判定をなくす
+			if (m_py + (40.0f * ((float)m_drow_down - 1)) > runner->GetY())
 			{
-				runner->SetVX(0.5f);//ランナーの移動量を減少させる
-			}
-			if (Input::GetVKey('A') == true)  //左移動
-			{
-				runner->SetVX(-0.5f);//ランナーの移動量を減少させる
-			}
-			if (Input::GetVKey('W') == true)//上移動
-			{
-				runner->SetVY(0.5f);//ランナーの移動量を減少させる
-			}
-			if (Input::GetVKey('S') == true)//下移動
-			{
-				runner->SetVY(-0.5f);//ランナーの移動量を減少させる
+				if (Input::GetVKey('D') == true)  //右移動
+				{
+					runner->SetVX(0.5f);//ランナーの移動量を減少させる
+				}
+				if (Input::GetVKey('A') == true)  //左移動
+				{
+					runner->SetVX(-0.5f);//ランナーの移動量を減少させる
+				}
+				if (Input::GetVKey('W') == true)//上移動
+				{
+					runner->SetVY(0.5f);//ランナーの移動量を減少させる
+				}
+				if (Input::GetVKey('S') == true)//下移動
+				{
+					runner->SetVY(-0.5f);//ランナーの移動量を減少させる
+				}
 			}
 		}
 	}
