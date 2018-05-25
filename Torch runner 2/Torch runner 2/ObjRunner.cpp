@@ -249,6 +249,8 @@ void CObjRunner::Action()
 	//当たり判定関連
 	HitBox();
 
+	m_vx -= 0.3f; //強制スクロール用移動量
+
 	//位置の更新
 	m_px += m_vx;
 	m_py += m_vy;
@@ -340,8 +342,8 @@ void CObjRunner::Draw()
 			//表示位置の設定
 			dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
 			dst3.m_left = 0.0f + m_px + 27.0f;
-			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5) - 10.0f;
-			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2);
+			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5f) - 10.0f;
+			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2.0f);
 		}
 		else
 		{

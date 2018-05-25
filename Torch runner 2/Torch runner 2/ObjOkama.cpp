@@ -331,6 +331,7 @@ void CObjOkama::HitBox()
 		}
 
 	}
+
 	if (runner->GetHoleFallCon() == false)
 	{
 	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr) //ランナーと当たっている
@@ -346,10 +347,10 @@ void CObjOkama::HitBox()
 			m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
 			m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
-								   //左右上下を押すとカウントが１増える
+			//左右上下を押すとカウントが１増える
 			if (Input::GetVKey('D') == true && Input::GetVKey('A') == true)  //左右同時押し（バグがあるので応急処置）
 			{
-				runner->SetVX(-0.0f);//ランナーの移動量を０にする
+				runner->SetVX(-1.5f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
 				{
 					m_rebagacha++;
@@ -360,7 +361,7 @@ void CObjOkama::HitBox()
 
 			else if (Input::GetVKey('D') == true)  //右
 			{
-				runner->SetVX(-0.8f);//ランナーの移動量を０にする
+				runner->SetVX(-3.0f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_r == false)
 				{
 					m_rebagacha++;
@@ -370,7 +371,7 @@ void CObjOkama::HitBox()
 
 			else if (Input::GetVKey('A') == true)  //左
 			{
-				runner->SetVX(0.8f);//ランナーの移動量を０にする
+				runner->SetVX(-1.5f);//ランナーの移動量を０にする
 				if (m_rebagacha_cotrol_l == false)
 				{
 					m_rebagacha++;
