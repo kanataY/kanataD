@@ -332,6 +332,12 @@ void CObjOkama::HitBox()
 
 	}
 
+	//–Ø” ‚É“–‚½‚Á‚Ä‚¢‚é‚Æ‚«
+	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr)
+	{
+		
+	}
+
 	if (runner->GetInvincible() < 0) //–³“GŠÔ‚Å‚È‚¯‚ê‚Î”»’è‚ğİ‚¯‚éB
 	{
 		if (runner->GetHoleFallCon() == false) //ƒ‰ƒ“ƒi[‚ªŒŠ‚É—‚¿‚Ä‚¢‚È‚¯‚ê‚Î
