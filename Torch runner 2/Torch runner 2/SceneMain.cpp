@@ -70,6 +70,10 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\object\\characterkey.png", 16, TEX_SIZE_256);    //文字キー
     //外部グラフィックファイルを読み込み17番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\object\\battered.png", 17, TEX_SIZE_256);    //押せ！！！の文字
+	//外部グラフィックファイルを読み込み18番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\back\\checkpoint.png", 18, TEX_SIZE_256);    //チェックポイント
+	//外部グラフィックファイルを読み込み19番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\hero1_2.png", 19, TEX_SIZE_256);    //チェックポイント
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();

@@ -33,6 +33,9 @@ void CObjRunner::Init()
 	m_puddle_control = false;
 	m_smart_control = false;
 	m_hole_control = false;
+	m_check_control = false;
+	m_homing = false;
+	m_check_time = 0;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -60,149 +63,6 @@ void CObjRunner::Action()
 	//オカマの情報を持ってくる
 	CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
 
-	//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
-
-	if (m_py >= 536) //一番下より下に行かないようにする
-		m_py = 536;
-	if (m_jamp_control_2 == false)          //ジャンプをしてない時
-	{
-		if (m_py <= 277) //道路より上に行かないようにする
-			m_py = 277;
-	}
-
-	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
-	//移動ーーーーーーーーーーーーーーーーーーーーー
-
-	if (Input::GetVKey('D') == true)  //右移動
-	{
-		m_vx += 0.8f;
-	}
-	if (Input::GetVKey('A') == true)  //左移動
-	{
-		m_vx += -0.8f;
-	}
-	if (Input::GetVKey('W') == true && m_py > 277)//上移動
-	{
-		m_vy += -0.8f;
-	}
-	if (Input::GetVKey('S') == true && m_py < 536)//下移動
-	{
-		if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
-			m_vy += 0.8f;
-		else
-			m_vy += 0.2f;
-	}
-
-	//摩擦
-	m_vx += -(m_vx * 0.15f);
-	m_vy += -(m_vy * 0.15f);
-
-	//移動終了---------------------------------------------------
-
-	//聖火をかざす（火をうつす）---------------------------------------------
-
-	if (m_hole_control == false)  //穴に落ちている場合（当たっている）
-	{
-		if (Input::GetVKey('O') == true)
-		{
-			if (m_torch_control == false)
-			{
-				m_ani_change = 8; //アニメーションの絵を８番に変える
-				m_torch_control = true;
-				//聖火を出現させる 
-				CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
-				Objs::InsertObj(torch, OBJ_TORCH, 20);
-			}
-		}
-		else
-		{
-			if (m_torch_time_control > 30) //３０フレームたつと次が触れる
-			{
-				m_torch_control = false;
-				m_ani_change = 0;         //ランナーの画像をもとに戻す
-				m_torch_time_control = 0;
-			}
-		}
-	}
-
-	if (m_torch_control == true) //降り下ろしてる状態なら
-	{
-		m_torch_time_control++;  //時間を進める。
-	}
-
-	//聖火をかざす終了-----------------------------------------------------------------------------
-
-	//ジャンプ---------------------------
-	bool m_hag = false;
-	if(okama != nullptr)
-		m_hag = okama->GetHug();
-
-	if (m_jamp_control == false)
-	{
-		if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
-		{
-			if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
-			{
-				m_jamp_control = true;		//ジャンプしている
-				m_jamp_control_2 = true;
-			}
-		}
-	}
-	if (m_jamp_control == true)//ジャンプしている
-	{
-		m_time++;
-		if (m_time > 20 && m_time < 45) //ジャンプして最高点に到達
-		{
-			if (jamp_memo != 999.0f)    //ジャンプするとき上のほうにいなければWで少し移動できる
-			{
-				if (Input::GetVKey('W') == true)//上移動
-				{
-					if (m_py > 280)//道幅ギリギリ
-						m_vy += 1.6f;
-					else
-						m_vy += -0.8f;
-				}
-				else
-					m_vy += 1.6f;//自由落下運動
-			}
-			else                     //ジャンプするとき上のほうにいた場合はただジャンプする
-				m_vy += 1.6f;
-		}
-		else if (m_time < 20)
-		{
-			if (m_py < 280)//道幅ギリギリ
-			{
-				m_vy += -1.6f;
-				jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
-			}
-			else
-			{
-				if (Input::GetVKey('W') == true)//上移動
-				{
-					m_vy += -0.8f;
-				}
-				else
-					m_vy += -1.6f;//自由落下運動
-			}
-		}
-		if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
-		{
-			m_jamp_control_2 = false;
-			m_vy = 0.0f;
-		}
-		if (m_time > 58) //時間が来たら自由に動けるようになる
-		{
-			if (Input::GetVKey(VK_SPACE) == false)   //スペースを離さない限りジャンプさせない
-			{
-				m_jamp_control = false;
-				m_time = 0;  //タイムを初期化
-			}
-		}
-	}
-
-
-	//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
-
 	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 	m_ani_time++;//フレーム動作感覚タイムを進める
 	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
@@ -216,63 +76,278 @@ void CObjRunner::Action()
 	}
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
-	//ブロック情報を持ってくる
-	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-	//穴関連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+	//チェックポイントに入ったから受け渡たすシーンを描画をする。
+	if (m_check_control == false)
 	{
-		m_ani_change = 0;
-		m_vx = 0.0f; //ランナーを移動させないようにする。
-		m_vy = 0.0f;
-	}
 
-	if (m_hole_fall > 3)
+		//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
+
+		if (m_py >= 536) //一番下より下に行かないようにする
+			m_py = 536;
+		if (m_jamp_control_2 == false)          //ジャンプをしてない時
+		{
+			if (m_py <= 277) //道路より上に行かないようにする
+				m_py = 277;
+		}
+
+		//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+		//移動ーーーーーーーーーーーーーーーーーーーーー
+
+		if (Input::GetVKey('D') == true)  //右移動
+		{
+			m_vx += 0.8f;
+		}
+		if (Input::GetVKey('A') == true)  //左移動
+		{
+			m_vx += -0.8f;
+		}
+		if (Input::GetVKey('W') == true && m_py > 277)//上移動
+		{
+			m_vy += -0.8f;
+		}
+		if (Input::GetVKey('S') == true && m_py < 536)//下移動
+		{
+			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
+				m_vy += 0.8f;
+			else
+				m_vy += 0.2f;
+		}
+
+		//摩擦
+		m_vx += -(m_vx * 0.15f);
+		m_vy += -(m_vy * 0.15f);
+
+		//移動終了---------------------------------------------------
+
+		//聖火をかざす（火をうつす）---------------------------------------------
+
+		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
+		{
+			if (Input::GetVKey('O') == true)
+			{
+				if (m_torch_control == false)
+				{
+					m_ani_change = 8; //アニメーションの絵を８番に変える
+					m_torch_control = true;
+					//聖火を出現させる 
+					CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
+					Objs::InsertObj(torch, OBJ_TORCH, 20);
+				}
+			}
+			else
+			{
+				if (m_torch_time_control > 30) //３０フレームたつと次が触れる
+				{
+					m_torch_control = false;
+					m_ani_change = 0;         //ランナーの画像をもとに戻す
+					m_torch_time_control = 0;
+				}
+			}
+		}
+
+		if (m_torch_control == true) //降り下ろしてる状態なら
+		{
+			m_torch_time_control++;  //時間を進める。
+		}
+
+		//聖火をかざす終了-----------------------------------------------------------------------------
+
+		//ジャンプ---------------------------
+		bool m_hag = false;
+		if (okama != nullptr)
+			m_hag = okama->GetHug();
+
+		if (m_jamp_control == false)
+		{
+			if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
+			{
+				if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+				{
+					m_jamp_control = true;		//ジャンプしている
+					m_jamp_control_2 = true;
+				}
+			}
+		}
+		if (m_jamp_control == true)//ジャンプしている
+		{
+			m_time++;
+			if (m_time > 20 && m_time < 45) //ジャンプして最高点に到達
+			{
+				if (jamp_memo != 999.0f)    //ジャンプするとき上のほうにいなければWで少し移動できる
+				{
+					if (Input::GetVKey('W') == true)//上移動
+					{
+						if (m_py > 280)//道幅ギリギリ
+							m_vy += 1.6f;
+						else
+							m_vy += -0.8f;
+					}
+					else
+						m_vy += 1.6f;//自由落下運動
+				}
+				else                     //ジャンプするとき上のほうにいた場合はただジャンプする
+					m_vy += 1.6f;
+			}
+			else if (m_time < 20)
+			{
+				if (m_py < 280)//道幅ギリギリ
+				{
+					m_vy += -1.6f;
+					jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
+				}
+				else
+				{
+					if (Input::GetVKey('W') == true)//上移動
+					{
+						m_vy += -0.8f;
+					}
+					else
+						m_vy += -1.6f;//自由落下運動
+				}
+			}
+			if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
+			{
+				m_jamp_control_2 = false;
+				m_vy = 0.0f;
+			}
+			if (m_time > 58) //時間が来たら自由に動けるようになる
+			{
+				if (Input::GetVKey(VK_SPACE) == false)   //スペースを離さない限りジャンプさせない
+				{
+					m_jamp_control = false;
+					m_time = 0;  //タイムを初期化
+				}
+			}
+		}
+
+
+		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
+
+		//ブロック情報を持ってくる
+		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+		//穴関連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+		{
+			m_ani_change = 0;
+			m_vx = 0.0f; //ランナーを移動させないようにする。
+			m_vy = 0.0f;
+		}
+
+		if (m_hole_fall > 3)
+		{
+			m_hole_control = true;
+		}
+
+		if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
+		{
+			m_invincible = 50;    //しばらくの間無敵時間を設ける
+			m_ani_change = 0;
+			m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
+			if (m_px < 400)       //ランナーの位置を穴から近い位置に移動させる
+				m_px += 60.0f;
+			else
+				m_px -= 60.0f;
+			m_py -= 10.0f;        //ランナーのYの位置をずらして穴のY軸の真ん中に近い位置で復活させる
+			m_hole_control = false;
+		}
+		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+		//後ろに行き過ぎた時ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー---
+
+		if (m_px < -50.0f) //スクロールに遅れた時は真ん中で復活
+		{
+			m_px = 400.0f;
+			m_invincible = 50; //しばらくの間無敵時間を設ける
+		}
+
+		m_invincible--; //無敵時間減少
+
+
+		//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+		//HitBoxの位置の変更
+		CHitBox* hit = Hits::GetHitBox(this);
+		hit->SetPos(m_px + 18.0f, m_py);
+
+		m_vx -= 0.3f; //強制スクロール用移動量
+
+		//当たり判定関連
+		HitBox();
+
+		//位置の更新
+		m_px += m_vx;
+		m_py += m_vy;
+
+		CObj::SetPrio((int)m_py); //描画優先順位変更
+	}
+	else if (m_check_control == true)
 	{
-		m_hole_control = true;
+		if (m_px < 500)
+		{
+			//ブロック情報を持ってくる
+			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+			//チェックポイントを取得
+			CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+
+			m_check_time++;
+
+			float okax = ((check->GetX() + block->GetScroll()) + 160.0f) - m_px;
+			float okay = (check->GetY()  * 3.0f) - m_py;
+
+			//atan2で角度を求める
+			float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+			//-180～-0を180～360に変換
+			if (r2 < 0)
+			{
+				r2 = 360 - abs(r2);
+			};
+
+			float ar = r2;
+
+			if (ar < 0)
+			{
+				ar = 360 - abs(ar);
+			}
+
+			//オカマの現在の向いてる角度を取る
+			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+			//-180～-0を180～360に変換
+			if (bor < 0)
+			{
+				bor = 360 - abs(bor);
+			};
+			float br = bor;
+
+			//ランナーのほうにホーミングする
+			if (m_homing == false)
+			{
+				//移動方向をランナーの方向にする
+				m_vx = cos(3.14f / 180 * ar);
+				m_vy = sin(3.14f / 180 * ar);
+				m_vx *= 2; // 移動速度を10べぇにする
+				m_vy *= 2;
+				m_homing = true;
+			}
+
+			if (m_px > ((check->GetX() + block->GetScroll()) + 160.0f))
+			{
+				m_vx = 0.0f;
+				m_vy = 0.0f;
+				m_ani_change = 8;
+			}
+
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
+
+			CObj::SetPrio((int)m_py); //描画優先順位変更
+		}
 	}
-
-	if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
-	{
-		m_invincible = 50;    //しばらくの間無敵時間を設ける
-		m_ani_change = 0;
-		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-		if (m_px < 400)       //ランナーの位置を穴から近い位置に移動させる
-			m_px += 60.0f;
-		else
-			m_px -= 60.0f;
-		m_py -= 10.0f;        //ランナーのYの位置をずらして穴のY軸の真ん中に近い位置で復活させる
-		m_hole_control = false;
-	}
-	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-
-	//後ろに行き過ぎた時ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー---
-
-	if (m_px < -50.0f) //スクロールに遅れた時は真ん中で復活
-	{
-		m_px = 400.0f;
-		m_invincible = 50; //しばらくの間無敵時間を設ける
-	}
-
-	m_invincible--; //無敵時間減少
-
-
-	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
-
-	//HitBoxの位置の変更
-	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + 18.0f, m_py);
-
-	//当たり判定関連
-	HitBox();
-
-	m_vx -= 0.3f; //強制スクロール用移動量
-
-	//位置の更新
-	m_px += m_vx;
-	m_py += m_vy;
-
-	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画
@@ -428,5 +503,13 @@ void CObjRunner::HitBox()
 			else
 				m_smart_control = false;//当たってない状態ならゲージを減らせる状態に戻す
 		}
+	}
+
+	//チェックポイントと当たった場合
+	if (hit->CheckObjNameHit(OBJ_CHECK_POINT) != nullptr)
+	{
+		m_check_control = true;
+		m_vx = 0.0f;
+		m_vy = 0.0f;
 	}
 }

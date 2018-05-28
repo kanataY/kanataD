@@ -70,6 +70,9 @@
     <Filter Include="ソース ファイル\Scene\GAMECLEAR">
       <UniqueIdentifier>{11dc65d4-5793-4067-8ef0-1d11abb865f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\CheckPoint">
+      <UniqueIdentifier>{2db2c4b5-1af9-4132-b7de-c125ab3df192}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -176,6 +179,9 @@
     </ClCompile>
     <ClCompile Include="ScenRanking.cpp">
       <Filter>ソース ファイル\Scene\RANKING</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjCheckPoint.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\CheckPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="SceneRanking.h">
       <Filter>ソース ファイル\Scene\RANKING</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjCheckPoint.h">
+      <Filter>ソース ファイル\GAMEMAIN\CheckPoint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
