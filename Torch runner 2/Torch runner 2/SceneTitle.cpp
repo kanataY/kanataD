@@ -30,8 +30,8 @@ CSceneTitle::~CSceneTitle()
 //ゲームメイン初期化メソッド
 void CSceneTitle::InitScene()
 {
-	//外部グラフィックファイルを読み込み0番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\Title\\TitleBack.png", 0, TEX_SIZE_512);
+	//外部グラフィックファイルを読み込み0番に登録(1024ピクセル)
+	Draw::LoadImageW(L"Image\\back\\title.png", 0, TEX_SIZE_1024);
 
 	//音楽情報の読み込み
 

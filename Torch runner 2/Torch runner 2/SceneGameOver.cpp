@@ -42,28 +42,7 @@ void CSceneGameOver::InitScene()
 	Audio::Start(0);*/
 
 	//外部グラフィックファイルを読み込み0番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\GAMEOVER4.png", 1, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み1番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\GAMEOVER1_Font.png", 2, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み2番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\GAMEOVER2_Font.png", 3, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み3番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\GAMEOVER3_Font.png", 4, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み4番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\GAMEOVER4_Font.png", 5, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み6番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\Menutransfer.png", 6, TEX_SIZE_512);
-
-	//外部グラフィックファイルを読み込み7番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\GameOver.png", 7, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み8番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\GameOver\\retry.png", 8, TEX_SIZE_512);
+	Draw::LoadImageW(L"Image\\back\\GameOver.png", 0, TEX_SIZE_1024);
 
 	//ゲームオーバーオブジェクト作成
 	CObjGameOver* obj = new CObjGameOver();

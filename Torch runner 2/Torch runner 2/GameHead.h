@@ -84,7 +84,6 @@ struct UserData
 #include "ObjRanking.h"			//ランキング
 #include "ObjMenu.h"			//メニュー
 #include "ObjGameClear.h"		//クリア
-
 //補助系
 #include "Correction.h"			//補正
 //------------------------------------------------
@@ -101,5 +100,5 @@ struct UserData
 
 //シーンスタートクラス---------------------------
 //ゲーム開始時のシーンクラス登録
-#define SET_GAME_START CSceneMain
+#define SET_GAME_START CSceneRanking
 //-----------------------------------------------

@@ -30,13 +30,15 @@ CSceneRanking::~CSceneRanking()
 //ランキング初期化メソッド
 void CSceneRanking::InitScene()
 {
-	Draw::LoadImageW(L"numeric.png", 0, TEX_SIZE_256);
+	Draw::LoadImageW(L"Image\\back\\Numeric.png", 0, TEX_SIZE_256);
 
-	Draw::LoadImageW(L"a.png", 1, TEX_SIZE_512);
+	Draw::LoadImageW(L"Image\\back\\ranking_mozi.png", 1, TEX_SIZE_1024);
+
+	Draw::LoadImageW(L"Image\\back\\Bit.png", 2, TEX_SIZE_64);
 
 	//ランキングオブジェクト作成
-	CObjRanking* obj = new CObjRanking();		//タイトルオブジェクト作成
-	Objs::InsertObj(obj, OBJ_RANKING, 10);  //主人公オブジェクト登録
+	CObjRanking* obj = new CObjRanking();		//ランキングオブジェクト作成
+	Objs::InsertObj(obj, OBJ_RANKING, 10);		//ランキングオブジェクト登録
 }
 
 //ランキング実行中メソッド

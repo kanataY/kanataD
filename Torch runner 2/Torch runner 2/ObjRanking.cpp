@@ -34,6 +34,7 @@ void CObjRanking::Init()
 			}
 		}
 	}
+
 	//戻るときの文字のサイズ
 	//バイト数が１のとき0.5	２のとき1.0とする
 	m_return_size = 0;
@@ -47,23 +48,6 @@ void CObjRanking::Action()
 	{
 		Scene::SetScene(new CSceneMenu());
 	}
-
-	//押された場所が戻る時の文字であれば処理
-	int mous_x = Input::GetPosX();
-	int mous_y = Input::GetPosY();
-
-	if (RETURN_X < mous_x && (RETURN_X + RETURN_SIZE * m_return_size) > mous_x)
-	{
-		if (RETURN_Y < mous_y && (RETURN_Y + RETURN_SIZE) > mous_y)
-		{
-			if (Input::GetMouButtonL() == true)
-			{
-				Scene::SetScene(new CSceneMain());
-			}
-		}
-	}
-	m_return_size = 0;
-
 }
 
 //ドロー
@@ -75,11 +59,12 @@ void CObjRanking::Draw()
 	//ランキング専用背景描画
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
-				//切り取り位置の設定
+
+	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
-	src.m_right = 512.0f;
-	src.m_bottom = 256.0f;
+	src.m_right = 1024.0f;
+	src.m_bottom = 1024.0f;
 
 	//表示位置の設定
 	dst.m_top = 0.0f;
@@ -93,45 +78,62 @@ void CObjRanking::Draw()
 	wchar_t str[128];
 
 	//ランキングを文字列化
-	for (int ranking_count = 0; ranking_count < RANKING_MAX_COUNT; ranking_count++)
+	for (int ranking_count = 0; ranking_count < 3; ranking_count++)
 	{
 		//ランニングのranking_count番の数値を格納
 		int ranking = ((UserData*)Save::GetData())->m_ranking[ranking_count];
 
-		//位の文字描画
-		Font::StrDraw(L"位", 32.0f + 100.0f, 50.0f* ranking_count + 50.0f, 50.0f, c);
+	
 
-		//順位が10だったときの専用描画処理
-		if (ranking_count + 1 == 10)
-		{
-			//１の描画
-			DrawNumber(50.0f* ranking_count + 50.0f, 32.0f + 32.0f, 50.0f, 1);
-			//２の描画
-			DrawNumber(50.0f* ranking_count + 50.0f, 32.0f + 60.0f, 50.0f, 0);
-		}
-		//順位一桁専用描画
-		else
-		{
-			DrawNumber(50.0f* ranking_count + 50.0f, 32.0f + 60.0f, 50.0f, ranking_count + 1);
-		}
+		//順位描画
+		DrawNumber(128.0f* ranking_count + 128.0f, 64.0f + 64.0f, 64.0f, ranking_count + 1);
+		
 		//ランキングの値描画処理
-		DrawNumber(50.0f* ranking_count + 50.0f, 32.0f + 150.0f, 50.f, ranking);
+		DrawNumber(128.0f* ranking_count + 128.0f, 64.0f + 164.0f, 64.f, ranking);
 	}
 
 	//戻るときに使う文字設定
-	swprintf_s(str, L"Baｃk");
-	//文字列のサイズを代入(バイト)
-	//クリック判定を行いたいので処理している
-	m_return_size = StringSize(str);
-
+	swprintf_s(str, L"ZkeyでMenuへ");
+	
 	//戻るときに使う文字を描画
-	Font::StrDraw(str, RETURN_X, RETURN_Y, RETURN_SIZE, c);
+	Font::StrDraw(str, 5, 580, RETURN_SIZE, c);
+
+	//位の描画
+	//切り取り位置の設定
+	src.m_top = 0.0f;
+	src.m_left = 0.0f;
+	src.m_right = 64.0f;
+	src.m_bottom = 64.0f;
+
+	//表示位置の設定
+	dst.m_top = 138.0f;
+	dst.m_left =175.0f;
+	dst.m_right =dst.m_left+56.0f;
+	dst.m_bottom =dst.m_top+56.0f;
+	//描画
+	Draw::Draw(2, &src, &dst, c, 0.0f);
+
+	//表示位置の設定
+	dst.m_top = 265.0f;
+	dst.m_left = 175.0f;
+	dst.m_right = dst.m_left + 56.0f;
+	dst.m_bottom = dst.m_top + 56.0f;
+	//描画
+	Draw::Draw(2, &src, &dst, c, 0.0f);
+
+	//表示位置の設定
+	dst.m_top = 392.0f;
+	dst.m_left = 175.0f;
+	dst.m_right = dst.m_left + 56.0f;
+	dst.m_bottom = dst.m_top + 56.0f;
+	//描画
+	Draw::Draw(2, &src, &dst, c, 0.0f);
 }
 
 //文字列のサイズを返す関数
 //引数１　wchar_t *str	:ワイルド文字列
 //戻り値	引数で取ったワイルド文字列をマルチ文字列に変換してマルチ文字列にしたときのメモリ情報を返す
-//　		マルチ文字列の長さが1のとき0.5　２のとき1を加算していった数字を返す	
+//マルチ文字列の長さが1のとき0.5　２のとき1を加算していった数字を返す	
 float CObjRanking::StringSize(wchar_t *str)
 {
 	//マルチ文字列の変数を作成
@@ -209,7 +211,7 @@ void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
 
-				//引数numの桁数が０だったら
+	//引数numの桁数が０だったら
 	if (numeric_number == 0)
 	{
 		//桁数を１増やす
@@ -223,70 +225,70 @@ void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int 
 		//桁ごとに数字調べる
 		switch (num_decomposition[i])
 		{
-		case 0:
+		case 0://0の時0の画像描画
 			//切り取り位置の設定
 			src.m_top = 0.0f;
 			src.m_left = 0.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 1:
+		case 1://1の時1の画像描画
 			//切り取り位置の設定
 			src.m_top = 0.0f;
 			src.m_left = 64.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 2:
+		case 2://2の時2の画像描画
 			//切り取り位置の設定
 			src.m_top = 0.0f;
 			src.m_left = 64.0f * 2;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 3:
+		case 3://3の時3の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f;
 			src.m_left = 0.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 4:
+		case 4://4の時4の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f;
 			src.m_left = 64.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 5:
+		case 5://5の時5の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f;
 			src.m_left = 64.0f * 2;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 6:
+		case 6://6の時6の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f * 2;
 			src.m_left = 0.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 7:
+		case 7://7の時7の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f * 2;
 			src.m_left = 64.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 8:
+		case 8://8の時8の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f * 2;
 			src.m_left = 64.0f * 2;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 9:
+		case 9://9の時9の画像描画
 			//切り取り位置の設定
 			src.m_top = 64.0f * 3;
 			src.m_left = 0.0f;
