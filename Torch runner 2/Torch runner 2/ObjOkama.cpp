@@ -164,7 +164,7 @@ void CObjOkama::Action()
 	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 	//木箱or穴回避--------------------------------------------------------------------------------------
-	if (m_avoidance == true)
+	if (m_avoidance == true && m_fire_control == false)
 	{
 		if (m_crates_hit != 0) //木箱に当たっているとき（0以外）
 		{
@@ -398,6 +398,19 @@ void CObjOkama::HitBox()
 
 	}
 
+	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
+	{
+		//炎
+		if (m_fire_control == false)
+		{
+			CObjFire* fi = new CObjFire(m_px, m_py, true);
+			Objs::InsertObj(fi, OBJ_FIRE, 999);
+			m_vx = 0.0f; 
+			m_vy = 0.0f;
+			m_fire_control = true;
+		}
+	}
+
 	//木箱に当たっているとき
 	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr)
 	{
@@ -408,7 +421,7 @@ void CObjOkama::HitBox()
 	{
 		if (runner->GetHoleFallCon() == false) //ランナーが穴に落ちていなければ
 		{
-			if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr) //ランナーと当たっている
+			if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr && m_fire_control == false) //ランナーと当たっている
 			{
 				m_vx = 0; m_vy = 0;  //動けないようにする
 				m_hug = true;        //抱きついている
