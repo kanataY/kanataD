@@ -128,18 +128,78 @@ void CObjCrates::HitBox()
 	}
 
 	//オカマと当たっている場合
-	if (hit->CheckObjNameHit(OBJ_OKAMA) != nullptr)
-	{
-		this->SetStatus(false);		//自身に削除命令を出す
-		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
-	}
+	//if (hit->CheckObjNameHit(OBJ_OKAMA) != nullptr)
+	//{
+	//	this->SetStatus(false);		//自身に削除命令を出す
+	//	Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	//}
 
 	//ランナーと当たっている場合
-	if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。
 	{
-		//木箱とランナーがどの角度で当たっているかを確認
+		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+		{
+			//木箱とランナーがどの角度で当たっているかを確認
+			HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
+			hit_data = hit->SearchObjNameHit(OBJ_RUNNER);	//hit_dataに木箱と当たっているほか全てのHitBoxとの情報を入れる
+
+			for (int i = 0; i < hit->GetCount(); i++)
+			{
+				//hit_data[i]に情報が入っていたら処理
+				if (hit_data[i] != NULL)
+				{
+					//左右に当たったら
+					float r = hit_data[i]->r;
+
+					//通り抜けないようにする       ※要調整
+					//ランナーが上に当たっていたら
+					if (r >= 45 && r < 135)
+					{
+						if (runner->GetY() > m_py - 35.0f)	//上側を通り抜けれるようにする
+							runner->SetVY(-0.8f);
+					}
+
+					if ((r < 45 && r >= 0) || r >= 315)
+					{
+						//右
+						if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
+							;
+						else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
+							;
+						else
+							runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
+					}
+
+					if (r >= 135 && r < 220)
+					{
+						//左
+						if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
+							;
+						else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
+							;
+						else
+							runner->SetVX(-3.0f);//真ん中だから通り抜けれないようにする
+					}
+					if (r >= 220 && r < 315)
+					{
+						//下
+						if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
+							runner->SetVY(0.8f);
+					}
+				}
+			}
+		}
+	}
+
+	//オカマに当たった場合
+	if (hit->CheckObjNameHit(OBJ_OKAMA) != nullptr)
+	{
+		//オカマの情報を持ってくる
+		CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
+
+		//木箱とオカマがどの角度で当たっているかを確認
 		HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
-		hit_data = hit->SearchObjNameHit(OBJ_RUNNER);	//hit_dataに木箱と当たっているほか全てのHitBoxとの情報を入れる
+		hit_data = hit->SearchObjNameHit(OBJ_OKAMA);	//hit_dataに木箱と当たっているほかのHitBoxとの情報を入れる
 
 		for (int i = 0; i < hit->GetCount(); i++)
 		{
@@ -150,39 +210,27 @@ void CObjCrates::HitBox()
 				float r = hit_data[i]->r;
 
 				//通り抜けないようにする       ※要調整
-				//ランナーが上に当たっていたら
+				//オカマが上に当たっていたら
 				if (r >= 45 && r < 135)
 				{
-					if (runner->GetY() > m_py - 35.0f)	//上側を通り抜けれるようにする
-						runner->SetVY(-0.8f);
+					okama->SetCratesHit(1);
 				}
 
-				if ((r<45 && r >= 0) || r >= 315)
+				if ((r < 45 && r >= 0) || r >= 315)
 				{
 					//右
-					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
-						;
-					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
-						;
-					else
-						runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
+					okama->SetCratesHit(3);
 				}
 
 				if (r >= 135 && r < 220)
 				{
 					//左
-					if (runner->GetY() < m_py - 35.0f)//上側を通り抜けれるようにする
-						;
-					else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
-						;
-					else
-						runner->SetVX(-0.8f);//真ん中だから通り抜けれないようにする
+					okama->SetCratesHit(2);
 				}
 				if (r >= 220 && r < 315)
 				{
 					//下
-					if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
-						runner->SetVY(0.8f);
+					okama->SetCratesHit(4);
 				}
 			}
 		}

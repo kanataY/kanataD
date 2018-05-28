@@ -16,7 +16,7 @@ public:
 	void HitBox();  //“–‚½‚è”»’èŠÖ˜A
 	float GetX() { return m_px; }
 	float GetY() { return m_py; }
-	float GetDrowDown() { return m_drow_down; } //ŒŠ‚ª‰½ŒÂ•ªL‚ª‚Á‚Ä‚¢‚é‚©’²‚×‚é
+	int   GetDrowDown() { return m_drow_down; } //ŒŠ‚ª‰½ŒÂ•ªL‚ª‚Á‚Ä‚¢‚é‚©’²‚×‚é
 	bool  GetHoleFall() { return m_hole_fall; } //ŒŠ‚Éƒ‰ƒ“ƒi[‚ª—‚¿‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ•Ô‚·
 	void  SetX(float x) { m_px = x; }
 	void  SetY(float y) { m_py = y; }

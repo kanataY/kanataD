@@ -20,10 +20,11 @@ CObjRunner::CObjRunner()
 //イニシャライズ
 void CObjRunner::Init()
 {
-	m_px = 0.0f;
+	m_px = 250.0f;
 	m_py = 500.0f;	//位置
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
+	m_invincible = 0;
 
 	m_hole_fall = 0.0f;
 
@@ -218,6 +219,7 @@ void CObjRunner::Action()
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
+	//穴関連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 	if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 	{
 		m_ani_change = 0;
@@ -232,15 +234,30 @@ void CObjRunner::Action()
 
 	if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
 	{
+		m_invincible = 50;    //しばらくの間無敵時間を設ける
 		m_ani_change = 0;
 		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-		if (m_px < 200)       //ランナーの位置を穴から近い位置に移動させる
+		if (m_px < 400)       //ランナーの位置を穴から近い位置に移動させる
 			m_px += 60.0f;
 		else
 			m_px -= 60.0f;
 		m_py -= 10.0f;        //ランナーのYの位置をずらして穴のY軸の真ん中に近い位置で復活させる
 		m_hole_control = false;
 	}
+	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+	//後ろに行き過ぎた時ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー---
+
+	if (m_px < -50.0f) //スクロールに遅れた時は真ん中で復活
+	{
+		m_px = 400.0f;
+		m_invincible = 50; //しばらくの間無敵時間を設ける
+	}
+
+	m_invincible--; //無敵時間減少
+
+
+	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
@@ -248,6 +265,8 @@ void CObjRunner::Action()
 
 	//当たり判定関連
 	HitBox();
+
+	m_vx -= 0.3f; //強制スクロール用移動量
 
 	//位置の更新
 	m_px += m_vx;
@@ -340,8 +359,8 @@ void CObjRunner::Draw()
 			//表示位置の設定
 			dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
 			dst3.m_left = 0.0f + m_px + 27.0f;
-			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5) - 10.0f;
-			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2);
+			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5f) - 10.0f;
+			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2.0f);
 		}
 		else
 		{
@@ -382,29 +401,32 @@ void CObjRunner::HitBox()
 	//スマホ少年の位置を取得
 	CObjSmartphone* sumaho = (CObjSmartphone*)Objs::GetObj(OBJ_SMARTPHONE);
 
-	if (m_hole_control == false)  //穴に落ちている場合（当たっている）
+	if (m_invincible < 0) //無敵時間じゃなければ
 	{
-		//スマホ少年と当たった場合
-		if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
+		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 		{
-			if ((sumaho->GetX() + block->GetScroll()) < m_px)
+			//スマホ少年と当たった場合
+			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
 			{
-				m_vx = 3.6f;//ランナーをずらす
+				if ((sumaho->GetX() + block->GetScroll()) < m_px)
+				{
+					m_vx = 3.6f;//ランナーをずらす
+				}
+				else
+				{
+					m_vx = -5.6f;//ランナーをずらす
+				}
+
+				//ゲージを減らすーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+				if (m_smart_control == false) //まだ当たってなければゲージを減らす
+				{
+					//ゲージが減る
+					gauge->SetGauge(1.0f);
+					m_smart_control = true;
+				}
 			}
 			else
-			{
-				m_vx = -5.6f;//ランナーをずらす
-			}
-
-			//ゲージを減らすーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-			if (m_smart_control == false) //まだ当たってなければゲージを減らす
-			{
-				//ゲージが減る
-				gauge->SetGauge(1.0f);
-				m_smart_control = true;
-			}
+				m_smart_control = false;//当たってない状態ならゲージを減らせる状態に戻す
 		}
-		else
-			m_smart_control = false;//当たってない状態ならゲージを減らせる状態に戻す
 	}
 }

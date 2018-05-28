@@ -18,6 +18,7 @@ public:
 	float GetY() { return m_py; }
 	float GetVY() { return m_vy; }//m_vx,m_vy‚Ì’l‚ğ“n‚·
 	float GetVX() { return m_vx; }
+	int   GetInvincible() { return m_invincible; } //–³“GŠÔ‚Ì’l‚ğ“n‚·
 	bool  GetHoleFallCon(){ return m_hole_control; }//ŒŠ‚É—‚¿‚Ä‚¢‚éî•ñ‚ğ“n‚·
 	void  SetX(float x) { m_px = x; }//m_px,m_py‚Ì’l‚ğ‚Ù‚©‚Ìcpp‚Å‚à‚¢‚¶‚ê‚é‚æ‚¤‚É‚·‚é
 	void  SetY(float y) { m_py = y; }
@@ -30,6 +31,7 @@ private:
 	float m_py;
 	float m_vx;		//ˆÚ“®ƒxƒNƒgƒ‹
 	float m_vy;
+	int   m_invincible; //–³“GŠÔ
 
 	//•`‰æŠÖ˜A
 	float m_hole_fall;  //ŒŠ‚É—‚¿‚½‚Ì•`‰æ‚·‚é‚Æ‚±‚ë‚ğ•Ï‚¦‚é•Ï”

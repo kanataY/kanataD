@@ -97,10 +97,10 @@ void CObjGameClear::Draw()
 	//•`‰æˆÊ’u
 	if (m_time <= 50)
 	{
-		dst.m_top = 105.0f - m_time * 0.7;
+		dst.m_top = 105.0f - m_time * 0.7f;
 		dst.m_left = 400.0f - m_time * 5;
 		dst.m_right = 400.0f + m_time * 5;
-		dst.m_bottom = 105.0f + m_time * 0.7;
+		dst.m_bottom = 105.0f + m_time * 0.7f;
 
 		//ƒQ[ƒ€ƒNƒŠƒA•¶Žš•`‰æ
 		Draw::Draw(0, &src, &dst, c, 0.0f);

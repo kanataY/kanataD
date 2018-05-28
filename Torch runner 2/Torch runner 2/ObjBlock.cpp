@@ -29,6 +29,7 @@ void CObjBlock::Init()
 	m_bx2 = 800.0f;
 
 	m_scroll = 0.0f;
+	m_scroll_run = 800.0f;
 	((UserData*)Save::GetData())->m_stage_count = 1; // 仮
 }
 
@@ -41,35 +42,41 @@ void CObjBlock::Action()
 	float rx = runner->GetX();
 	float ry = runner->GetY();
 
+	
+
 	//前方スクロールライン
-	if (rx > 300)
+	if (rx > -50 && runner->GetHoleFallCon() == false)
 	{
-		runner->SetX(300);		//主人公はラインを超えないようにする
-		m_scroll -= runner->GetVX();//主人公が本来動くべき分の値をm_scrollに加える
+
+		m_scroll -= 2.0f;//主人公が本来動くべき分の値をm_scrollに加える
 
 		//背景1の動作
-		m_bx1 -= runner->GetVX();
+		m_bx1 -= 2.0f;
 		if (m_bx1 < -800.0f)
 			m_bx1 = 800.0f;
 
 		//背景2の動作
-		m_bx2 -= runner->GetVX();
+		m_bx2 -= 2.0f;
 		if (m_bx2 < -800.0f)
 			m_bx2 = 800.0f;
 	}
 
 	//後方
-	if (rx < 0) //画面より左側に行けないようにする
+	if (rx < -50 || runner->GetHoleFallCon() == true) //画面より左側に行けないようにする
 	{
-		runner->SetX(0);			//主人公はラインを超えないようにする
+		//背景1の動作
+		m_bx1 -= 0.0f;
+
+		//背景2の動作
+		m_bx2 -= 0.0f;
 	}
 
 	//マップ関連ーーーーーーーーーー
 	float line = 0.0f;
 
 	//敵出現ライン
-	//主人公の位置+500を敵出現ラインにする
-	line = rx + (-m_scroll) + 500;
+	//主人公の位置+800 - ランナーの位置を敵出現ラインにする
+	line = rx + (-m_scroll) + (800 - rx);
 
 	//敵出現ラインを要素番号化
 	int ex = ((int)line) / 64;
