@@ -369,6 +369,13 @@ void CObjOkama::HitBox()
 	//炎の情報を取得
 	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
 
+	//穴に落ちた時オカマを殺す。
+	if (runner->GetHoleFallCon() == true && m_hug == true)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
+
 	if (m_hug == true) //抱きついている
 	{
 		//まだ炎がついてない状態
