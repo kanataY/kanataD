@@ -29,6 +29,10 @@ void CObjOkama::Init()
 	m_time = 0;
 	m_time_fire = 0;
 	m_r_time = 0;
+	m_avoidance = false;
+	m_avoidance_time = 0;
+	m_crates_hit = 0;
+	m_crates_vy = false;
 	m_fire_control = false;
 	m_homing = false;
 	m_rebagacha_cotrol_r = false;
@@ -145,7 +149,8 @@ void CObjOkama::Action()
 
 	HitBox(); //HitBox関連
 
-	if (m_rebagacha > 25) //レバガチャ25回したら
+	//レバガチャーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+	if (m_rebagacha > 15) //レバガチャ25回したら
 	{
 		m_hug = false;
 		m_vx = 100.f; //後ろにぶっ飛ぶ
@@ -156,6 +161,67 @@ void CObjOkama::Action()
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
 	}
+	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+	//木箱or穴回避--------------------------------------------------------------------------------------
+	if (m_avoidance == true)
+	{
+		if (m_crates_hit != 0) //木箱に当たっているとき（0以外）
+		{
+			m_vx = 0.0f; m_vy = 0.0f; //移動量を０
+			m_avoidance_time++;
+			if (m_avoidance_time < 20)
+			{
+				if (m_crates_hit == 1) //木箱の上に当たっている場合
+				{
+					m_vy = -5.0f;
+				}
+				if (m_crates_hit == 2) //木箱の左に当たっている場合
+				{
+					m_vx = -5.0f;
+				}
+				if (m_crates_hit == 3) //木箱の右に当たっている場合
+				{
+					m_vx = 5.0f;
+				}
+				if (m_crates_hit == 4) //木箱の下に当たっている場合
+				{
+					m_vy = 5.0f;
+				}
+			}
+
+			//木箱に当たって後ずさりした後に移動する
+			if (m_avoidance_time > 20 && m_avoidance_time < 21)
+			{
+				if (m_py >= 406.5f) //真ん中より下なら
+				{
+					m_crates_vy = true;
+				}
+				else
+					m_crates_vy = false;
+			}
+			if (m_avoidance_time > 21 && m_avoidance_time < 71)//木箱に当たって後ずさりした後に移動する
+			{
+				if (m_crates_vy ==true) //真ん中より下なら
+				{
+					m_py++;
+				}
+				if (m_crates_vy == false) //真ん中より上
+				{
+					m_py--;
+				}
+			}
+
+			//ホーミングできるようにする。
+			if (m_avoidance_time > 70)
+			{
+				m_time = 50;
+				m_avoidance = false;
+				m_homing = false;
+			}
+		}
+}
+	//--------------------------------------------------------------------------------------
 
 	//画面外に行くと死ぬ
 	bool m_s_o = cor->Screen_Out(m_px);
@@ -335,7 +401,7 @@ void CObjOkama::HitBox()
 	//木箱に当たっているとき
 	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr)
 	{
-		
+		m_avoidance = true;
 	}
 
 	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。

@@ -46,7 +46,7 @@ void CObjSmartphone::Action()
 			m_vx += 0.15f;    //上に動かせる
 			m_vy += -0.15f;
 		}
-		if (m_middle == false) //ランナー以外のHitBoxに当たった時真ん中より上なら
+		if (m_middle == false)//ランナー以外のHitBoxに当たった時真ん中より上なら
 		{
 			m_vx += 0.15f;   //下に動かせる
 			m_vy += 0.15f;

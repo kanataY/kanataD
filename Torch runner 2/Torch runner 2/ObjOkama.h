@@ -20,6 +20,7 @@ public:
 	float GetVX() { return m_vx; }
 	bool  GetHug() { return m_hug; } //抱きついているかどうかを渡す
 	int   GetRebagacha() { return m_rebagacha; } //レバガチャの回数を渡す
+	void  SetCratesHit(int c) { m_crates_hit = c; }//m_px,m_pyの値をほかのcppでもいじれるようにする
 
 private:
 	float m_px;		//位置
@@ -31,6 +32,10 @@ private:
 	int  m_r_time;   //レバガチャした後の後ずさる距離に使う
 	int m_time_fire;     //タイム
 	bool m_hug;  //抱きついたか調べる変数
+	bool m_avoidance;       //回避したかどうかを入れる変数
+	int  m_avoidance_time;  //回避するときのタイムで管理する。
+	int  m_crates_hit;      //木箱のどこに当たったかを調べる変数
+	bool m_crates_vy;       //木箱に当たった際に移動するYの量を一定にするための変数
 	//制御系
 	bool m_fire_control; //火が付いた時の制御
 	bool m_homing;       //ホーミングする回数を制御
