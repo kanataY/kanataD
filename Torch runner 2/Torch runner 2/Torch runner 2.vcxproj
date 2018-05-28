@@ -155,7 +155,7 @@
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
-    <ClCompile Include="ScenRanking.cpp" />
+    <ClCompile Include="SceneRanking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjCheckPoint.h" />

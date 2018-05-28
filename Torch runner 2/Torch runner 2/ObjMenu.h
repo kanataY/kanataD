@@ -14,8 +14,7 @@ public:
 	void Action();	//アクション
 	void Draw();	//ドロー
 private:
-	bool m_key_flag;//キーフラグ
-	float m_mou_x;	//マウスの位置X
-	float m_mou_y;	//マウスの位置Y
-	bool  m_mou_l;	//マウスの左ボタン
+	int m_key_flag;//1:ステージセレクト2:ランキング3:タイトルに戻る4:操作説明
+	bool m_key_control;//キーの制御用
+	int m_key_control_time;//キーの制御のタイム
 };

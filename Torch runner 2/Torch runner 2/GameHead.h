@@ -86,7 +86,6 @@ struct UserData
 #include "ObjRanking.h"			//ランキング
 #include "ObjMenu.h"			//メニュー
 #include "ObjGameClear.h"		//クリア
-
 //補助系
 #include "Correction.h"			//補正
 //------------------------------------------------
