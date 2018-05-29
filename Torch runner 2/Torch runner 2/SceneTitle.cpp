@@ -31,7 +31,10 @@ CSceneTitle::~CSceneTitle()
 void CSceneTitle::InitScene()
 {
 	//外部グラフィックファイルを読み込み0番に登録(1024ピクセル)
-	Draw::LoadImageW(L"Image\\back\\title.png", 0, TEX_SIZE_1024);
+	Draw::LoadImageW(L"Image\\back\\title\\title.png", 0, TEX_SIZE_1024);
+
+	//外部グラフィックファイルを読み込み0番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\back\\title\\title_mozi.png", 1, TEX_SIZE_512);
 
 	//音楽情報の読み込み
 
