@@ -39,12 +39,31 @@ void CObjBlock::Action()
 	//背景関連ーーーーーーーーーーーーーーーーーーーーーーーー
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//チェックポイントを取得
+	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+
 	float rx = runner->GetX();
 	float ry = runner->GetY();
 
-	
+	//チェックポイントのが出てなかったらとまらないようにする
+	float m_check_x = 999.0f;
+	//チェックポイントが出現しているなら位置をとる
+	if (check != nullptr)
+		m_check_x = check->GetX() + m_scroll ;
+
+	//チェックポイントの描画がすべてWindowに収まっている場合
+	if (m_check_x < 400.0f)
+	{
+		//背景1の動作
+		m_bx1 -= 0.0f;
+
+		//背景2の動作
+		m_bx2 -= 0.0f;
+	}
+
 	//後方
-	if (runner->GetCheckPoint() == true && rx < 500)
+	else if (runner->GetCheckPoint() == true && m_check_x < 400.0f)
 	{
 		//背景1の動作
 		m_bx1 -= 0.0f;
@@ -151,8 +170,8 @@ void CObjBlock::Action()
 		if (m_map[i][ex] == 6)
 		{
 			//チェックポイントを生成
-			CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
-			Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
+			//CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
+			//Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
 
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;

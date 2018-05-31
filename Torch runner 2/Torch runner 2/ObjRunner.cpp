@@ -34,8 +34,11 @@ void CObjRunner::Init()
 	m_smart_control = false;
 	m_hole_control = false;
 	m_check_control = false;
+	m_check_control_x = false;
 	m_homing = false;
 	m_check_time = 0;
+	m_check_transfer = false;
+	m_check_s1 = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -63,24 +66,28 @@ void CObjRunner::Action()
 	//オカマの情報を持ってくる
 	CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
 
+	//チェックポイントを取得
+	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+
 	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	m_ani_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	if (m_check_transfer == false)
 	{
-		m_ani_frame++;//フレームを進める
-		m_ani_time = 0;
-	}
-	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-	{
-		m_ani_frame = 0;
+		m_ani_time++;//フレーム動作感覚タイムを進める
+		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+		{
+			m_ani_frame++;//フレームを進める
+			m_ani_time = 0;
+		}
+		if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+		{
+			m_ani_frame = 0;
+		}
 	}
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
-
-	//チェックポイントに入ったから受け渡たすシーンを描画をする。
+	//チェックポイントに入ってなければメインの行動ができる
 	if (m_check_control == false)
 	{
-
 		//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
 		if (m_py >= 536) //一番下より下に行かないようにする
@@ -271,7 +278,22 @@ void CObjRunner::Action()
 		CHitBox* hit = Hits::GetHitBox(this);
 		hit->SetPos(m_px + 18.0f, m_py);
 
-		m_vx -= 0.3f; //強制スクロール用移動量
+		//チェックポイントが指定の位置に行ってるかどうかを入れる変数
+		bool m_check_vx = false; 
+
+		//チェックポイントが生成されてるなら調べる
+		if (check != nullptr)
+		{
+			//チェックポイントが指定の位置に
+			if (check->GetX() + block->GetScroll() < 400)
+			{
+				m_check_vx = true; //強制スクロールをしなくさせないようにする
+			}
+		}
+		if(m_check_vx == false)
+		{
+			m_vx -= 0.3f; //強制スクロール用移動量
+		}
 
 		//当たり判定関連
 		HitBox();
@@ -282,19 +304,26 @@ void CObjRunner::Action()
 
 		CObj::SetPrio((int)m_py); //描画優先順位変更
 	}
+
+	//チェックポイントに入ったら受け渡たすシーンを描画をする。
 	else if (m_check_control == true)
 	{
-		if (m_px < 500)
+		//ブロック情報を持ってくる
+		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+		//チェックポイントを取得
+		CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+
+		// チェックポイントが指定の位置にある場合
+		if (check->GetX() + block->GetScroll() < 400)
 		{
-			//ブロック情報を持ってくる
-			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
-			//チェックポイントを取得
-			CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
-
-			m_check_time++;
-
-			float okax = ((check->GetX() + block->GetScroll()) + 160.0f) - m_px;
+			m_check_control_x = true; //ホーミングをONにする
+		}
+		if (m_check_control_x == true)
+		{
+			m_ani_change = 0;
+			//チェックポイントにいる第二のランナーの位置を取得する
+			float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
 			float okay = (check->GetY()  * 3.0f) - m_py;
 
 			//atan2で角度を求める
@@ -313,7 +342,7 @@ void CObjRunner::Action()
 				ar = 360 - abs(ar);
 			}
 
-			//オカマの現在の向いてる角度を取る
+			//ランナーの現在の向いてる角度を取る
 			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
 
 			//-180～-0を180～360に変換
@@ -329,16 +358,25 @@ void CObjRunner::Action()
 				//移動方向をランナーの方向にする
 				m_vx = cos(3.14f / 180 * ar);
 				m_vy = sin(3.14f / 180 * ar);
-				m_vx *= 2; // 移動速度を10べぇにする
+				m_vx *= 2; // 移動速度を2べぇにする
 				m_vy *= 2;
 				m_homing = true;
 			}
 
-			if (m_px > ((check->GetX() + block->GetScroll()) + 160.0f))
+			//第二のランナーの目の前に来た時
+			if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
 			{
-				m_vx = 0.0f;
+				m_check_time++; //タイムを進める
+				m_check_transfer = true;
+				m_vx = 0.0f; //移動量を０にする
 				m_vy = 0.0f;
-				m_ani_change = 8;
+				if (m_check_time < 50) //振り下ろす
+					m_ani_change = 8;
+				else
+				{
+					m_ani_change = 0;//通常の状態で待つ
+					m_ani_frame = 1;
+				}
 			}
 
 			//位置の更新
@@ -346,6 +384,27 @@ void CObjRunner::Action()
 			m_py += m_vy;
 
 			CObj::SetPrio((int)m_py); //描画優先順位変更
+		}
+		else
+		{
+			// チェックポイントが指定のいちに行くまでは移動量を0にする
+			if (m_px < 499 && m_px > 490)
+			{
+				m_vx = 0.0f;
+			}
+			else
+			m_vx -= 0.3f; //強制スクロール用移動量
+
+			//摩擦
+			m_vx += -(m_vx * 0.15f);
+
+			//HitBoxの位置の変更
+			CHitBox* hit = Hits::GetHitBox(this);
+			hit->SetPos(m_px + 18.0f, m_py);
+
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
 		}
 	}
 }

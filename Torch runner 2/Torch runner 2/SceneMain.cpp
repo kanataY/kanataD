@@ -73,7 +73,9 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み18番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\back\\checkpoint.png", 18, TEX_SIZE_256);    //チェックポイント
 	//外部グラフィックファイルを読み込み19番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\hero1_2.png", 19, TEX_SIZE_256);    //チェックポイント
+	Draw::LoadImageW(L"Image\\hero\\youtuber.png", 19, TEX_SIZE_256);    //YouTubeｒ
+	//外部グラフィックファイルを読み込み20番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 20, TEX_SIZE_256);    //YouTubeｒの振りかざし
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
