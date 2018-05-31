@@ -83,8 +83,6 @@ void CObjRanking::Draw()
 		//ƒ‰ƒ“ƒjƒ“ƒO‚Ìranking_count”Ô‚Ì”’l‚ğŠi”[
 		int ranking = ((UserData*)Save::GetData())->m_ranking[ranking_count];
 
-	
-
 		//‡ˆÊ•`‰æ
 		DrawNumber(128.0f* ranking_count + 128.0f, 64.0f + 64.0f, 64.0f, ranking_count + 1);
 		

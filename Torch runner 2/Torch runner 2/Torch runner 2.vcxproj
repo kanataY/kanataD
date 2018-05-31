@@ -149,6 +149,7 @@
     <ClCompile Include="ObjTitle.cpp" />
     <ClCompile Include="Correction.cpp" />
     <ClCompile Include="ObjTorch.cpp" />
+    <ClCompile Include="ObjTrack.cpp" />
     <ClCompile Include="SceneGameClear.cpp" />
     <ClCompile Include="SceneGameOver.cpp" />
     <ClCompile Include="SceneMain.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="ObjTitle.h" />
     <ClInclude Include="Correction.h" />
     <ClInclude Include="ObjTorch.h" />
+    <ClInclude Include="ObjTrack.h" />
     <ClInclude Include="SceneGameClear.h" />
     <ClInclude Include="SceneGameOver.h" />
     <ClInclude Include="SceneMain.h" />
