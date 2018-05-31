@@ -71,9 +71,23 @@ void CObjTitle::Draw()
 	dst.m_right = 800.0f;
 	dst.m_bottom = 600.0f;
 
-	//m_pic番目に登録しているsrc・dst・cで描画する
+	//0番目に登録しているsrc・dst・cで描画する
 	Draw::Draw(0, &src, &dst, c, 0.0f);
 
+	//タイトル画面--------
+	//切り取り位置設定
+	src.m_top = 0.0f;
+	src.m_left = 0.0f;
+	src.m_right = 512.0f;
+	src.m_bottom = 512.0f;
 
-	//Font::StrDraw(L"タイトル", 10, 10, 100, c);
+	//描画位置設定
+	dst.m_top = 20.0f;
+	dst.m_left = 120.0f;
+	dst.m_right = dst.m_left+512.0f;
+	dst.m_bottom = dst.m_top+140.0f;
+
+	//1番目に登録しているsrc・dst・cで描画する
+	Draw::Draw(1, &src, &dst, c, 0.0f);
+	
 }
