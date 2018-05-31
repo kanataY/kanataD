@@ -120,6 +120,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ObjCheckPoint.cpp" />
     <ClCompile Include="ObjCrates.cpp" />
     <ClCompile Include="GameL\Audio.cpp" />
     <ClCompile Include="GameL\DirectXDevice.cpp" />
@@ -158,6 +159,7 @@
     <ClCompile Include="SceneRanking.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ObjCheckPoint.h" />
     <ClInclude Include="ObjCrates.h" />
     <ClInclude Include="GameHead.h" />
     <ClInclude Include="GameL\Audio.h" />

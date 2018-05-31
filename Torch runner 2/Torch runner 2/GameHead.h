@@ -17,6 +17,7 @@ enum OBJ_NAME
 	OBJ_RAIN,               //雨
 	OBJ_OKAMA,              //オカマ
 	OBJ_HOLE,				//穴
+	OBJ_CHECK_POINT,		//チェックポイント
 	OBJ_TRACK,				//トラック
 
 	//補正
@@ -80,6 +81,7 @@ struct UserData
 #include "ObjOkama.h"			//オカマ
 #include "ObjHole.h"			//穴
 #include "ObjTrack.h"			//トラック
+#include "ObjCheckPoint.h"		//チェックポイント
 
 #include "ObjTitle.h"			//タイトル
 #include "ObjGameOver.h"		//ゲームオーバー

@@ -39,15 +39,50 @@ void CObjBlock::Action()
 	//背景関連ーーーーーーーーーーーーーーーーーーーーーーーー
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//チェックポイントを取得
+	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+
 	float rx = runner->GetX();
 	float ry = runner->GetY();
 
-	
+	//チェックポイントのが出てなかったらとまらないようにする
+	float m_check_x = 999.0f;
+	//チェックポイントが出現しているなら位置をとる
+	if (check != nullptr)
+		m_check_x = check->GetX() + m_scroll ;
 
-	//前方スクロールライン
-	if (rx > -50 && runner->GetHoleFallCon() == false)
+	//チェックポイントの描画がすべてWindowに収まっている場合
+	if (m_check_x < 400.0f)
 	{
+		//背景1の動作
+		m_bx1 -= 0.0f;
 
+		//背景2の動作
+		m_bx2 -= 0.0f;
+	}
+
+	//後方
+	else if (runner->GetCheckPoint() == true && m_check_x < 400.0f)
+	{
+		//背景1の動作
+		m_bx1 -= 0.0f;
+
+		//背景2の動作
+		m_bx2 -= 0.0f;
+	}
+
+	else if (rx < -50 || runner->GetHoleFallCon() == true) //画面より左側に行けないようにする
+	{
+		//背景1の動作
+		m_bx1 -= 0.0f;
+
+		//背景2の動作
+		m_bx2 -= 0.0f;
+	}
+	//前方スクロールライン
+	else if (rx > -50 && runner->GetHoleFallCon() == false)
+	{
 		m_scroll -= 2.0f;//主人公が本来動くべき分の値をm_scrollに加える
 
 		//背景1の動作
@@ -61,15 +96,7 @@ void CObjBlock::Action()
 			m_bx2 = 800.0f;
 	}
 
-	//後方
-	if (rx < -50 || runner->GetHoleFallCon() == true) //画面より左側に行けないようにする
-	{
-		//背景1の動作
-		m_bx1 -= 0.0f;
-
-		//背景2の動作
-		m_bx2 -= 0.0f;
-	}
+	
 
 	//マップ関連ーーーーーーーーーー
 	float line = 0.0f;
@@ -108,9 +135,6 @@ void CObjBlock::Action()
 		//列の中から3を探す
 		if (m_map[i][ex] == 3)
 		{
-			////水たまりを生成
-			//CObjPuddle* pu = new CObjPuddle(ex * 64, i * 64);
-			//Objs::InsertObj(pu, OBJ_PUDDLE, 15);
 			//穴を生成
 			CObjHole* hole = new CObjHole(ex * 64, i * 64);
 			Objs::InsertObj(hole, OBJ_HOLE, 15);
@@ -126,6 +150,28 @@ void CObjBlock::Action()
 			//オカマを生成
 			CObjOkama* sma = new CObjOkama(ex * 64, i * 64);
 			Objs::InsertObj(sma, OBJ_OKAMA, 16);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
+
+		//列の中から5を探す
+		if (m_map[i][ex] == 5)
+		{
+			//水たまりを生成
+			CObjPuddle* pu = new CObjPuddle(ex * 64, i * 64);
+			Objs::InsertObj(pu, OBJ_PUDDLE, 15);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
+
+		//列の中から6を探す
+		if (m_map[i][ex] == 6)
+		{
+			//チェックポイントを生成
+			//CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
+			//Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
 
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;
