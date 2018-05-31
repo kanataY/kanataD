@@ -31,10 +31,19 @@ CSceneTitle::~CSceneTitle()
 void CSceneTitle::InitScene()
 {
 	//外部グラフィックファイルを読み込み0番に登録(1024ピクセル)
-	Draw::LoadImageW(L"Image\\back\\title\\title.png", 0, TEX_SIZE_1024);
+	Draw::LoadImageW(L"Image\\back\\title\\title_back.png", 0, TEX_SIZE_1024);//背景
 
-	//外部グラフィックファイルを読み込み0番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\back\\title\\title_mozi.png", 1, TEX_SIZE_512);
+	//外部グラフィックファイルを読み込み1番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\back\\title\\title_title.png", 1, TEX_SIZE_512);//タイトルの文字
+
+	//外部グラフィックファイルを読み込み2番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\back\\title\\title_menu.png", 2, TEX_SIZE_512);//メニューの文字
+
+	//外部グラフィックファイルを読み込み3番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\back\\title\\title_exit.png", 3, TEX_SIZE_512);//終了の文字
+
+	//外部グラフィックファイルを読み込み2番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\back\\title\\Frame.png", 4, TEX_SIZE_512);//枠
 
 	//音楽情報の読み込み
 

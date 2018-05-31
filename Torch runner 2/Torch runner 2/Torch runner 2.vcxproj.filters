@@ -73,6 +73,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\CheckPoint">
       <UniqueIdentifier>{2db2c4b5-1af9-4132-b7de-c125ab3df192}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Torack">
+      <UniqueIdentifier>{160a7f65-07ea-4522-9604-95689515e30b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -182,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="ObjCheckPoint.cpp">
       <Filter>ソース ファイル\GAMEMAIN\CheckPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjTrack.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Torack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="ObjCheckPoint.h">
       <Filter>ソース ファイル\GAMEMAIN\CheckPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjTrack.h">
+      <Filter>ソース ファイル\GAMEMAIN\Torack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
