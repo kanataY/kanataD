@@ -388,7 +388,6 @@ void CObjOkama::HitBox()
 				m_fire_control = true;
 			}
 		}
-
 	}
 	//炎がついてる状態
 	if (m_fire_control == true)
@@ -424,6 +423,7 @@ void CObjOkama::HitBox()
 		m_avoidance = true;
 	}
 
+	//ランナーに当たった時-------------------------------------
 	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。
 	{
 		if (runner->GetHoleFallCon() == false) //ランナーが穴に落ちていなければ

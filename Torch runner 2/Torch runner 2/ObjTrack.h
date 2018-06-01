@@ -17,6 +17,7 @@ public:
 	float GetY() { return m_py; }
 	void  SetX(float x) { m_px = x; }
 	void  SetY(float y) { m_py = y; }
+	void HitBox();  //HitBoxŠÖ˜A
 
 private:
 	float m_px;		//ˆÊ’u

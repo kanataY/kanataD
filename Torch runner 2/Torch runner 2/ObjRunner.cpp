@@ -76,7 +76,7 @@ void CObjRunner::Action()
 	if (m_death == true)//死んだとき
 	{
 		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-		m_ani_max_time = 1;   //アニメーションの速度を上げる
+		m_ani_max_time = 3;   //アニメーションの速度を上げる
 
 		if(m_px  < 300.0f)//３００の地点まで進む
 			m_px += 2;
@@ -449,6 +449,24 @@ void CObjRunner::Draw()
 
 	//描画
 	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
+	//--------------------------------無敵点滅-----------------------------------
+	if (m_invincible > 0 && m_death == false)
+	{
+		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+		src.m_top = 1.0f;
+		src.m_left = 0.0f + m_ani_frame * 64;
+		src.m_right = 64.0f + m_ani_frame * 64;
+		src.m_bottom = 257.0f;
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px;
+		dst.m_right = 64.0f + m_px;
+		dst.m_bottom = 64.0f + m_py;
+
+		//描画
+		Draw::Draw(22, &src, &dst, c, 0.0f);
+	}
 
 	//ーーーーーーーーーーーーーーーーー聖火のもつとこーーーーーーーーーーーー
 	//切り取り位置の設定 
@@ -534,6 +552,8 @@ void CObjRunner::Draw()
 		//描画
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
+
+	
 }
 
 void CObjRunner::HitBox()
