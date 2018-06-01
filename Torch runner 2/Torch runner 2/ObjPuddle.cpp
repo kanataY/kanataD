@@ -116,7 +116,7 @@ void CObjPuddle::HitBox()
 
 	//ƒ‰ƒ“ƒi[‚Æ“–‚½‚Á‚Ä‚¢‚éê‡
 
-	if (runner->GetInvincible() < 0) //–³“GŽžŠÔ‚Å‚È‚¯‚ê‚Î”»’è‚ðÝ‚¯‚éB
+	if (runner->GetInvincible() < 0 ) //–³“GŽžŠÔ‚Å‚È‚¯‚ê‚Î”»’è‚ðÝ‚¯‚éB
 	{
 		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 		{

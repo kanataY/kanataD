@@ -72,7 +72,7 @@ void CObjBlock::Action()
 		m_bx2 -= 0.0f;
 	}
 
-	else if (rx < -50 || runner->GetHoleFallCon() == true) //画面より左側に行けないようにする
+	else if (rx < -50 || runner->GetHoleFallCon() == true || runner->GetDeath() == true) //画面より左側に行けないようにする
 	{
 		//背景1の動作
 		m_bx1 -= 0.0f;
@@ -95,7 +95,6 @@ void CObjBlock::Action()
 		if (m_bx2 < -800.0f)
 			m_bx2 = 800.0f;
 	}
-
 	
 
 	//マップ関連ーーーーーーーーーー

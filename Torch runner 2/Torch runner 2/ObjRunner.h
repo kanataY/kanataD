@@ -23,6 +23,7 @@ public:
 	bool  GetCheckPoint() { return m_check_control; }	//チェックポイントに当たっているかどうかの情報を渡す
 	int   GetCheckTime()  { return m_check_time; }		//チェックポイントに当たってからのタイムを渡す。
 	bool  GetCheckTransfer() { return m_check_transfer; }//チェックポイントに到達して火をうつしているかどうかを渡す
+	bool  GetDeath() { return m_death; }				//ランナーが死んでいるかどうかを入れる。
 	void  SetX(float x) { m_px = x; }					//m_px,m_pyの値をほかのcppでもいじれるようにする
 	void  SetY(float y) { m_py = y; }
 	void  SetVX(float x) { m_vx = x; }					//m_vx,m_vyの値をほかのcppでもいじれるようにする
@@ -51,6 +52,7 @@ private:
 	bool m_homing;                  //第二のランナーに向かっていく
 	bool m_check_transfer;			//チェックポイントに到達して火をうつしているかどうかを入れる変数
 	bool m_check_s1;				//S1のチェックポイントを通過したかどうかを入れる変数
+	bool m_death;					//ランナーが死んだとき
 
 	//ジャンプ系（調整するので消すor帰る）
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる

@@ -39,6 +39,7 @@ void CObjRunner::Init()
 	m_check_time = 0;
 	m_check_transfer = false;
 	m_check_s1 = false;
+	m_death = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -69,7 +70,27 @@ void CObjRunner::Action()
 	//チェックポイントを取得
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
-	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+	//死んだときーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+	if (m_death == true)//死んだとき
+	{
+		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
+		m_ani_max_time = 1;   //アニメーションの速度を上げる
+
+		if(m_px  < 300.0f)//３００の地点まで進む
+			m_px += 2;
+		else
+		{
+			m_death = false; //動かせるようにする
+			m_ani_max_time = 5;//タイムを戻す
+			m_invincible = 50; //しばらくの間無敵時間を設ける
+		}
+	}
+
+	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 	if (m_check_transfer == false)
 	{
 		m_ani_time++;//フレーム動作感覚タイムを進める
@@ -85,8 +106,8 @@ void CObjRunner::Action()
 	}
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
-	//チェックポイントに入ってなければメインの行動ができる
-	if (m_check_control == false)
+	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
+	if (m_check_control == false && m_death == false)
 	{
 		//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
@@ -249,24 +270,18 @@ void CObjRunner::Action()
 
 		if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
 		{
-			m_invincible = 50;    //しばらくの間無敵時間を設ける
-			m_ani_change = 0;
-			m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-			if (m_px < 400)       //ランナーの位置を穴から近い位置に移動させる
-				m_px += 60.0f;
-			else
-				m_px -= 60.0f;
-			m_py -= 10.0f;        //ランナーのYの位置をずらして穴のY軸の真ん中に近い位置で復活させる
+			m_px = -80.0f;
+			m_py = 410.0f;
 			m_hole_control = false;
+			m_death = true;
 		}
 		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 		//後ろに行き過ぎた時ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー---
 
-		if (m_px < -50.0f) //スクロールに遅れた時は真ん中で復活
+		if (m_px < -50.0f && m_death == false) //スクロールに遅れた時は真ん中で復活
 		{
-			m_px = 400.0f;
-			m_invincible = 50; //しばらくの間無敵時間を設ける
+			m_death = true; //死んだ
 		}
 
 		m_invincible--; //無敵時間減少
@@ -535,7 +550,7 @@ void CObjRunner::HitBox()
 	//スマホ少年の位置を取得
 	CObjSmartphone* sumaho = (CObjSmartphone*)Objs::GetObj(OBJ_SMARTPHONE);
 
-	if (m_invincible < 0) //無敵時間じゃなければ
+	if (m_invincible < 0 && m_death == false) //無敵時間じゃなければ
 	{
 		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 		{

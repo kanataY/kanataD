@@ -424,7 +424,7 @@ void CObjOkama::HitBox()
 		m_avoidance = true;
 	}
 
-	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。
+	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。
 	{
 		if (runner->GetHoleFallCon() == false) //ランナーが穴に落ちていなければ
 		{
