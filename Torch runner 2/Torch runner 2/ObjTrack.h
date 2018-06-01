@@ -23,4 +23,7 @@ private:
 	float m_py;
 	float m_vx;		//移動量
 	float m_vy;
+	int m_ani_time; //アニメーションフレーム動作感覚
+	int m_ani_frame;//描画フレーム
+	float m_ani_max_time;   //アニメーション動作間隔最大値
 };
