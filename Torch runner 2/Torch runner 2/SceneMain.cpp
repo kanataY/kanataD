@@ -76,9 +76,14 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\hero\\youtuber.png", 19, TEX_SIZE_256);    //YouTubeｒ
 	//外部グラフィックファイルを読み込み20番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 20, TEX_SIZE_256);    //YouTubeｒの振りかざし
-	//外部グラフィックファイルを読み込み18番に登録(128ピクセル)
-	Draw::LoadImageW(L"Image\\object\\Track.png", 21, TEX_SIZE_128);    //トラック
-	//主人公オブジェクト作成
+	//外部グラフィックファイルを読み込み21番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\Track.png", 21, TEX_SIZE_512);    //トラック
+	//外部グラフィックファイルを読み込み22番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\runner_invincible.png", 22, TEX_SIZE_256);    //第一走者の点滅
+	//外部グラフィックファイルを読み込み23番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\youtuber_invincible.png", 23, TEX_SIZE_256);    //YouTuberの点滅
+																	  
+																	  //主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
 
@@ -124,6 +129,9 @@ void CSceneMain::InitScene()
 	/*
 	CObjRain* r = new CObjRain(0.0f, 0.0f);
 	Objs::InsertObj(r, OBJ_RAIN, 1300);*/
+
+	CObjTrack* t = new CObjTrack(600.0f, 400.0f);
+	Objs::InsertObj(t, OBJ_TRACK, 30);
 }
 
 //実行中メソッド
