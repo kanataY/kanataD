@@ -25,6 +25,7 @@ void CObjRunner::Init()
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
 	m_invincible = 0;
+	m_speed = 0.8f;
 
 	m_hole_fall = 0.0f;
 
@@ -40,6 +41,7 @@ void CObjRunner::Init()
 	m_check_transfer = false;
 	m_check_s1 = false;
 	m_death = false;
+	m_stick_fire = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -75,6 +77,7 @@ void CObjRunner::Action()
 
 	if (m_death == true)//死んだとき
 	{
+		m_stick_fire = false;
 		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
 		m_ani_max_time = 1;   //アニメーションの速度を上げる
 
@@ -121,25 +124,31 @@ void CObjRunner::Action()
 
 		//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 		//移動ーーーーーーーーーーーーーーーーーーーーー
+		if (m_stick_fire == true)
+		{
+			m_speed = 1.6f;
+		}
+		else
+			m_speed = 0.8f;
 
 		if (Input::GetVKey('D') == true)  //右移動
 		{
-			m_vx += 0.8f;
+			m_vx += m_speed;
 		}
 		if (Input::GetVKey('A') == true)  //左移動
 		{
-			m_vx += -0.8f;
+			m_vx += -m_speed;
 		}
 		if (Input::GetVKey('W') == true && m_py > 277)//上移動
 		{
-			m_vy += -0.8f;
+			m_vy += -m_speed;
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
 			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
-				m_vy += 0.8f;
+				m_vy += m_speed;
 			else
-				m_vy += 0.2f;
+				m_vy += m_speed - 0.6f;
 		}
 
 		//摩擦
@@ -307,7 +316,11 @@ void CObjRunner::Action()
 		}
 		if(m_check_vx == false)
 		{
-			m_vx -= 0.3f; //強制スクロール用移動量
+			//火がついているときは強制スクロールを二倍にする
+			if (m_stick_fire == true)
+				m_vx -= 0.6f; //強制スクロール用移動量
+			else
+				m_vx -= 0.3f;
 		}
 
 		//当たり判定関連
@@ -585,5 +598,11 @@ void CObjRunner::HitBox()
 		m_check_control = true;
 		m_vx = 0.0f;
 		m_vy = 0.0f;
+	}
+
+	//炎に当たった場合
+	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
+	{
+		m_stick_fire = true;
 	}
 }

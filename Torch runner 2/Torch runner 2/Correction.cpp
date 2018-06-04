@@ -59,33 +59,22 @@ float CObjCorrection::RangeYPuddle(float y)
 	return y;
 }
 
-//炎を複数表示させる
+//炎を表示させる　箱
+void CObjCorrection::FireDisplayCrates(float x, float y)
+{
+	//炎
+	CObjFire* fi = new CObjFire(x , y , 0);
+	Objs::InsertObj(fi, OBJ_FIRE, 999);
+
+}
+
+//炎を表示させる
 void CObjCorrection::FireDisplay(float x, float y)
 {
 	//炎
-	CObjFire* fi = new CObjFire(x , y , false);
+	CObjFire* fi = new CObjFire(x, y, 1);
 	Objs::InsertObj(fi, OBJ_FIRE, 999);
-	////炎2
-	//CObjFire* fi2 = new CObjFire(x + 30.0f, y + 10.0f);
-	//Objs::InsertObj(fi2, OBJ_FIRE, 999);
-	////炎3
-	//CObjFire* fi3 = new CObjFire(x + 12.0f, y + 35.0f);
-	//Objs::InsertObj(fi3, OBJ_FIRE, 999);
 }
-
-//炎を複数表示させる 追尾バージョン
-//void CObjCorrection::FireDisplayTracking(float x, float y)
-//{
-//	//炎
-//	CObjFire* fi = new CObjFire(x - 10.0f, y - 10.0f);
-//	Objs::InsertObj(fi, OBJ_FIRE, 999);
-//	//炎2
-//	CObjFire* fi2 = new CObjFire(x + 30.0f, y + 10.0f);
-//	Objs::InsertObj(fi2, OBJ_FIRE, 999);
-//	//炎3
-//	CObjFire* fi3 = new CObjFire(x + 12.0f, y + 35.0f);
-//	Objs::InsertObj(fi3, OBJ_FIRE, 999);
-//}
 
 //画面外に行くと消える処理
 bool CObjCorrection::Screen_Out(float x)

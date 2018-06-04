@@ -12,11 +12,11 @@
 using namespace GameL;
 
 //コンストラクタ
-CObjFire::CObjFire(float x,float y ,bool b)
+CObjFire::CObjFire(float x,float y ,int b)
 {
 	m_px = x;
 	m_py = y;
-	m_okama_hit = b;
+	m_fire_hit = b;
 }
 
 //イニシャライズ
@@ -29,7 +29,7 @@ void CObjFire::Init()
 	m_ani_max_time = 4; //アニメーション間隔幅
 
 	//HitBox
-	if(m_okama_hit == false)
+	if(m_fire_hit == 0)
 		Hits::SetHitBox(this, m_px, m_py, 64, 64, ELEMENT_NULL, OBJ_FIRE, 1);
 }
 
@@ -42,7 +42,7 @@ void CObjFire::Action()
 	m_time++; //タイムを進める
 
 	//HitBoxの位置の変更
-	if (m_okama_hit == false)
+	if (m_fire_hit == 0)
 	{
 		CHitBox* hit = Hits::GetHitBox(this);
 		hit->SetPos(m_px + block->GetScroll(), m_py);
@@ -51,7 +51,7 @@ void CObjFire::Action()
 	if (m_time > 101)//一定時間たったら消す
 	{
 		this->SetStatus(false);		//自身に削除命令を出す
-		if (m_okama_hit == false)
+		if (m_fire_hit == 0)
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 	}
 
@@ -65,8 +65,6 @@ void CObjFire::Action()
 	{
 		m_ani_frame = 0;
 	}
-
-	
 
 }
 

@@ -410,7 +410,7 @@ void CObjOkama::HitBox()
 		//炎
 		if (m_fire_control == false)
 		{
-			CObjFire* fi = new CObjFire(m_px, m_py, true);
+			CObjFire* fi = new CObjFire(m_px, m_py, 1);
 			Objs::InsertObj(fi, OBJ_FIRE, 999);
 			m_vx = 0.0f; 
 			m_vy = 0.0f;
@@ -441,10 +441,24 @@ void CObjOkama::HitBox()
 				m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
 				m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
+				// オカマが抱きついた時の主人公
+				float m_okama_run_hag_x_r = -2.8f;
+				float m_okama_run_hag_x_l = -1.3f;
+				float m_okama_run_hag_x_l_r = -2.1f;
+				float m_okama_run_hag_y = 0.8f;
+				// ランナーに火がついていたら移動量を倍にして調整する
+				if (runner->GetStickFire() == true)
+				{
+					m_okama_run_hag_x_r *= 2.0f;
+					m_okama_run_hag_x_l *= 1.8f;
+					m_okama_run_hag_x_l_r *= 1.85f;
+					m_okama_run_hag_y = 1.6f;
+				}
+
 				//左右上下を押すとカウントが１増える
 				if (Input::GetVKey('D') == true && Input::GetVKey('A') == true)  //左右同時押し（バグがあるので応急処置）
 				{
-					runner->SetVX(-1.5f);//ランナーの移動量を０にする
+					runner->SetVX(m_okama_run_hag_x_l_r);//ランナーの移動量を-1.5にする
 					if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
 					{
 						m_rebagacha++;
@@ -455,7 +469,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('D') == true)  //右
 				{
-					runner->SetVX(-3.0f);//ランナーの移動量を０にする
+					runner->SetVX(m_okama_run_hag_x_r);//ランナーの移動量を-3.0にする
 					if (m_rebagacha_cotrol_r == false)
 					{
 						m_rebagacha++;
@@ -465,7 +479,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('A') == true)  //左
 				{
-					runner->SetVX(-1.5f);//ランナーの移動量を０にする
+					runner->SetVX(m_okama_run_hag_x_l);//ランナーの移動量を-1.5にする
 					if (m_rebagacha_cotrol_l == false)
 					{
 						m_rebagacha++;
@@ -492,7 +506,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('W') == true)//上
 				{
-					runner->SetVY(0.8f);//ランナーの移動量を０にする
+					runner->SetVY(m_okama_run_hag_y);//ランナーの移動量を０.8にする
 					if (m_rebagacha_cotrol_u == false)
 					{
 						m_rebagacha++;
@@ -502,7 +516,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('S') == true)//下
 				{
-					runner->SetVY(-0.8f);//ランナーの移動量を０にする
+					runner->SetVY(-m_okama_run_hag_y);//ランナーの移動量を-０.8にする
 					if (m_rebagacha_cotrol_d == false)
 					{
 						m_rebagacha++;

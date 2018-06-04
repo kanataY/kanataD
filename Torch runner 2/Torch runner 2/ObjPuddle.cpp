@@ -125,11 +125,11 @@ void CObjPuddle::HitBox()
 			{
 				if (Input::GetVKey('D') == true)  //右移動
 				{
-					runner->SetVX(0.5f);//ランナーの移動量を減少させる
+					runner->SetVX(-2.f);//ランナーの移動量を減少させる
 				}
 				if (Input::GetVKey('A') == true)  //左移動
 				{
-					runner->SetVX(-0.5f);//ランナーの移動量を減少させる
+					runner->SetVX(-2.f);//ランナーの移動量を減少させる
 				}
 				if (Input::GetVKey('W') == true)//上移動
 				{

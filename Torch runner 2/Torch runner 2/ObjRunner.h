@@ -24,6 +24,7 @@ public:
 	int   GetCheckTime()  { return m_check_time; }		//チェックポイントに当たってからのタイムを渡す。
 	bool  GetCheckTransfer() { return m_check_transfer; }//チェックポイントに到達して火をうつしているかどうかを渡す
 	bool  GetDeath() { return m_death; }				//ランナーが死んでいるかどうかを入れる。
+	bool  GetStickFire() {return m_stick_fire;}			//ランナーに火がついているかどうかを調べる変数
 	void  SetX(float x) { m_px = x; }					//m_px,m_pyの値をほかのcppでもいじれるようにする
 	void  SetY(float y) { m_py = y; }
 	void  SetVX(float x) { m_vx = x; }					//m_vx,m_vyの値をほかのcppでもいじれるようにする
@@ -35,6 +36,7 @@ private:
 	float m_py;
 	float m_vx;			//移動ベクトル
 	float m_vy;
+	float m_speed;      //主人公の移動量のスピード管理
 	int   m_invincible; //無敵時間
 	int   m_check_time; //チェックポイントのタイム管理
 
@@ -53,6 +55,7 @@ private:
 	bool m_check_transfer;			//チェックポイントに到達して火をうつしているかどうかを入れる変数
 	bool m_check_s1;				//S1のチェックポイントを通過したかどうかを入れる変数
 	bool m_death;					//ランナーが死んだとき
+	bool m_stick_fire;              //火が付いたかどうか
 
 	//ジャンプ系（調整するので消すor帰る）
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる

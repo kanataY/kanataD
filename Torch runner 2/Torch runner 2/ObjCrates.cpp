@@ -109,7 +109,7 @@ void CObjCrates::HitBox()
 		//聖火と当たっている場合
 		if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
 		{
-			cor->FireDisplay(m_px, m_py); //炎を発生させる
+			cor->FireDisplayCrates(m_px, m_py); //炎を発生させる
 			m_fire_control = true;
 		}
 	}
@@ -127,12 +127,15 @@ void CObjCrates::HitBox()
 		}
 	}
 
-	//オカマと当たっている場合
-	//if (hit->CheckObjNameHit(OBJ_OKAMA) != nullptr)
-	//{
-	//	this->SetStatus(false);		//自身に削除命令を出す
-	//	Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
-	//}
+	//ランナーを跳ね返す量
+	float m_run_return_1 = 0.8f;     //左以外の箇所
+	float m_run_return_left = 3.0f;  //左側
+	//ランナーが火にあたった場合　ランナーを跳ね返す量を倍にする
+	if (runner->GetStickFire() == true)
+	{
+		m_run_return_1 = 1.6f; //倍にする
+		m_run_return_left = 6.0f;
+	}
 
 	//ランナーと当たっている場合
 	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。
@@ -156,7 +159,7 @@ void CObjCrates::HitBox()
 					if (r >= 45 && r < 135)
 					{
 						if (runner->GetY() > m_py - 35.0f)	//上側を通り抜けれるようにする
-							runner->SetVY(-0.8f);
+							runner->SetVY(-m_run_return_1);
 					}
 
 					if ((r < 45 && r >= 0) || r >= 315)
@@ -167,7 +170,7 @@ void CObjCrates::HitBox()
 						else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
 							;
 						else
-							runner->SetVX(0.8f);//真ん中だから通り抜けれないようにする
+							runner->SetVX(m_run_return_1);//真ん中だから通り抜けれないようにする
 					}
 
 					if (r >= 135 && r < 220)
@@ -178,13 +181,13 @@ void CObjCrates::HitBox()
 						else if (runner->GetY() > m_py + 32.0f)//下側を通り抜けれるようにする
 							;
 						else
-							runner->SetVX(-3.0f);//真ん中だから通り抜けれないようにする
+							runner->SetVX(-m_run_return_left);//真ん中だから通り抜けれないようにする
 					}
 					if (r >= 220 && r < 315)
 					{
 						//下
 						if (runner->GetY() < m_py + 32.0f)//下側を通り抜けれるようにする
-							runner->SetVY(0.8f);
+							runner->SetVY(m_run_return_1);
 					}
 				}
 			}
