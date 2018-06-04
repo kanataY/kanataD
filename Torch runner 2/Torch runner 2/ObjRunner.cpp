@@ -208,6 +208,16 @@ void CObjRunner::Action()
 				}
 			}
 		}
+
+		//ジャンプ量
+		float m_jamp_y_1 = 1.6f;
+		float m_jamp_y_2 = 0.8f;
+		if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
+		{
+			m_jamp_y_1 = 2.4;
+			m_jamp_y_2 = 1.2f;
+		}
+
 		if (m_jamp_control == true)//ジャンプしている
 		{
 			m_time++;
@@ -218,31 +228,31 @@ void CObjRunner::Action()
 					if (Input::GetVKey('W') == true)//上移動
 					{
 						if (m_py > 280)//道幅ギリギリ
-							m_vy += 1.6f;
+							m_vy += m_jamp_y_1;
 						else
-							m_vy += -0.8f;
+							m_vy += -m_jamp_y_2;
 					}
 					else
-						m_vy += 1.6f;//自由落下運動
+						m_vy += m_jamp_y_1;//自由落下運動
 				}
 				else                     //ジャンプするとき上のほうにいた場合はただジャンプする
-					m_vy += 1.6f;
+					m_vy += m_jamp_y_1;
 			}
 			else if (m_time < 20)
 			{
 				if (m_py < 280)//道幅ギリギリ
 				{
-					m_vy += -1.6f;
+					m_vy += -m_jamp_y_1;
 					jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
 				}
 				else
 				{
 					if (Input::GetVKey('W') == true)//上移動
 					{
-						m_vy += -0.8f;
+						m_vy += -m_jamp_y_2;
 					}
 					else
-						m_vy += -1.6f;//自由落下運動
+						m_vy += -m_jamp_y_1;//自由落下運動
 				}
 			}
 			if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる

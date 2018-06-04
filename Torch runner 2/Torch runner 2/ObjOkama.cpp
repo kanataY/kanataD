@@ -27,6 +27,7 @@ void CObjOkama::Init()
 	m_hug = false;
 	m_rebagacha = 0;
 	m_time = 0;
+	m_time_warning = 0;
 	m_time_fire = 0;
 	m_r_time = 0;
 	m_avoidance = false;
@@ -60,184 +61,206 @@ void CObjOkama::Action()
 
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
-	//移動ーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_homing == false)
-		m_vx = -2.f;
-	m_time++;
 
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	//警告を出している
+	m_time_warning++;
 
-	//アニメーション---------------------
-	m_ani_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	//最初に警告を出す（その間オカマはどこかに行かせとく）
+	if (m_time_warning < 2 && m_time_warning > 0)
 	{
-		m_ani_frame++;//フレームを進める
-		m_ani_time = 0;
+		m_px = 0.0f;
+		//警告を出す（描画する）
+		CObjWarning* war = new CObjWarning(500, (int)m_py);
+		Objs::InsertObj(war, OBJ_WARNING, 20);
 	}
-	if (m_ani_frame == 7)//フレームが最後まで進んだら戻す
+	//警告が消えたのでオカマをいまの右端にもどす。
+	if (m_time_warning > 60 && m_time_warning < 65)
 	{
-		m_ani_frame = 0;
+		m_px = 790.0f - block->GetScroll();
 	}
-
-	//キーボード表示用アニメーション
-	m_ani_key_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_key_time > m_ani_key_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	
+	//警告が終わった後出てくる
+	if (m_time_warning > 65)
 	{
-		m_ani_key_frame++;//フレームを進める
-		m_ani_key_time = 0;
-	}
-	if (m_ani_key_frame == 4)//フレームが最後まで進んだら戻す
-	{
-		m_ani_key_frame = 0;
-	}
-
-	//しばらく進んでからホーミングする------------------------------------------------------------
-	if (m_time > 50)
-	{
-		float okax = runner->GetX() - (m_px + block->GetScroll());
-		float okay = runner->GetY() - m_py;
-
-		//atan2で角度を求める
-		float r2 = atan2(okay, okax)*180.0f / 3.14f;
-
-		//-180～-0を180～360に変換
-		if (r2 < 0)
-		{
-			r2 = 360 - abs(r2);
-		};
-
-		float ar = r2;
-
-		if (ar < 0)
-		{
-			ar = 360 - abs(ar);
-		}
-
-		//オカマの現在の向いてる角度を取る
-		float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
-
-		//-180～-0を180～360に変換
-		if (bor < 0)
-		{
-			bor = 360 - abs(bor);
-		};
-		float br = bor;
-
-		//ランナーのほうにホーミングする
+		//移動ーーーーーーーーーーーーーーーーーーーーーーーーー
 		if (m_homing == false)
+			m_vx = -2.f;
+		m_time++;
+
+		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+		//アニメーション---------------------
+		m_ani_time++;//フレーム動作感覚タイムを進める
+		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
 		{
-			//移動方向をランナーの方向にする
-			m_vx = cos(3.14f / 180 * ar);
-			m_vy = sin(3.14f / 180 * ar);
-			m_vx *= 10; // 移動速度を10べぇにする
-			m_vy *= 10;
-			m_homing = true;
-			//ランナーの方にホーミングしたらアニメーション感覚を1にする
-			m_ani_max_time = 1;
+			m_ani_frame++;//フレームを進める
+			m_ani_time = 0;
 		}
-	}
+		if (m_ani_frame == 7)//フレームが最後まで進んだら戻す
+		{
+			m_ani_frame = 0;
+		}
 
-	//ホーミング終了ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		//キーボード表示用アニメーション
+		m_ani_key_time++;//フレーム動作感覚タイムを進める
+		if (m_ani_key_time > m_ani_key_max_time)//フレーム動作感覚タイムが最大まで行ったら
+		{
+			m_ani_key_frame++;//フレームを進める
+			m_ani_key_time = 0;
+		}
+		if (m_ani_key_frame == 4)//フレームが最後まで進んだら戻す
+		{
+			m_ani_key_frame = 0;
+		}
 
-	//補正の情報を持ってくる--------------------------------------------
-	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+		//しばらく進んでからホーミングする------------------------------------------------------------
+		if (m_time > 50)
+		{
+			float okax = runner->GetX() - (m_px + block->GetScroll());
+			float okay = runner->GetY() - m_py;
 
-	//HitBoxの位置の変更
-	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll(), m_py);
+			//atan2で角度を求める
+			float r2 = atan2(okay, okax)*180.0f / 3.14f;
 
-	HitBox(); //HitBox関連
+			//-180～-0を180～360に変換
+			if (r2 < 0)
+			{
+				r2 = 360 - abs(r2);
+			};
 
-	//レバガチャーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_rebagacha > 15) //レバガチャ25回したら
-	{
-		m_hug = false;
-		m_vx = 100.f; //後ろにぶっ飛ぶ
-		m_r_time++;
-		if (m_r_time > 5) //しばらくしたら消える
+			float ar = r2;
+
+			if (ar < 0)
+			{
+				ar = 360 - abs(ar);
+			}
+
+			//オカマの現在の向いてる角度を取る
+			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+			//-180～-0を180～360に変換
+			if (bor < 0)
+			{
+				bor = 360 - abs(bor);
+			};
+			float br = bor;
+
+			//ランナーのほうにホーミングする
+			if (m_homing == false)
+			{
+				//移動方向をランナーの方向にする
+				m_vx = cos(3.14f / 180 * ar);
+				m_vy = sin(3.14f / 180 * ar);
+				m_vx *= 10; // 移動速度を10べぇにする
+				m_vy *= 10;
+				m_homing = true;
+				//ランナーの方にホーミングしたらアニメーション感覚を1にする
+				m_ani_max_time = 1;
+			}
+		}
+
+		//ホーミング終了ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+		//補正の情報を持ってくる--------------------------------------------
+		CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+		m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+
+		//HitBoxの位置の変更
+		CHitBox* hit = Hits::GetHitBox(this);
+		hit->SetPos(m_px + block->GetScroll(), m_py);
+
+		HitBox(); //HitBox関連
+
+		//レバガチャーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		if (m_rebagacha > 15) //レバガチャ25回したら
+		{
+			m_hug = false;
+			m_vx = 100.f; //後ろにぶっ飛ぶ
+			m_r_time++;
+			if (m_r_time > 5) //しばらくしたら消える
+			{
+				this->SetStatus(false);		//自身に削除命令を出す
+				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			}
+		}
+		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+		//木箱or穴回避--------------------------------------------------------------------------------------
+		if (m_avoidance == true && m_fire_control == false)
+		{
+			if (m_crates_hit != 0) //木箱に当たっているとき（0以外）
+			{
+				m_vx = 0.0f; m_vy = 0.0f; //移動量を０
+				m_avoidance_time++;
+				if (m_avoidance_time < 20)
+				{
+					if (m_crates_hit == 1) //木箱の上に当たっている場合
+					{
+						m_vy = -5.0f;
+					}
+					if (m_crates_hit == 2) //木箱の左に当たっている場合
+					{
+						m_vx = -5.0f;
+					}
+					if (m_crates_hit == 3) //木箱の右に当たっている場合
+					{
+						m_vx = 5.0f;
+					}
+					if (m_crates_hit == 4) //木箱の下に当たっている場合
+					{
+						m_vy = 5.0f;
+					}
+				}
+
+				//木箱に当たって後ずさりした後に移動する
+				if (m_avoidance_time > 20 && m_avoidance_time < 21)
+				{
+					if (m_py >= 406.5f) //真ん中より下なら
+					{
+						m_crates_vy = true;
+					}
+					else
+						m_crates_vy = false;
+				}
+				if (m_avoidance_time > 21 && m_avoidance_time < 71)//木箱に当たって後ずさりした後に移動する
+				{
+					if (m_crates_vy == true) //真ん中より下なら
+					{
+						m_py++;
+					}
+					if (m_crates_vy == false) //真ん中より上
+					{
+						m_py--;
+					}
+				}
+
+				//ホーミングできるようにする。
+				if (m_avoidance_time > 70)
+				{
+					m_time = 50;
+					m_avoidance = false;
+					m_homing = false;
+				}
+			}
+		}
+		//--------------------------------------------------------------------------------------
+
+		//画面外に行くと死ぬ
+		bool m_s_o = cor->Screen_Out(m_px);
+
+		if (m_s_o == 1)
 		{
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
+
+		//位置の更新
+		m_px += m_vx;
+		m_py += m_vy;
+
+
+		CObj::SetPrio((int)m_py); //描画優先順位変更
 	}
-	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-
-	//木箱or穴回避--------------------------------------------------------------------------------------
-	if (m_avoidance == true && m_fire_control == false)
-	{
-		if (m_crates_hit != 0) //木箱に当たっているとき（0以外）
-		{
-			m_vx = 0.0f; m_vy = 0.0f; //移動量を０
-			m_avoidance_time++;
-			if (m_avoidance_time < 20)
-			{
-				if (m_crates_hit == 1) //木箱の上に当たっている場合
-				{
-					m_vy = -5.0f;
-				}
-				if (m_crates_hit == 2) //木箱の左に当たっている場合
-				{
-					m_vx = -5.0f;
-				}
-				if (m_crates_hit == 3) //木箱の右に当たっている場合
-				{
-					m_vx = 5.0f;
-				}
-				if (m_crates_hit == 4) //木箱の下に当たっている場合
-				{
-					m_vy = 5.0f;
-				}
-			}
-
-			//木箱に当たって後ずさりした後に移動する
-			if (m_avoidance_time > 20 && m_avoidance_time < 21)
-			{
-				if (m_py >= 406.5f) //真ん中より下なら
-				{
-					m_crates_vy = true;
-				}
-				else
-					m_crates_vy = false;
-			}
-			if (m_avoidance_time > 21 && m_avoidance_time < 71)//木箱に当たって後ずさりした後に移動する
-			{
-				if (m_crates_vy ==true) //真ん中より下なら
-				{
-					m_py++;
-				}
-				if (m_crates_vy == false) //真ん中より上
-				{
-					m_py--;
-				}
-			}
-
-			//ホーミングできるようにする。
-			if (m_avoidance_time > 70)
-			{
-				m_time = 50;
-				m_avoidance = false;
-				m_homing = false;
-			}
-		}
-	}
-	//--------------------------------------------------------------------------------------
-
-	//画面外に行くと死ぬ
-	bool m_s_o = cor->Screen_Out(m_px);
-
-	if (m_s_o == 1)
-	{
-		this->SetStatus(false);		//自身に削除命令を出す
-		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
-	}
-
-	//位置の更新
-	m_px += m_vx;
-	m_py += m_vy;
-
-
-	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画

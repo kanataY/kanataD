@@ -20,6 +20,7 @@ public:
 	void Draw();									//ドロー
 	float RangeY(float y);							//範囲外にいるときにただす
 	float RangeYPuddle(float y);					//範囲外にいるときにただす水たまりバージョン
+	float RangeYTrack(float y);					//範囲外にいるときにただすトラックバージョン
 	void  FireDisplayCrates(float x, float y);		//炎を表示させる 箱限定
 	void  FireDisplay(float x, float y);			//炎を表示させる
 	bool  Screen_Out(float x);						//画面外に行くと消える処理

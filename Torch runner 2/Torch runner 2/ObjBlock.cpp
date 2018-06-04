@@ -187,8 +187,19 @@ void CObjBlock::Action()
 		if (m_map[i][ex] == 6)
 		{
 			//チェックポイントを生成
-			//CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
-			//Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
+			CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
+			Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
+
+		//列の中から7を探す
+		if (m_map[i][ex] == 7)
+		{
+			//トラックを生成
+			CObjTrack* war = new CObjTrack(ex * 64, i * 64);
+			Objs::InsertObj(war, OBJ_TRACK, 20);
 
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;

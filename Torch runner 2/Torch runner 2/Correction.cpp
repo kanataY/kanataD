@@ -59,6 +59,18 @@ float CObjCorrection::RangeYPuddle(float y)
 	return y;
 }
 
+//オブジェクト生成したときにYが歩ける範囲より外か中だったら調整するトラックバージョン
+float CObjCorrection::RangeYTrack(float y)
+{
+
+	if (y > 480.0f)  //歩ける範囲より下にいる場合ギリギリまで戻す
+		return 480.0f;
+	else if (y < 220.0f)//歩ける範囲より上にいる場合ギリギリまで戻す
+		return 220.0f;
+
+	return y;
+}
+
 //炎を表示させる　箱
 void CObjCorrection::FireDisplayCrates(float x, float y)
 {

@@ -32,15 +32,26 @@ void CObjPuddle::Init()
 		//ブロック情報を持ってくる
 		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 		//マップ番号を取ってくる　
-		if (block->GetMap(m_rx, m_ry + j) == 3)//水たまりが下にあるなら増やす
+		if (block->GetMap(m_rx, m_ry + j) == 5)//水たまりが下にあるなら増やす
 		{
 			m_drow_down++;
 		}
 
-		if (block->GetMap(m_rx, m_ry - j) == 3)//水たまりが上にあるなら下にあるのを消す
+		if (block->GetMap(m_rx, m_ry - j) == 5)//水たまりが上にあるなら下にあるのを消す
 		{
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+
+		//水たまり以外なら終了させる
+		if (block->GetMap(m_rx, m_ry + j) != 5)
+		{
+			break;
+		}
+		//水たまり以外なら終了させる
+		if (block->GetMap(m_rx, m_ry - j) != 5)
+		{
+			break;
 		}
 	}
 	
@@ -125,7 +136,7 @@ void CObjPuddle::HitBox()
 	}
 
 	//ランナーと当たっている場合
-	if (runner->GetInvincible() < 0 ) //無敵時間でなければ判定を設ける。
+	if (runner->GetInvincible() < 0 && runner->GetJamp() == false) //無敵時間でなければ判定を設ける。&ジャンプしてない時
 	{
 		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 		{

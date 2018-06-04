@@ -76,6 +76,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Torack">
       <UniqueIdentifier>{160a7f65-07ea-4522-9604-95689515e30b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GAMEMAIN\Warning">
+      <UniqueIdentifier>{3c57765d-f995-48c6-bec4-936253da7c85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="ObjTrack.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Torack</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjWarning.cpp">
+      <Filter>ソース ファイル\GAMEMAIN\Warning</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="ObjTrack.h">
       <Filter>ソース ファイル\GAMEMAIN\Torack</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjWarning.h">
+      <Filter>ソース ファイル\GAMEMAIN\Warning</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
