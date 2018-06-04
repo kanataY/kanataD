@@ -77,6 +77,10 @@ void CObjRunner::Action()
 
 	if (m_death == true)//死んだとき
 	{
+		//ジャンプしたときにそのまま行ってしまうので戻す。
+		if (m_py <= 277) //道路より上に行かないようにする
+			m_py = 277;
+
 		m_stick_fire = false;
 		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
 		m_ani_max_time = 3;   //アニメーションの速度を上げる
@@ -302,6 +306,11 @@ void CObjRunner::Action()
 
 		if (m_px < -50.0f && m_death == false) //スクロールに遅れた時は真ん中で復活
 		{
+			//ジャンプ関連をすべて最初に戻す。
+			m_time = 0;
+			m_jamp_control = false;
+			m_jamp_control_2 = false;
+			//-----------------------------------------------
 			m_death = true; //死んだ
 		}
 
