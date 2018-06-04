@@ -90,3 +90,18 @@ bool CObjCorrection::Screen_Out(float x)
 
 	return false;
 }
+
+//画面外に行くと消える処理
+float CObjCorrection::Screen_In(float x)
+{
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	//画面外ならtrueを返す
+	if (x > 750.0f)
+	{
+		x = 750.0f;
+	}
+
+	return x;
+}
