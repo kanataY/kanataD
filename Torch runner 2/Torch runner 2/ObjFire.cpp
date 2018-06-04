@@ -36,23 +36,42 @@ void CObjFire::Init()
 //アクション
 void CObjFire::Action()
 {
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
 	m_time++; //タイムを進める
 
-	//HitBoxの位置の変更
-	if (m_fire_hit == 0)
+	//ランナー以外に火が付いた場合はこっち
+	if (m_fire_hit != 2)
 	{
-		CHitBox* hit = Hits::GetHitBox(this);
-		hit->SetPos(m_px + block->GetScroll(), m_py);
-	}
-
-	if (m_time > 101)//一定時間たったら消す
-	{
-		this->SetStatus(false);		//自身に削除命令を出す
+		//HitBoxの位置の変更
 		if (m_fire_hit == 0)
-			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		{
+			CHitBox* hit = Hits::GetHitBox(this);
+			hit->SetPos(m_px + block->GetScroll(), m_py);
+		}
+
+		if (m_time > 101)//一定時間たったら消す
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+			if (m_fire_hit == 0)
+				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+	}
+	else      //ランナーも火が付いた場合
+	{
+		//火の位置をランナーの位置にする
+		m_px = runner->GetX() - block->GetScroll();
+		m_py = runner->GetY();
+
+		//ランナーについている火が消えたなら
+		if (runner->GetStickFire() == false)
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+		}
 	}
 
 	m_ani_time++;//フレーム動作感覚タイムを進める
@@ -87,30 +106,47 @@ void CObjFire::Draw()
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-	//表示位置の設定
-	dst.m_top = 0.0f + m_py - 10.0f;
-	dst.m_left = 0.0f + m_px + block->GetScroll() - 10.0f;
-	dst.m_right = 50.0f + m_px + block->GetScroll() -10.0f;
-	dst.m_bottom = 50.0f + m_py -10.0f;
 
-	//描画
-	Draw::Draw(6, &src, &dst, c, 0.0f);
+	//ランナー以外に火が付いた場合はこっち
+	if (m_fire_hit != 2)
+	{
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py - 10.0f;
+		dst.m_left = 0.0f + m_px + block->GetScroll() - 10.0f;
+		dst.m_right = 50.0f + m_px + block->GetScroll() - 10.0f;
+		dst.m_bottom = 50.0f + m_py - 10.0f;
 
-	//表示位置の設定
-	dst.m_top = 0.0f + m_py + 30.0f;
-	dst.m_left = 0.0f + m_px + block->GetScroll() + 10.0f;
-	dst.m_right = 50.0f + m_px + block->GetScroll() + 10.0f;
-	dst.m_bottom = 50.0f + m_py + 30.0f;
+		//描画
+		Draw::Draw(6, &src, &dst, c, 0.0f);
 
-	//描画
-	Draw::Draw(6, &src, &dst, c, 0.0f);
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + 30.0f;
+		dst.m_left = 0.0f + m_px + block->GetScroll() + 10.0f;
+		dst.m_right = 50.0f + m_px + block->GetScroll() + 10.0f;
+		dst.m_bottom = 50.0f + m_py + 30.0f;
 
-	//表示位置の設定
-	dst.m_top = 0.0f + m_py + 12.0f;
-	dst.m_left = 0.0f + m_px + block->GetScroll() + 35.0f;
-	dst.m_right = 50.0f + m_px + block->GetScroll() + 35.0f;
-	dst.m_bottom = 50.0f + m_py + 12.0f;
+		//描画
+		Draw::Draw(6, &src, &dst, c, 0.0f);
 
-	//描画
-	Draw::Draw(6, &src, &dst, c, 0.0f);
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + 12.0f;
+		dst.m_left = 0.0f + m_px + block->GetScroll() + 35.0f;
+		dst.m_right = 50.0f + m_px + block->GetScroll() + 35.0f;
+		dst.m_bottom = 50.0f + m_py + 12.0f;
+
+		//描画
+		Draw::Draw(6, &src, &dst, c, 0.0f);
+	}
+
+	else //ランナーの場合は火を小さくしておしりにつける
+	{
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + 18.0f;
+		dst.m_left = 0.0f + m_px + block->GetScroll();
+		dst.m_right = 25.0f + m_px + block->GetScroll();
+		dst.m_bottom = 25.0f + m_py + 18.0f;
+
+		//描画
+		Draw::Draw(6, &src, &dst, c, 0.0f);
+	}
 }

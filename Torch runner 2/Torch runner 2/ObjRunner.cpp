@@ -645,5 +645,16 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
 	{
 		m_stick_fire = true;
+
+		//‰Š
+		CObjFire* fi = new CObjFire(m_px, m_py, 2);
+		Objs::InsertObj(fi, OBJ_FIRE, 999);
+	}
+
+	//…‚É“–‚½‚Á‚½ê‡
+	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
+	{
+		//ƒ‰ƒ“ƒi[‚É‰Î‚ª‚Â‚¢‚Ä‚é‚È‚çÁ‚¦‚é
+		m_stick_fire = false;
 	}
 }
