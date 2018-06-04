@@ -114,8 +114,17 @@ void CObjPuddle::HitBox()
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
-	//ランナーと当たっている場合
+	//ランナーを跳ね返す量
+	float m_run_return_1 = 2.0f;  //左右
+	float m_run_return_2 = 0.5f;  //上下
+									 //ランナーが火にあたった場合　ランナーを跳ね返す量を倍にする
+	if (runner->GetStickFire() == true)
+	{
+		m_run_return_1 = 4.0f; //倍にする
+		m_run_return_2 = 1.0f;
+	}
 
+	//ランナーと当たっている場合
 	if (runner->GetInvincible() < 0 ) //無敵時間でなければ判定を設ける。
 	{
 		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
@@ -125,19 +134,19 @@ void CObjPuddle::HitBox()
 			{
 				if (Input::GetVKey('D') == true)  //右移動
 				{
-					runner->SetVX(-2.f);//ランナーの移動量を減少させる
+					runner->SetVX(-m_run_return_1);//ランナーの移動量を減少させる
 				}
 				if (Input::GetVKey('A') == true)  //左移動
 				{
-					runner->SetVX(-2.f);//ランナーの移動量を減少させる
+					runner->SetVX(-m_run_return_1);//ランナーの移動量を減少させる
 				}
 				if (Input::GetVKey('W') == true)//上移動
 				{
-					runner->SetVY(0.5f);//ランナーの移動量を減少させる
+					runner->SetVY(m_run_return_2);//ランナーの移動量を減少させる
 				}
 				if (Input::GetVKey('S') == true)//下移動
 				{
-					runner->SetVY(-0.5f);//ランナーの移動量を減少させる
+					runner->SetVY(-m_run_return_2);//ランナーの移動量を減少させる
 				}
 			}
 		}
