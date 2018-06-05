@@ -62,6 +62,9 @@ void CObjOkama::Action()
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
+	//箱の位置を取得
+	CObjCrates* cra = (CObjCrates*)Objs::GetObj(OBJ_CRATES);
+
 	//警告を出している
 	m_time_warning++;
 
@@ -78,7 +81,7 @@ void CObjOkama::Action()
 	{
 		m_px = 790.0f - block->GetScroll();
 	}
-	
+
 	//警告が終わった後出てくる
 	if (m_time_warning > 65)
 	{
@@ -186,61 +189,51 @@ void CObjOkama::Action()
 		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 		//木箱or穴回避--------------------------------------------------------------------------------------
-		if (m_avoidance == true && m_fire_control == false)
+		if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr && m_fire_control == false)
 		{
-			if (m_crates_hit != 0) //木箱に当たっているとき（0以外）
+			m_avoidance = true;
+		}
+
+		if (m_avoidance == true)
+		{
+			m_avoidance_time++; //タイムを進める
+
+			if (m_avoidance_time < 2) //木箱に当たったから
 			{
 				m_vx = 0.0f; m_vy = 0.0f; //移動量を０
-				m_avoidance_time++;
-				if (m_avoidance_time < 20)
-				{
-					if (m_crates_hit == 1) //木箱の上に当たっている場合
-					{
-						m_vy = -5.0f;
-					}
-					if (m_crates_hit == 2) //木箱の左に当たっている場合
-					{
-						m_vx = -5.0f;
-					}
-					if (m_crates_hit == 3) //木箱の右に当たっている場合
-					{
-						m_vx = 5.0f;
-					}
-					if (m_crates_hit == 4) //木箱の下に当たっている場合
-					{
-						m_vy = 5.0f;
-					}
-				}
+			}
 
-				//木箱に当たって後ずさりした後に移動する
-				if (m_avoidance_time > 20 && m_avoidance_time < 21)
+			//当たる位置によって移動量を変化させる
+			if (m_avoidance_time < 140 && m_avoidance_time > 2)
+			{
+				if (cra != nullptr)
 				{
-					if (m_py >= 406.5f) //真ん中より下なら
+					if (cra->GetX() > m_px)
 					{
-						m_crates_vy = true;
+						m_vx = -2.0f;
 					}
-					else
-						m_crates_vy = false;
+					if (cra->GetX() < m_px)
+					{
+						m_vx = 2.0f;
+					}
+					if (cra->GetY() > m_py)
+					{
+						m_vy = 1.0f;
+					}
+					if (cra->GetY() < m_py)
+					{
+						m_vy = -2.0f;
+					}
 				}
-				if (m_avoidance_time > 21 && m_avoidance_time < 71)//木箱に当たって後ずさりした後に移動する
-				{
-					if (m_crates_vy == true) //真ん中より下なら
-					{
-						m_py++;
-					}
-					if (m_crates_vy == false) //真ん中より上
-					{
-						m_py--;
-					}
-				}
+			}
 
-				//ホーミングできるようにする。
-				if (m_avoidance_time > 70)
-				{
-					m_time = 50;
-					m_avoidance = false;
-					m_homing = false;
-				}
+			//ホーミングできるようにする。
+			if (m_avoidance_time > 140)
+			{
+				m_avoidance_time = 0;
+				m_time = 50;
+				m_avoidance = false;
+				m_homing = false;
 			}
 		}
 		//--------------------------------------------------------------------------------------
@@ -434,17 +427,13 @@ void CObjOkama::HitBox()
 		{
 			CObjFire* fi = new CObjFire(m_px, m_py, 1);
 			Objs::InsertObj(fi, OBJ_FIRE, 999);
-			m_vx = 0.0f; 
+			m_vx = 0.0f;
 			m_vy = 0.0f;
 			m_fire_control = true;
 		}
 	}
 
-	//木箱に当たっているとき
-	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr)
-	{
-		m_avoidance = true;
-	}
+
 
 	//ランナーに当たった時-------------------------------------
 	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。

@@ -14,6 +14,8 @@ public:
 	void Action();  //アクション
 	void Draw();	//ドロー
 	void HitBox();  //HitBox関連
+	float GetX() { return m_px; }						//m_px,m_pyの値を渡す
+	float GetY() { return m_py; }
 
 private:
 	float m_px;		//位置
