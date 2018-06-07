@@ -31,11 +31,20 @@ void CObjRain::Init()
 //アクション
 void CObjRain::Action()
 {
+	//ゲージの情報を持ってくる
+	CObjGauge* gau = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
+
 	m_time++; //タイムを進める
 
-	if (m_time > 500)//一定時間たったら消す
+	if (m_time > 250)//一定時間たったら消す
 	{
 		this->SetStatus(false);		//自身に削除命令を出す
+	}
+
+	//ゲージを減らす
+	if (m_time % 50 == 0)
+	{
+		gau->SetGauge(1);
 	}
 
 	m_ani_time++;//フレーム動作感覚タイムを進める

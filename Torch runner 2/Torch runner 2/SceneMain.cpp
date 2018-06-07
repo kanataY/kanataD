@@ -16,9 +16,9 @@ using namespace GameL;
 #include "GameHead.h"
 
 
-CSceneMain::CSceneMain()
+CSceneMain::CSceneMain(int r)
 {
-
+	remaining = r;	//残機
 }
 
 
@@ -86,7 +86,7 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\object\\warning.png", 24, TEX_SIZE_128);    //警告
 																	  
 	//主人公オブジェクト作成
-	CObjRunner* obj = new CObjRunner();
+	CObjRunner* obj = new CObjRunner(remaining);
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
 
 	//背景（ブロック）オブジェクト作成
@@ -148,7 +148,7 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	switch (((UserData*)Save::GetData())->m_stage_count = 1)
 	{
 	case 1:
-		p = Save::ExternalDataOpen(L"Stage1.csv", &size);//外部データ読み込み
+		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み
 		break;
 
 		break;

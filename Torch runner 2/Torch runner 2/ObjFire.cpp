@@ -56,6 +56,8 @@ void CObjFire::Action()
 
 		if (m_time > 101)//一定時間たったら消す
 		{
+			if (m_fire_hit == 1) //人間関係だったら雨を降らす
+				block->SetRain(true);
 			this->SetStatus(false);		//自身に削除命令を出す
 			if (m_fire_hit == 0)
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する

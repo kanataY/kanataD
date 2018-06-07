@@ -27,6 +27,7 @@ void CObjBlock::Init()
 	m_py = 0.0f;	//位置
 	m_bx1 = 0.0f;
 	m_bx2 = 800.0f;
+	m_rain = false;
 
 	m_scroll = 0.0f;
 	m_scroll_run = 800.0f;
@@ -204,6 +205,15 @@ void CObjBlock::Action()
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;
 		}
+	}
+
+	//雨のフラグがONになったなら雨を降らす
+	if (m_rain == true)
+	{
+		CObjRain* r = new CObjRain(0.0f, 0.0f);
+		Objs::InsertObj(r, OBJ_RAIN, 1300);
+
+		m_rain = false;
 	}
 }
 

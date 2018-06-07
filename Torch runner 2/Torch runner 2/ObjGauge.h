@@ -15,6 +15,7 @@ public:
 	void Draw();	//ƒhƒ[
 	float GetX() { return m_px; }
 	float GetY() { return m_py; }
+	float GetGauge() { return m_gauge_decrease; }
 	void  SetX(float x) { m_px = x; }
 	void  SetY(float y) { m_py = y; }
 	void  SetGauge(float g) { m_gauge_decrease += g; }

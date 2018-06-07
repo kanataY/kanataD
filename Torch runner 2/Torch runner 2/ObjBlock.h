@@ -22,13 +22,14 @@ public:
 
 	int  GetMap(int x, int y);//マップ情報の取得
 	void  SetMap(int x, int y, int m) { m_map[y][x] = m; }
-
+	void  SetRain(bool r) { m_rain = r; }
 
 private:
 	float m_px;		//位置
 	float m_py;
 	float m_bx1;     //背景の動く値
 	float m_bx2;     //背景の動く値2
+	bool  m_rain;    //雨を降らす
 	
 	float m_scroll; //スクロール位置
 	float m_scroll_run; //ランナーの位置でスクを変えるようの変数

@@ -96,7 +96,7 @@ void CObjMenu::Action()
 
 	if (Input::GetVKey(VK_RETURN) == true&&m_key_flag==0)
 	{
-		Scene::SetScene(new CSceneMain());
+		Scene::SetScene(new CSceneMain(3));
 	}
 	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 1)
 	{
@@ -108,7 +108,7 @@ void CObjMenu::Action()
 	}
 	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 3)
 	{
-		Scene::SetScene(new CSceneMain());
+		Scene::SetScene(new CSceneMain(3));
 	}
 
 }

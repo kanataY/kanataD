@@ -12,7 +12,7 @@ using namespace GameL;
 class CSceneMain : public CScene
 {
 public:
-	CSceneMain();
+	CSceneMain(int r);
 	~CSceneMain();
 	void InitScene();//初期化メソッド
 	void Scene();	 //実行中メソッド
