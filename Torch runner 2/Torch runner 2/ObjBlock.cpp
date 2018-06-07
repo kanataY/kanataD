@@ -205,6 +205,17 @@ void CObjBlock::Action()
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;
 		}
+
+		//列の中から8を探す
+		if (m_map[i][ex] == 8)
+		{
+			//トラック2を生成
+			CObjTrack* war = new CObjTrack(ex * 64, i * 64);
+			Objs::InsertObj(war, OBJ_TRACK, 20);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
 	}
 
 	//雨のフラグがONになったなら雨を降らす

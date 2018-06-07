@@ -29,6 +29,8 @@ private:
 	int m_rx;		//最初の位置を記憶する
 	int m_ry;
 
+	int m_ani_change; //描画を変える用の変数
+
 	int   m_time_warning; //警告出してるタイム
 
 	int m_ani_time; //アニメーションフレーム動作感覚

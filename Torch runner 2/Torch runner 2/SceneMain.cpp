@@ -75,16 +75,23 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み19番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\youtuber.png", 19, TEX_SIZE_256);    //YouTubeｒ
 	//外部グラフィックファイルを読み込み20番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 20, TEX_SIZE_256);    //YouTubeｒの振りかざし
+	Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 20, TEX_SIZE_256);    //YouTuberの振りかざし
 	//外部グラフィックファイルを読み込み21番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Track.png", 21, TEX_SIZE_512);    //トラック
 	//外部グラフィックファイルを読み込み22番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\runner_invincible.png", 22, TEX_SIZE_256);    //第一走者の点滅
 	//外部グラフィックファイルを読み込み23番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\youtuber_invincible.png", 23, TEX_SIZE_256);    //YouTuberの点滅
-	//外部グラフィックファイルを読み込み24番に登録(256ピクセル)
+	//外部グラフィックファイルを読み込み24番に登録(128ピクセル)
 	Draw::LoadImageW(L"Image\\object\\warning.png", 24, TEX_SIZE_128);    //警告
-																	  
+	//外部グラフィックファイルを読み込み25番に登録(192ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\runner_death.png", 25, TEX_SIZE_192);  //第一走者の死亡
+	 //外部グラフィックファイルを読み込み26番に登録(192ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\youtuber_death.png", 26, TEX_SIZE_192);    //YouTuberの死亡
+	//外部グラフィックファイルを読み込み27番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\Track2.png", 27, TEX_SIZE_512);    //トラック2
+	//外部グラフィックファイルを読み込み24番に登録(128ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\remaining.png", 28, TEX_SIZE_128);    //残機
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner(remaining);
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
@@ -104,7 +111,7 @@ void CSceneMain::InitScene()
 	//オカマバズーカ
 	/*CObjOkama* o = new CObjOkama(800.0f, 450.0f);
 	Objs::InsertObj(o, OBJ_OKAMA, 13);
-*/
+	*/
 	/*CObjOkama* o2 = new CObjOkama(800.0f, 500.0f);
 	Objs::InsertObj(o2, OBJ_OKAMA, 13);
 
