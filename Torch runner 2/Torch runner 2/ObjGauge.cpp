@@ -29,14 +29,21 @@ void CObjGauge::Init()
 //アクション
 void CObjGauge::Action()
 {
-	m_time++;
-	if (m_time % 1 == 0) //15フレームごとにゲージが減るようにする
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//チェックポイントに到達しているときはゲージを減らさない。
+	if (runner->GetCheckPoint() == false)
 	{
-		m_gauge_decrease++;
-	}
-	if (m_gauge_decrease > 192)
-	{
-		m_gauge_decrease = 192.0f;
+		m_time++;
+		if (m_time % 27 == 0) //15フレームごとにゲージが減るようにする
+		{
+			m_gauge_decrease++;
+		}
+		if (m_gauge_decrease > 192.0f)
+		{
+			m_gauge_decrease = 192.0f;
+		}
 	}
 }
 
