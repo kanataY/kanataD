@@ -32,7 +32,7 @@ void CObjCheckPoint::Init()
 	m_ani_change = 19;
 
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 124, 300, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
+	Hits::SetHitBox(this, m_px, m_py, 150, 300, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
 }
 
 //ƒAƒNƒVƒ‡ƒ“

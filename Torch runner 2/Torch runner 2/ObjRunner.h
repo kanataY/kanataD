@@ -8,7 +8,7 @@ using namespace GameL;
 class CObjRunner : public CObj
 {
 public:
-	CObjRunner();
+	CObjRunner(int r);
 	~CObjRunner() {};
 	void Init();	//イニシャライズ
 	void Action();  //アクション
@@ -40,6 +40,7 @@ private:
 	float m_speed;      //主人公の移動量のスピード管理
 	int   m_invincible; //無敵時間
 	int   m_check_time; //チェックポイントのタイム管理
+	int   m_remaining;  //残機
 
 	//描画関連
 	float m_hole_fall;  //穴に落ちた時の描画するところを変える変数
@@ -57,6 +58,7 @@ private:
 	bool m_check_s1;				//S1のチェックポイントを通過したかどうかを入れる変数
 	bool m_death;					//ランナーが死んだとき
 	bool m_stick_fire;              //火が付いたかどうか
+	bool m_check_vx;				//チェックポイントによってスクロールができなくなったかどうか
 
 	//ジャンプ系（調整するので消すor帰る）
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる

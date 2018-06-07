@@ -23,7 +23,7 @@ void CObjGameOver::Action()
 {
 	m_time++;
 
-	if (Input::GetVKey('A') == true )
+	if (Input::GetVKey(VK_RETURN) == true )
 	{
 		if (m_key_flag == true)
 		{

@@ -188,52 +188,56 @@ void CObjOkama::Action()
 		}
 		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
-		//木箱or穴回避--------------------------------------------------------------------------------------
-		if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr && m_fire_control == false)
+		//炎がついてる状態
+		if (m_fire_control == false)
 		{
-			m_avoidance = true;
-		}
-
-		if (m_avoidance == true)
-		{
-			m_avoidance_time++; //タイムを進める
-
-			if (m_avoidance_time < 2) //木箱に当たったから
+			//木箱or穴回避--------------------------------------------------------------------------------------
+			if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr && m_fire_control == false)
 			{
-				m_vx = 0.0f; m_vy = 0.0f; //移動量を０
+				m_avoidance = true;
 			}
 
-			//当たる位置によって移動量を変化させる
-			if (m_avoidance_time < 140 && m_avoidance_time > 2)
+			if (m_avoidance == true)
 			{
-				if (cra != nullptr)
+				m_avoidance_time++; //タイムを進める
+
+				if (m_avoidance_time < 2) //木箱に当たったから
 				{
-					if (cra->GetX() > m_px)
+					m_vx = 0.0f; m_vy = 0.0f; //移動量を０
+				}
+
+				//当たる位置によって移動量を変化させる
+				if (m_avoidance_time < 140 && m_avoidance_time > 2)
+				{
+					if (cra != nullptr)
 					{
-						m_vx = -2.0f;
-					}
-					if (cra->GetX() < m_px)
-					{
-						m_vx = 2.0f;
-					}
-					if (cra->GetY() > m_py)
-					{
-						m_vy = 1.0f;
-					}
-					if (cra->GetY() < m_py)
-					{
-						m_vy = -2.0f;
+						if (cra->GetX() > m_px)
+						{
+							m_vx = -2.0f;
+						}
+						if (cra->GetX() < m_px)
+						{
+							m_vx = 2.0f;
+						}
+						if (cra->GetY() > m_py)
+						{
+							m_vy = 1.0f;
+						}
+						if (cra->GetY() < m_py)
+						{
+							m_vy = -2.0f;
+						}
 					}
 				}
-			}
 
-			//ホーミングできるようにする。
-			if (m_avoidance_time > 140)
-			{
-				m_avoidance_time = 0;
-				m_time = 50;
-				m_avoidance = false;
-				m_homing = false;
+				//ホーミングできるようにする。
+				if (m_avoidance_time > 140)
+				{
+					m_avoidance_time = 0;
+					m_time = 50;
+					m_avoidance = false;
+					m_homing = false;
+				}
 			}
 		}
 		//--------------------------------------------------------------------------------------
@@ -408,6 +412,8 @@ void CObjOkama::HitBox()
 	//炎がついてる状態
 	if (m_fire_control == true)
 	{
+		m_vx = 0.0f;
+		m_vy = 0.0f;
 		if (fire != nullptr)
 		{
 			m_time_fire++; //一定時間たったらオカマを消す。

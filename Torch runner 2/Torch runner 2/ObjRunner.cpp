@@ -3,6 +3,7 @@
 #include "GameL\WinInputs.h"
 #include "GameL\SceneManager.h"
 #include "GameL\HitBoxManager.h"
+#include "GameL\DrawFont.h"
 #include "GameL\UserData.h"
 
 #include "GameHead.h"
@@ -12,9 +13,9 @@
 using namespace GameL;
 
 //コンストラクタ
-CObjRunner::CObjRunner()
+CObjRunner::CObjRunner(int r)
 {
-
+	m_remaining = r; //残機
 }
 
 //イニシャライズ
@@ -42,6 +43,7 @@ void CObjRunner::Init()
 	m_check_s1 = false;
 	m_death = false;
 	m_stick_fire = false;
+	m_check_vx = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -69,9 +71,25 @@ void CObjRunner::Action()
 	//オカマの情報を持ってくる
 	CObjOkama* okama = (CObjOkama*)Objs::GetObj(OBJ_OKAMA);
 
+	//ゲージの情報を持ってくる
+	CObjGauge* gau = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
+
 	//チェックポイントを取得
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
+	//ゲージがなくなった時----------------------------------------------------------------------
+	if (gau->GetGauge() == 192)
+	{
+		m_remaining -= 1;
+		if (m_remaining <= 0)
+		{
+			Scene::SetScene(new CSceneGameOver());
+		}
+		else
+			Scene::SetScene(new CSceneMain(m_remaining));
+	}
+
+	//----------------------------------------------------------------------------------------
 
 	//死んだときーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
@@ -197,83 +215,86 @@ void CObjRunner::Action()
 		//聖火をかざす終了-----------------------------------------------------------------------------
 
 		//ジャンプ---------------------------
-		bool m_hag = false;
-		if (okama != nullptr)
-			m_hag = okama->GetHug();
-
-		if (m_jamp_control == false)
+		//スクロールがとまっていたらジャンプできない
+		if (m_check_vx == false)
 		{
-			if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
+			bool m_hag = false;
+			if (okama != nullptr)
+				m_hag = okama->GetHug();
+
+			if (m_jamp_control == false)
 			{
-				if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+				if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
 				{
-					m_jamp_control = true;		//ジャンプしている
-					m_jamp_control_2 = true;
+					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
+					{
+						m_jamp_control = true;		//ジャンプしている
+						m_jamp_control_2 = true;
+					}
 				}
 			}
-		}
 
-		//ジャンプ量
-		float m_jamp_y_1 = 1.6f;
-		float m_jamp_y_2 = 0.8f;
-		if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
-		{
-			m_jamp_y_1 = 2.4;
-			m_jamp_y_2 = 1.2f;
-		}
-
-		if (m_jamp_control == true)//ジャンプしている
-		{
-			m_time++;
-			if (m_time > 20 && m_time < 45) //ジャンプして最高点に到達
+			//ジャンプ量
+			float m_jamp_y_1 = 1.6f;
+			float m_jamp_y_2 = 0.8f;
+			if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
 			{
-				if (jamp_memo != 999.0f)    //ジャンプするとき上のほうにいなければWで少し移動できる
+				m_jamp_y_1 = 2.4;
+				m_jamp_y_2 = 1.2f;
+			}
+
+			if (m_jamp_control == true)//ジャンプしている
+			{
+				m_time++;
+				if (m_time > 20 && m_time < 45) //ジャンプして最高点に到達
 				{
-					if (Input::GetVKey('W') == true)//上移動
+					if (jamp_memo != 999.0f)    //ジャンプするとき上のほうにいなければWで少し移動できる
 					{
-						if (m_py > 280)//道幅ギリギリ
-							m_vy += m_jamp_y_1;
+						if (Input::GetVKey('W') == true)//上移動
+						{
+							if (m_py > 280)//道幅ギリギリ
+								m_vy += m_jamp_y_1;
+							else
+								m_vy += -m_jamp_y_2;
+						}
 						else
-							m_vy += -m_jamp_y_2;
+							m_vy += m_jamp_y_1;//自由落下運動
 					}
-					else
-						m_vy += m_jamp_y_1;//自由落下運動
+					else                     //ジャンプするとき上のほうにいた場合はただジャンプする
+						m_vy += m_jamp_y_1;
 				}
-				else                     //ジャンプするとき上のほうにいた場合はただジャンプする
-					m_vy += m_jamp_y_1;
-			}
-			else if (m_time < 20)
-			{
-				if (m_py < 280)//道幅ギリギリ
+				else if (m_time < 20)
 				{
-					m_vy += -m_jamp_y_1;
-					jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
-				}
-				else
-				{
-					if (Input::GetVKey('W') == true)//上移動
+					if (m_py < 280)//道幅ギリギリ
 					{
-						m_vy += -m_jamp_y_2;
+						m_vy += -m_jamp_y_1;
+						jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
 					}
 					else
-						m_vy += -m_jamp_y_1;//自由落下運動
+					{
+						if (Input::GetVKey('W') == true)//上移動
+						{
+							m_vy += -m_jamp_y_2;
+						}
+						else
+							m_vy += -m_jamp_y_1;//自由落下運動
+					}
 				}
-			}
-			if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
-			{
-				m_jamp_control_2 = false;
-				m_vy = 0.0f;
-			}
-			if (m_time > 58) //時間が来たら自由に動けるようになる
-			{
-				if (Input::GetVKey(VK_SPACE) == false)   //スペースを離さない限りジャンプさせない
+				if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
 				{
-					m_jamp_control = false;
-					m_time = 0;  //タイムを初期化
+					m_jamp_control_2 = false;
+					m_vy = 0.0f;
+				}
+				if (m_time > 58) //時間が来たら自由に動けるようになる
+				{
+					if (Input::GetVKey(VK_SPACE) == false)   //スペースを離さない限りジャンプさせない
+					{
+						m_jamp_control = false;
+						m_time = 0;  //タイムを初期化
+					}
 				}
 			}
 		}
-
 
 		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
@@ -322,9 +343,6 @@ void CObjRunner::Action()
 		//HitBoxの位置の変更
 		CHitBox* hit = Hits::GetHitBox(this);
 		hit->SetPos(m_px + 18.0f, m_py);
-
-		//チェックポイントが指定の位置に行ってるかどうかを入れる変数
-		bool m_check_vx = false; 
 
 		//チェックポイントが生成されてるなら調べる
 		if (check != nullptr)
@@ -587,7 +605,28 @@ void CObjRunner::Draw()
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
 
-	
+	//残機-------------------------------------------------------------------------------
+	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+	src.m_top = 0.0f;
+	src.m_left = 0.0f;
+	src.m_right = 64.0f;
+	src.m_bottom = 64.0f;
+
+	//表示位置の設定
+	dst.m_top = 0.0f + 10.0f;
+	dst.m_left = 0.0f + 680.0f;
+	dst.m_right = 40.0f + 680.0f;
+	dst.m_bottom = 40.0f + 10.0f;
+
+	//残りの数字を描画する
+	static wchar_t  c_siro[8];
+	static float cl_siro[4] = { 0.0f,0.0f,0.0f,1.0f };
+	swprintf_s(c_siro, L"X %d", m_remaining);
+	CDrawFont::StrDraw(c_siro, 735, 16, 32, cl_siro);
+
+	//描画
+	Draw::Draw(4, &src, &dst, c, 0.0f);
+	//---------------------------------------------------------------------------------
 }
 
 void CObjRunner::HitBox()
