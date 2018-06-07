@@ -16,7 +16,8 @@ CObjTrack::CObjTrack(int x, int y)
 {
 	m_px = (float)x;
 	m_py = (float)y;
-
+	m_rx = x / 128;
+	m_ry = y / 128;
 }
 
 //イニシャライズ
@@ -27,6 +28,17 @@ void CObjTrack::Init()
 	m_ani_time = 0; 
 	m_ani_frame = 0;		//静止フレームを初期にする
 	m_ani_max_time = 2;		//アニメーション動作間隔最大値
+	for (int j = 1; j < 10; j++)  //マップのYの値だけ探す
+	{
+		//ブロック情報を持ってくる
+		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+		
+		if (block->GetMap(m_rx, m_ry - j) == 3)//水たまりが上にあるなら下にあるのを消す
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+	}
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 128, 68, ELEMENT_ENEMY, OBJ_TRACK, 1);
 }
@@ -117,6 +129,5 @@ void CObjTrack::HitBox()
 				runner->SetVX(-9.0f);
 			}
 		}
-		
 	}
 }
