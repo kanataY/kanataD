@@ -81,17 +81,16 @@ void CObjRunner::Action()
 	if (gau->GetGauge() == 192)
 	{
 		m_remaining -= 1;
-		m_ani_change = 25;
-		if (m_ani_frame == 4)
+		//m_ani_change = 25;
+
+		if (m_remaining <= 0)
 		{
-			if (m_remaining <= 0)
-			{
-				Scene::SetScene(new CSceneGameOver());
-			}
-			else
-				Scene::SetScene(new CSceneMain(m_remaining));
+			Scene::SetScene(new CSceneGameOver());
 		}
-		m_ani_max_time = 20;
+		else
+			Scene::SetScene(new CSceneMain(m_remaining));
+
+		//m_ani_max_time = 20;
 	}
 
 	//----------------------------------------------------------------------------------------
