@@ -16,8 +16,8 @@ CObjTrack::CObjTrack(int x, int y)
 {
 	m_px = (float)x;
 	m_py = (float)y;
-	m_rx = x / 128;
-	m_ry = y / 128;
+	m_rx = x / 64;
+	m_ry = y / 64;
 }
 
 //イニシャライズ
@@ -26,20 +26,22 @@ void CObjTrack::Init()
 	m_vx = 0.0f;
 	m_vy = 0.0f;
 	m_time_warning = 0;
+	m_ani_change = 0;
 
-	m_ani_time = 0; 
+	m_ani_time = 0;
 	m_ani_frame = 0;		//静止フレームを初期にする
 	m_ani_max_time = 2;		//アニメーション動作間隔最大値
-	for (int j = 1; j < 10; j++)  //マップのYの値だけ探す
-	{
+
 		//ブロック情報を持ってくる
-		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-		
-		if (block->GetMap(m_rx, m_ry - j) == 3)//水たまりが上にあるなら下にあるのを消す
-		{
-			this->SetStatus(false);		//自身に削除命令を出す
-			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
-		}
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	if (block->GetMap(m_rx, m_ry) == 7)//マップ上にトラックがあった時
+	{
+		m_ani_change = 0;//0にする
+	}
+	if (block->GetMap(m_rx, m_ry) == 8)//マップ上にトラック2があった時
+	{
+		m_ani_change = 1;//1にする
 	}
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 128, 68, ELEMENT_ENEMY, OBJ_TRACK, 1);
@@ -75,7 +77,6 @@ void CObjTrack::Action()
 	//警告が終わった後出てくる
 	if (m_time_warning > 65)
 	{
-
 		//移動速度
 		m_vx = -5.5f;
 
@@ -126,21 +127,42 @@ void CObjTrack::Draw()
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+	//m_ani_changeが0の時トラックの描画
+	if (m_ani_change == 0)
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f + m_ani_frame * 128;
+		src.m_right = 128.0f + m_ani_frame * 128;
+		src.m_bottom = 512.0f;
 
-	//切り取り位置の設定
-	src.m_top = 0.0f;
-	src.m_left = 0.0f + m_ani_frame * 128;
-	src.m_right = 128.0f + m_ani_frame * 128;
-	src.m_bottom = 512.0f;
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px + block->GetScroll();
+		dst.m_right = 128.0f + m_px + block->GetScroll();
+		dst.m_bottom = 128.0f + m_py;
 
-	//表示位置の設定
-	dst.m_top = 0.0f + m_py;
-	dst.m_left = 0.0f + m_px + block->GetScroll();
-	dst.m_right = 128.0f + m_px + block->GetScroll();
-	dst.m_bottom = 128.0f + m_py;
+		//描画
+		Draw::Draw(21, &src, &dst, c, 0.0f);
+	}
+	//m_ani_changeが1の時トラック2の描画
+	if (m_ani_change == 1)
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f + m_ani_frame * 128;
+		src.m_right = 128.0f + m_ani_frame * 128;
+		src.m_bottom = 512.0f;
 
-	//描画
-	Draw::Draw(21, &src, &dst, c, 0.0f);
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px + block->GetScroll();
+		dst.m_right = 128.0f + m_px + block->GetScroll();
+		dst.m_bottom = 128.0f + m_py;
+
+		//描画
+		Draw::Draw(27, &src, &dst, c, 0.0f);
+	}
 }
 
 void CObjTrack::HitBox()
@@ -158,11 +180,25 @@ void CObjTrack::HitBox()
 		//ランナーのヒットボックスに触れている時
 		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 		{
-			//トラックのY軸の位置+65.0fよりランナーの位置が上なら
-			if (m_py + 65.0f > runner->GetY())
+			//m_ani_cangeが0の時トラック1の仕様にする
+			if (m_ani_change == 0)
 			{
-				//ランナーを後ろに移動させる
-				runner->SetVX(-9.0f);
+				//トラックのY軸の位置+65.0fよりランナーの位置が上なら
+				if (m_py + 65.0f > runner->GetY())
+				{
+					//ランナーを後ろに移動させる
+					runner->SetVX(-9.0f);
+				}
+			}
+			//m_ani_cangeが1の時トラック2の仕様にする
+			if (m_ani_change == 1)
+			{
+				//トラックのY軸の位置+65.0fよりランナーの位置が上なら
+				if (m_py + 65.0f > runner->GetY())
+				{
+					//ランナーを後ろに移動させる
+					runner->SetVX(-20.0f);
+				}
 			}
 		}
 	}

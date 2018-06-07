@@ -81,12 +81,16 @@ void CObjRunner::Action()
 	if (gau->GetGauge() == 192)
 	{
 		m_remaining -= 1;
+		//m_ani_change = 25;
+
 		if (m_remaining <= 0)
 		{
 			Scene::SetScene(new CSceneGameOver());
 		}
 		else
 			Scene::SetScene(new CSceneMain(m_remaining));
+
+		//m_ani_max_time = 20;
 	}
 
 	//----------------------------------------------------------------------------------------
@@ -490,7 +494,7 @@ void CObjRunner::Draw()
 	src.m_top = 1.0f;
 	src.m_left = 0.0f + m_ani_frame * 64;
 	src.m_right =  64.0f + m_ani_frame * 64;
-	src.m_bottom = 257.0f ;
+	src.m_bottom = 257.0f;
 
 	//•\Ž¦ˆÊ’u‚ÌÝ’è
 	dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //ŒŠ‚É—Ž‚¿‚½Žž‚Í•`‰æ‚ð¬‚³‚­‚·‚é
@@ -498,6 +502,20 @@ void CObjRunner::Draw()
 	dst.m_right = 64.0f + m_px - m_hole_fall;
 	dst.m_bottom = 64.0f + m_py - m_hole_fall;
 
+	if (m_ani_change == 25)
+	{
+		src.m_top = 1.0f;
+		src.m_left = 0.0f + m_ani_frame * 64;
+		src.m_right = 64.0f + m_ani_frame * 64;
+		src.m_bottom = 193.0f;
+
+		//•\Ž¦ˆÊ’u‚ÌÝ’è
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px;
+		dst.m_right = 64.0f + m_px;
+		dst.m_bottom = 64.0f + m_py;
+
+	}
 	//•`‰æ
 	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 	//--------------------------------–³“G“_–Å-----------------------------------
@@ -609,7 +627,7 @@ void CObjRunner::Draw()
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 64.0f;
-	src.m_bottom = 64.0f;
+	src.m_bottom = 128.0f;
 
 	//•\Ž¦ˆÊ’u‚ÌÝ’è
 	dst.m_top = 0.0f + 10.0f;
@@ -624,7 +642,7 @@ void CObjRunner::Draw()
 	CDrawFont::StrDraw(c_siro, 735, 16, 32, cl_siro);
 
 	//•`‰æ
-	Draw::Draw(4, &src, &dst, c, 0.0f);
+	Draw::Draw(28, &src, &dst, c, 0.0f);
 	//---------------------------------------------------------------------------------
 }
 
