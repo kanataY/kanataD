@@ -28,6 +28,7 @@ private:
 	float m_vx;		//移動量
 	float m_vy;
 	int   m_time;     //タイム
+	int   m_time_warning; //警告出してるタイム
 	int  m_rebagacha;//レバガチャ
 	int  m_r_time;   //レバガチャした後の後ずさる距離に使う
 	int m_time_fire;     //タイム

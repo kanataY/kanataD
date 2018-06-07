@@ -8,7 +8,7 @@ using namespace GameL;
 class CObjFire : public CObj
 {
 public:
-	CObjFire(float x, float y, bool b);
+	CObjFire(float x, float y, int b);
 	~CObjFire() {};
 	void Init();	//イニシャライズ
 	void Action();  //アクション
@@ -22,7 +22,7 @@ private:
 	float m_px;		//位置
 	float m_py;
 	int   m_time;   //タイム
-	bool  m_okama_hit; //オカマに当たっているかどうかをもらう変数
+	int  m_fire_hit; //0：一般的なもの　１：オカマ　２：ランナー
 
 	int m_ani_time; //アニメーションフレーム動作感覚
 	int m_ani_frame;//描画フレーム

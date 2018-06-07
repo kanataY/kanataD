@@ -83,17 +83,35 @@ void CObjBlock::Action()
 	//前方スクロールライン
 	else if (rx > -50 && runner->GetHoleFallCon() == false)
 	{
-		m_scroll -= 2.0f;//主人公が本来動くべき分の値をm_scrollに加える
+		// 主人公が炎に当たっている場合スクロールを二倍にする
+		if(runner->GetStickFire() == true)
+		{
+			m_scroll -= 4.0f;//主人公が本来動くべき分の値をm_scrollに加える
 
-		//背景1の動作
-		m_bx1 -= 2.0f;
-		if (m_bx1 < -800.0f)
-			m_bx1 = 800.0f;
+			//背景1の動作
+			m_bx1 -= 4.0f;
+			if (m_bx1 < -800.0f)
+				m_bx1 = 800.0f;
 
-		//背景2の動作
-		m_bx2 -= 2.0f;
-		if (m_bx2 < -800.0f)
-			m_bx2 = 800.0f;
+			//背景2の動作
+			m_bx2 -= 4.0f;
+			if (m_bx2 < -800.0f)
+				m_bx2 = 800.0f;
+		}
+		else
+		{
+			m_scroll -= 2.0f;//主人公が本来動くべき分の値をm_scrollに加える
+
+			//背景1の動作
+			m_bx1 -= 2.0f;
+			if (m_bx1 < -800.0f)
+				m_bx1 = 800.0f;
+
+			//背景2の動作
+			m_bx2 -= 2.0f;
+			if (m_bx2 < -800.0f)
+				m_bx2 = 800.0f;
+		}
 	}
 	
 
@@ -169,8 +187,19 @@ void CObjBlock::Action()
 		if (m_map[i][ex] == 6)
 		{
 			//チェックポイントを生成
-			//CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
-			//Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
+			CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
+			Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
+
+			//敵出現場所の値を0にする
+			m_map[i][ex] = 0;
+		}
+
+		//列の中から7を探す
+		if (m_map[i][ex] == 7)
+		{
+			//トラックを生成
+			CObjTrack* war = new CObjTrack(ex * 64, i * 64);
+			Objs::InsertObj(war, OBJ_TRACK, 20);
 
 			//敵出現場所の値を0にする
 			m_map[i][ex] = 0;

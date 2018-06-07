@@ -44,6 +44,17 @@ void CObjHole::Init()
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
+
+		//穴以外なら終了させる
+		if (block->GetMap(m_rx, m_ry + j) != 3)
+		{
+			break;
+		}
+		//穴以外なら終了させる
+		if (block->GetMap(m_rx, m_ry - j) != 3)
+		{
+			break;
+		}
 	}
 
 	//HitBox
@@ -119,7 +130,7 @@ void CObjHole::HitBox()
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
 	//ランナーと当たっている場合
-	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。
+	if (runner->GetInvincible() < 0 && runner->GetJamp() == false) //無敵時間でなければ判定を設ける。&ジャンプしてない時
 	{
 		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 		{

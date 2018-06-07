@@ -27,6 +27,7 @@ void CObjOkama::Init()
 	m_hug = false;
 	m_rebagacha = 0;
 	m_time = 0;
+	m_time_warning = 0;
 	m_time_fire = 0;
 	m_r_time = 0;
 	m_avoidance = false;
@@ -60,184 +61,199 @@ void CObjOkama::Action()
 
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
-	//移動ーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_homing == false)
-		m_vx = -2.f;
-	m_time++;
 
-	//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	//箱の位置を取得
+	CObjCrates* cra = (CObjCrates*)Objs::GetObj(OBJ_CRATES);
 
-	//アニメーション---------------------
-	m_ani_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-	{
-		m_ani_frame++;//フレームを進める
-		m_ani_time = 0;
-	}
-	if (m_ani_frame == 7)//フレームが最後まで進んだら戻す
-	{
-		m_ani_frame = 0;
-	}
+	//警告を出している
+	m_time_warning++;
 
-	//キーボード表示用アニメーション
-	m_ani_key_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_key_time > m_ani_key_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	//最初に警告を出す（その間オカマはどこかに行かせとく）
+	if (m_time_warning < 2 && m_time_warning > 0)
 	{
-		m_ani_key_frame++;//フレームを進める
-		m_ani_key_time = 0;
+		m_px = 0.0f;
+		//警告を出す（描画する）
+		CObjWarning* war = new CObjWarning(500, (int)m_py);
+		Objs::InsertObj(war, OBJ_WARNING, 20);
 	}
-	if (m_ani_key_frame == 4)//フレームが最後まで進んだら戻す
+	//警告が消えたのでオカマをいまの右端にもどす。
+	if (m_time_warning > 60 && m_time_warning < 65)
 	{
-		m_ani_key_frame = 0;
+		m_px = 790.0f - block->GetScroll();
 	}
 
-	//しばらく進んでからホーミングする------------------------------------------------------------
-	if (m_time > 50)
+	//警告が終わった後出てくる
+	if (m_time_warning > 65)
 	{
-		float okax = runner->GetX() - (m_px + block->GetScroll());
-		float okay = runner->GetY() - m_py;
-
-		//atan2で角度を求める
-		float r2 = atan2(okay, okax)*180.0f / 3.14f;
-
-		//-180～-0を180～360に変換
-		if (r2 < 0)
-		{
-			r2 = 360 - abs(r2);
-		};
-
-		float ar = r2;
-
-		if (ar < 0)
-		{
-			ar = 360 - abs(ar);
-		}
-
-		//オカマの現在の向いてる角度を取る
-		float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
-
-		//-180～-0を180～360に変換
-		if (bor < 0)
-		{
-			bor = 360 - abs(bor);
-		};
-		float br = bor;
-
-		//ランナーのほうにホーミングする
+		//移動ーーーーーーーーーーーーーーーーーーーーーーーーー
 		if (m_homing == false)
+			m_vx = -2.f;
+		m_time++;
+
+		//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+		//アニメーション---------------------
+		m_ani_time++;//フレーム動作感覚タイムを進める
+		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
 		{
-			//移動方向をランナーの方向にする
-			m_vx = cos(3.14f / 180 * ar);
-			m_vy = sin(3.14f / 180 * ar);
-			m_vx *= 10; // 移動速度を10べぇにする
-			m_vy *= 10;
-			m_homing = true;
-			//ランナーの方にホーミングしたらアニメーション感覚を1にする
-			m_ani_max_time = 1;
+			m_ani_frame++;//フレームを進める
+			m_ani_time = 0;
 		}
-	}
-
-	//ホーミング終了ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-
-	//補正の情報を持ってくる--------------------------------------------
-	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
-
-	//HitBoxの位置の変更
-	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll(), m_py);
-
-	HitBox(); //HitBox関連
-
-	//レバガチャーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_rebagacha > 15) //レバガチャ25回したら
-	{
-		m_hug = false;
-		m_vx = 100.f; //後ろにぶっ飛ぶ
-		m_r_time++;
-		if (m_r_time > 5) //しばらくしたら消える
+		if (m_ani_frame == 7)//フレームが最後まで進んだら戻す
 		{
-			this->SetStatus(false);		//自身に削除命令を出す
-			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			m_ani_frame = 0;
 		}
-	}
-	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
-	//木箱or穴回避--------------------------------------------------------------------------------------
-	if (m_avoidance == true && m_fire_control == false)
-	{
-		if (m_crates_hit != 0) //木箱に当たっているとき（0以外）
+		//キーボード表示用アニメーション
+		m_ani_key_time++;//フレーム動作感覚タイムを進める
+		if (m_ani_key_time > m_ani_key_max_time)//フレーム動作感覚タイムが最大まで行ったら
 		{
-			m_vx = 0.0f; m_vy = 0.0f; //移動量を０
-			m_avoidance_time++;
-			if (m_avoidance_time < 20)
+			m_ani_key_frame++;//フレームを進める
+			m_ani_key_time = 0;
+		}
+		if (m_ani_key_frame == 4)//フレームが最後まで進んだら戻す
+		{
+			m_ani_key_frame = 0;
+		}
+
+		//しばらく進んでからホーミングする------------------------------------------------------------
+		if (m_time > 50)
+		{
+			float okax = runner->GetX() - (m_px + block->GetScroll());
+			float okay = runner->GetY() - m_py;
+
+			//atan2で角度を求める
+			float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+			//-180～-0を180～360に変換
+			if (r2 < 0)
 			{
-				if (m_crates_hit == 1) //木箱の上に当たっている場合
-				{
-					m_vy = -5.0f;
-				}
-				if (m_crates_hit == 2) //木箱の左に当たっている場合
-				{
-					m_vx = -5.0f;
-				}
-				if (m_crates_hit == 3) //木箱の右に当たっている場合
-				{
-					m_vx = 5.0f;
-				}
-				if (m_crates_hit == 4) //木箱の下に当たっている場合
-				{
-					m_vy = 5.0f;
-				}
+				r2 = 360 - abs(r2);
+			};
+
+			float ar = r2;
+
+			if (ar < 0)
+			{
+				ar = 360 - abs(ar);
 			}
 
-			//木箱に当たって後ずさりした後に移動する
-			if (m_avoidance_time > 20 && m_avoidance_time < 21)
+			//オカマの現在の向いてる角度を取る
+			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+			//-180～-0を180～360に変換
+			if (bor < 0)
 			{
-				if (m_py >= 406.5f) //真ん中より下なら
-				{
-					m_crates_vy = true;
-				}
-				else
-					m_crates_vy = false;
+				bor = 360 - abs(bor);
+			};
+			float br = bor;
+
+			//ランナーのほうにホーミングする
+			if (m_homing == false)
+			{
+				//移動方向をランナーの方向にする
+				m_vx = cos(3.14f / 180 * ar);
+				m_vy = sin(3.14f / 180 * ar);
+				m_vx *= 10; // 移動速度を10べぇにする
+				m_vy *= 10;
+				m_homing = true;
+				//ランナーの方にホーミングしたらアニメーション感覚を1にする
+				m_ani_max_time = 1;
 			}
-			if (m_avoidance_time > 21 && m_avoidance_time < 71)//木箱に当たって後ずさりした後に移動する
+		}
+
+		//ホーミング終了ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+		//補正の情報を持ってくる--------------------------------------------
+		CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+		m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+
+		//HitBoxの位置の変更
+		CHitBox* hit = Hits::GetHitBox(this);
+		hit->SetPos(m_px + block->GetScroll(), m_py);
+
+		HitBox(); //HitBox関連
+
+		//レバガチャーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		if (m_rebagacha > 15) //レバガチャ25回したら
+		{
+			m_hug = false;
+			m_vx = 100.f; //後ろにぶっ飛ぶ
+			m_r_time++;
+			if (m_r_time > 5) //しばらくしたら消える
 			{
-				if (m_crates_vy ==true) //真ん中より下なら
+				this->SetStatus(false);		//自身に削除命令を出す
+				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			}
+		}
+		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+		//木箱or穴回避--------------------------------------------------------------------------------------
+		if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr && m_fire_control == false)
+		{
+			m_avoidance = true;
+		}
+
+		if (m_avoidance == true)
+		{
+			m_avoidance_time++; //タイムを進める
+
+			if (m_avoidance_time < 2) //木箱に当たったから
+			{
+				m_vx = 0.0f; m_vy = 0.0f; //移動量を０
+			}
+
+			//当たる位置によって移動量を変化させる
+			if (m_avoidance_time < 140 && m_avoidance_time > 2)
+			{
+				if (cra != nullptr)
 				{
-					m_py++;
-				}
-				if (m_crates_vy == false) //真ん中より上
-				{
-					m_py--;
+					if (cra->GetX() > m_px)
+					{
+						m_vx = -2.0f;
+					}
+					if (cra->GetX() < m_px)
+					{
+						m_vx = 2.0f;
+					}
+					if (cra->GetY() > m_py)
+					{
+						m_vy = 1.0f;
+					}
+					if (cra->GetY() < m_py)
+					{
+						m_vy = -2.0f;
+					}
 				}
 			}
 
 			//ホーミングできるようにする。
-			if (m_avoidance_time > 70)
+			if (m_avoidance_time > 140)
 			{
+				m_avoidance_time = 0;
 				m_time = 50;
 				m_avoidance = false;
 				m_homing = false;
 			}
 		}
+		//--------------------------------------------------------------------------------------
+
+		//画面外に行くと死ぬ
+		bool m_s_o = cor->Screen_Out(m_px);
+
+		if (m_s_o == 1)
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+
+		//位置の更新
+		m_px += m_vx;
+		m_py += m_vy;
+
+
+		CObj::SetPrio((int)m_py); //描画優先順位変更
 	}
-	//--------------------------------------------------------------------------------------
-
-	//画面外に行くと死ぬ
-	bool m_s_o = cor->Screen_Out(m_px);
-
-	if (m_s_o == 1)
-	{
-		this->SetStatus(false);		//自身に削除命令を出す
-		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
-	}
-
-	//位置の更新
-	m_px += m_vx;
-	m_py += m_vy;
-
-
-	CObj::SetPrio((int)m_py); //描画優先順位変更
 }
 
 //描画
@@ -409,19 +425,15 @@ void CObjOkama::HitBox()
 		//炎
 		if (m_fire_control == false)
 		{
-			CObjFire* fi = new CObjFire(m_px, m_py, true);
+			CObjFire* fi = new CObjFire(m_px, m_py, 1);
 			Objs::InsertObj(fi, OBJ_FIRE, 999);
-			m_vx = 0.0f; 
+			m_vx = 0.0f;
 			m_vy = 0.0f;
 			m_fire_control = true;
 		}
 	}
 
-	//木箱に当たっているとき
-	if (hit->CheckObjNameHit(OBJ_CRATES) != nullptr)
-	{
-		m_avoidance = true;
-	}
+
 
 	//ランナーに当たった時-------------------------------------
 	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。
@@ -441,10 +453,24 @@ void CObjOkama::HitBox()
 				m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
 				m_py = runner->GetY(); //Yの位置をランナーに合わせる
 
+				// オカマが抱きついた時の主人公
+				float m_okama_run_hag_x_r = -2.8f;
+				float m_okama_run_hag_x_l = -1.3f;
+				float m_okama_run_hag_x_l_r = -2.1f;
+				float m_okama_run_hag_y = 0.8f;
+				// ランナーに火がついていたら移動量を倍にして調整する
+				if (runner->GetStickFire() == true)
+				{
+					m_okama_run_hag_x_r *= 2.0f;
+					m_okama_run_hag_x_l *= 1.8f;
+					m_okama_run_hag_x_l_r *= 1.85f;
+					m_okama_run_hag_y = 1.6f;
+				}
+
 				//左右上下を押すとカウントが１増える
 				if (Input::GetVKey('D') == true && Input::GetVKey('A') == true)  //左右同時押し（バグがあるので応急処置）
 				{
-					runner->SetVX(-1.5f);//ランナーの移動量を０にする
+					runner->SetVX(m_okama_run_hag_x_l_r);//ランナーの移動量を-1.5にする
 					if (m_rebagacha_cotrol_r == false && m_rebagacha_cotrol_l == false)
 					{
 						m_rebagacha++;
@@ -455,7 +481,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('D') == true)  //右
 				{
-					runner->SetVX(-3.0f);//ランナーの移動量を０にする
+					runner->SetVX(m_okama_run_hag_x_r);//ランナーの移動量を-3.0にする
 					if (m_rebagacha_cotrol_r == false)
 					{
 						m_rebagacha++;
@@ -465,7 +491,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('A') == true)  //左
 				{
-					runner->SetVX(-1.5f);//ランナーの移動量を０にする
+					runner->SetVX(m_okama_run_hag_x_l);//ランナーの移動量を-1.5にする
 					if (m_rebagacha_cotrol_l == false)
 					{
 						m_rebagacha++;
@@ -492,7 +518,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('W') == true)//上
 				{
-					runner->SetVY(0.8f);//ランナーの移動量を０にする
+					runner->SetVY(m_okama_run_hag_y);//ランナーの移動量を０.8にする
 					if (m_rebagacha_cotrol_u == false)
 					{
 						m_rebagacha++;
@@ -502,7 +528,7 @@ void CObjOkama::HitBox()
 
 				else if (Input::GetVKey('S') == true)//下
 				{
-					runner->SetVY(-0.8f);//ランナーの移動量を０にする
+					runner->SetVY(-m_okama_run_hag_y);//ランナーの移動量を-０.8にする
 					if (m_rebagacha_cotrol_d == false)
 					{
 						m_rebagacha++;

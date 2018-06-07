@@ -82,8 +82,10 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\hero\\runner_invincible.png", 22, TEX_SIZE_256);    //第一走者の点滅
 	//外部グラフィックファイルを読み込み23番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\youtuber_invincible.png", 23, TEX_SIZE_256);    //YouTuberの点滅
+	//外部グラフィックファイルを読み込み24番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\object\\warning.png", 24, TEX_SIZE_128);    //警告
 																	  
-																	  //主人公オブジェクト作成
+	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner();
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
 
@@ -98,14 +100,6 @@ void CSceneMain::InitScene()
 	//補正オブジェクト作成
 	CObjCorrection* cor = new CObjCorrection();
 	Objs::InsertObj(cor, CORRECTION, 13);
-
-	//炎
-	//CObjFire* fi = new CObjFire(30.0f, 400.0f);
-	//Objs::InsertObj(fi, OBJ_FIRE, 13);
-
-	////穴
-	//CObjHole* fi = new CObjHole(30.0f, 400.0f);
-	//Objs::InsertObj(fi, OBJ_HOLE, 13);
 
 	//オカマバズーカ
 	/*CObjOkama* o = new CObjOkama(800.0f, 450.0f);
@@ -130,8 +124,11 @@ void CSceneMain::InitScene()
 	CObjRain* r = new CObjRain(0.0f, 0.0f);
 	Objs::InsertObj(r, OBJ_RAIN, 1300);*/
 
-	CObjTrack* t = new CObjTrack(600.0f, 400.0f);
-	Objs::InsertObj(t, OBJ_TRACK, 30);
+	//CObjTrack* t = new CObjTrack(600, 400);
+	//Objs::InsertObj(t, OBJ_TRACK, 30);
+
+	//CObjWarning* war = new CObjWarning(500, 400);
+	//Objs::InsertObj(war, OBJ_WARNING, 20);
 }
 
 //実行中メソッド

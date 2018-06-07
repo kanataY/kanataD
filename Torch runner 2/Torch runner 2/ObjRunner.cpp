@@ -25,6 +25,7 @@ void CObjRunner::Init()
 	m_vx = 0.0f;
 	m_vy = 0.0f;	//移動ベクトル
 	m_invincible = 0;
+	m_speed = 0.8f;
 
 	m_hole_fall = 0.0f;
 
@@ -40,6 +41,7 @@ void CObjRunner::Init()
 	m_check_transfer = false;
 	m_check_s1 = false;
 	m_death = false;
+	m_stick_fire = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -75,6 +77,11 @@ void CObjRunner::Action()
 
 	if (m_death == true)//死んだとき
 	{
+		//ジャンプしたときにそのまま行ってしまうので戻す。
+		if (m_py <= 277) //道路より上に行かないようにする
+			m_py = 277;
+
+		m_stick_fire = false;
 		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
 		m_ani_max_time = 3;   //アニメーションの速度を上げる
 
@@ -119,27 +126,35 @@ void CObjRunner::Action()
 				m_py = 277;
 		}
 
+		m_px = cor->Screen_In(m_px);  //右に行き過ぎないようにする（右の画面外に行かないように）
+
 		//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 		//移動ーーーーーーーーーーーーーーーーーーーーー
+		if (m_stick_fire == true)
+		{
+			m_speed = 1.6f;
+		}
+		else
+			m_speed = 0.8f;
 
 		if (Input::GetVKey('D') == true)  //右移動
 		{
-			m_vx += 0.8f;
+			m_vx += m_speed;
 		}
 		if (Input::GetVKey('A') == true)  //左移動
 		{
-			m_vx += -0.8f;
+			m_vx += -m_speed;
 		}
 		if (Input::GetVKey('W') == true && m_py > 277)//上移動
 		{
-			m_vy += -0.8f;
+			m_vy += -m_speed;
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
 			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
-				m_vy += 0.8f;
+				m_vy += m_speed;
 			else
-				m_vy += 0.2f;
+				m_vy += m_speed - 0.6f;
 		}
 
 		//摩擦
@@ -197,6 +212,16 @@ void CObjRunner::Action()
 				}
 			}
 		}
+
+		//ジャンプ量
+		float m_jamp_y_1 = 1.6f;
+		float m_jamp_y_2 = 0.8f;
+		if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
+		{
+			m_jamp_y_1 = 2.4;
+			m_jamp_y_2 = 1.2f;
+		}
+
 		if (m_jamp_control == true)//ジャンプしている
 		{
 			m_time++;
@@ -207,31 +232,31 @@ void CObjRunner::Action()
 					if (Input::GetVKey('W') == true)//上移動
 					{
 						if (m_py > 280)//道幅ギリギリ
-							m_vy += 1.6f;
+							m_vy += m_jamp_y_1;
 						else
-							m_vy += -0.8f;
+							m_vy += -m_jamp_y_2;
 					}
 					else
-						m_vy += 1.6f;//自由落下運動
+						m_vy += m_jamp_y_1;//自由落下運動
 				}
 				else                     //ジャンプするとき上のほうにいた場合はただジャンプする
-					m_vy += 1.6f;
+					m_vy += m_jamp_y_1;
 			}
 			else if (m_time < 20)
 			{
 				if (m_py < 280)//道幅ギリギリ
 				{
-					m_vy += -1.6f;
+					m_vy += -m_jamp_y_1;
 					jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
 				}
 				else
 				{
 					if (Input::GetVKey('W') == true)//上移動
 					{
-						m_vy += -0.8f;
+						m_vy += -m_jamp_y_2;
 					}
 					else
-						m_vy += -1.6f;//自由落下運動
+						m_vy += -m_jamp_y_1;//自由落下運動
 				}
 			}
 			if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
@@ -281,6 +306,11 @@ void CObjRunner::Action()
 
 		if (m_px < -50.0f && m_death == false) //スクロールに遅れた時は真ん中で復活
 		{
+			//ジャンプ関連をすべて最初に戻す。
+			m_time = 0;
+			m_jamp_control = false;
+			m_jamp_control_2 = false;
+			//-----------------------------------------------
 			m_death = true; //死んだ
 		}
 
@@ -307,7 +337,11 @@ void CObjRunner::Action()
 		}
 		if(m_check_vx == false)
 		{
-			m_vx -= 0.3f; //強制スクロール用移動量
+			//火がついているときは強制スクロールを二倍にする
+			if (m_stick_fire == true)
+				m_vx -= 0.6f; //強制スクロール用移動量
+			else
+				m_vx -= 0.3f;
 		}
 
 		//当たり判定関連
@@ -605,5 +639,22 @@ void CObjRunner::HitBox()
 		m_check_control = true;
 		m_vx = 0.0f;
 		m_vy = 0.0f;
+	}
+
+	//炎に当たった場合
+	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
+	{
+		m_stick_fire = true;
+
+		//炎
+		CObjFire* fi = new CObjFire(m_px, m_py, 2);
+		Objs::InsertObj(fi, OBJ_FIRE, 999);
+	}
+
+	//水に当たった場合
+	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
+	{
+		//ランナーに火がついてるなら消える
+		m_stick_fire = false;
 	}
 }

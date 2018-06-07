@@ -25,6 +25,8 @@ void CObjTrack::Init()
 {
 	m_vx = 0.0f;
 	m_vy = 0.0f;
+	m_time_warning = 0;
+
 	m_ani_time = 0; 
 	m_ani_frame = 0;		//静止フレームを初期にする
 	m_ani_max_time = 2;		//アニメーション動作間隔最大値
@@ -46,36 +48,70 @@ void CObjTrack::Init()
 //アクション
 void CObjTrack::Action()
 {
-	//移動速度
-	m_vx = -5.5f;
-
-	//アニメーション---------------------------------------------------
-	m_ani_time++;
-	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-	{
-		m_ani_frame++;//フレームを進める
-		m_ani_time = 0;
-	}
-	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-	{
-		m_ani_frame = 0;
-	}
-	//-------------------------------------------------------------------
-
-
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-	//HitBoxの位置の変更
-	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll(), m_py+60.0f);
+	//補正の情報を持ってくる
+	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
+	m_py = cor->RangeYTrack(m_py); //Yの位置がおかしかったら調整する
 
-	HitBox(); //HitBox関連
-	//位置の更新
-	m_px += m_vx;
-	m_py += m_vy;
+	//警告を出している
+	m_time_warning++;
 
-	CObj::SetPrio((int)m_py+50.0f); //描画優先順位変更
+	//最初に警告を出す（その間トラックはどこかに行かせとく）
+	if (m_time_warning < 2 && m_time_warning > 0)
+	{
+		m_px = 0.0f;
+		//警告を出す（描画する）
+		CObjWarning* war = new CObjWarning(500, (int)m_py);
+		Objs::InsertObj(war, OBJ_WARNING, 20);
+	}
+	//警告が消えたのでトラックをいまの右端にもどす。
+	if (m_time_warning > 60 && m_time_warning < 65)
+	{
+		m_px = 790.0f - block->GetScroll();
+	}
+
+	//警告が終わった後出てくる
+	if (m_time_warning > 65)
+	{
+
+		//移動速度
+		m_vx = -5.5f;
+
+		//アニメーション---------------------------------------------------
+		m_ani_time++;
+		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+		{
+			m_ani_frame++;//フレームを進める
+			m_ani_time = 0;
+		}
+		if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+		{
+			m_ani_frame = 0;
+		}
+		//-------------------------------------------------------------------
+
+		//HitBoxの位置の変更
+		CHitBox* hit = Hits::GetHitBox(this);
+		hit->SetPos(m_px + block->GetScroll(), m_py + 60.0f);
+
+		HitBox(); //HitBox関連
+		//位置の更新
+		m_px += m_vx;
+		m_py += m_vy;
+
+		//画面外に行くと死ぬ
+		bool m_s_o = cor->Screen_Out(m_px);
+
+		if (m_s_o == 1)
+		{
+			this->SetStatus(false);		//自身に削除命令を出す
+			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+
+		CObj::SetPrio((int)m_py + 50); //描画優先順位変更
+	}
 }
 
 //描画

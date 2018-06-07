@@ -19,6 +19,7 @@ enum OBJ_NAME
 	OBJ_HOLE,				//穴
 	OBJ_CHECK_POINT,		//チェックポイント
 	OBJ_TRACK,				//トラック
+	OBJ_WARNING,			//警告
 
 	//補正
 	CORRECTION,				//補正
@@ -82,6 +83,7 @@ struct UserData
 #include "ObjHole.h"			//穴
 #include "ObjTrack.h"			//トラック
 #include "ObjCheckPoint.h"		//チェックポイント
+#include "ObjWarning.h"			//警告
 
 #include "ObjTitle.h"			//タイトル
 #include "ObjGameOver.h"		//ゲームオーバー
