@@ -431,7 +431,7 @@ void CObjOkama::HitBox()
 		//‰Š
 		if (m_fire_control == false)
 		{
-			CObjFire* fi = new CObjFire(m_px, m_py, 1);
+			CObjFire* fi = new CObjFire(m_px, m_py, 3);
 			Objs::InsertObj(fi, OBJ_FIRE, 999);
 			m_vx = 0.0f;
 			m_vy = 0.0f;
