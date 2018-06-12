@@ -28,6 +28,9 @@ void CObjOkama::Init()
 	m_rebagacha = 0;
 	m_time = 0;
 	m_time_warning = 0;
+	m_hole_out = false;
+	ar = 0.0f;
+	m_time_hole = 0;
 	m_time_fire = 0;
 	m_r_time = 0;
 	m_avoidance = false;
@@ -40,6 +43,7 @@ void CObjOkama::Init()
 	m_rebagacha_cotrol_l = false;
 	m_rebagacha_cotrol_u = false;
 	m_rebagacha_cotrol_d = false;
+	m_crates_jamp = false;
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
@@ -117,7 +121,7 @@ void CObjOkama::Action()
 		}
 
 		//しばらく進んでからホーミングする------------------------------------------------------------
-		if (m_time > 50)
+		if (m_time > 40)
 		{
 			float okax = runner->GetX() - (m_px + block->GetScroll());
 			float okay = runner->GetY() - m_py;
@@ -166,7 +170,11 @@ void CObjOkama::Action()
 
 		//補正の情報を持ってくる--------------------------------------------
 		CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-		m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+		//穴に当たってない時は
+		if (m_hole_out == false && m_avoidance == false)
+		{
+			m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+		}
 
 		//HitBoxの位置の変更
 		CHitBox* hit = Hits::GetHitBox(this);
@@ -201,46 +209,71 @@ void CObjOkama::Action()
 			{
 				m_avoidance_time++; //タイムを進める
 
-				if (m_avoidance_time < 2) //木箱に当たったから
+				if (m_avoidance_time < 2)
 				{
-					m_vx = 0.0f; m_vy = 0.0f; //移動量を０
+					m_crates_jamp = true;  //ジャンプできるようにする
 				}
 
-				//当たる位置によって移動量を変化させる
-				if (m_avoidance_time < 140 && m_avoidance_time > 2)
+				if (m_avoidance_time < 12) //木箱に当たったから
 				{
-					if (cra != nullptr)
-					{
-						if (cra->GetX() > m_px)
-						{
-							m_vx = -2.0f;
-						}
-						if (cra->GetX() < m_px)
-						{
-							m_vx = 2.0f;
-						}
-						if (cra->GetY() > m_py)
-						{
-							m_vy = 1.0f;
-						}
-						if (cra->GetY() < m_py)
-						{
-							m_vy = -2.0f;
-						}
-					}
+					m_vy = -8.0f;
+				}
+
+				//移動量を変化させる
+				if (m_avoidance_time > 12 && m_avoidance_time < 22)
+				{
+					m_vy = 8.0f;
 				}
 
 				//ホーミングできるようにする。
-				if (m_avoidance_time > 140)
+				if (m_avoidance_time > 20 && m_avoidance_time < 25)
 				{
-					m_avoidance_time = 0;
-					m_time = 50;
+					//木箱に当たってないことにする
 					m_avoidance = false;
-					m_homing = false;
+					if (m_crates_jamp == true) //ジャンプした後にホーミングする
+					{
+						m_homing = false;
+					}
+					m_crates_jamp = false;
+				}
+				if (m_avoidance_time > 25)
+				{
+					m_avoidance_time = 3; //二回目のホーミングはさせない
 				}
 			}
 		}
 		//--------------------------------------------------------------------------------------
+
+		//穴に当たった時飛んで回避
+		if (m_hole_out == true)
+		{
+			m_time_hole++;
+			//ジャンプする
+			if (10 > m_time_hole)
+			{
+				m_vy = -8.0f;
+			}
+			//落下する
+			if (m_time_hole > 10 && m_time_hole < 20)
+			{
+				m_vy = 8.0f;
+			}
+			//そのまま行く
+			else if (m_time_hole > 20 && m_time_hole < 30)
+			{
+				m_hole_out = false;
+				m_vy = 0.0f;
+				//m_time = 50;
+				//m_homing = false; //ホーミングさせる
+				//m_hole_out = false;
+			}
+			//ほんのすこし穴におちなくする
+			else if (m_time_hole > 30)
+			{
+				m_time_hole = 0;
+				
+			}
+		}
 
 		//画面外に行くと死ぬ
 		bool m_s_o = cor->Screen_Out(m_px);
@@ -386,6 +419,9 @@ void CObjOkama::HitBox()
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 
+	//穴情報を持ってくる
+	CObjHole* hole = (CObjHole*)Objs::GetObj(OBJ_HOLE);
+
 	//炎の情報を取得
 	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
 
@@ -401,12 +437,12 @@ void CObjOkama::HitBox()
 		//まだ炎がついてない状態
 		if (m_fire_control == false)
 		{
-			//聖火と当たっている場合
-			if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
-			{
-				cor->FireDisplay(m_px, m_py); //炎を発生させる
-				m_fire_control = true;
-			}
+			////聖火と当たっている場合
+			//if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
+			//{
+			//	cor->FireDisplay(m_px, m_py); //炎を発生させる
+			//	m_fire_control = true;
+			//}
 		}
 	}
 	//炎がついてる状態
@@ -439,7 +475,17 @@ void CObjOkama::HitBox()
 		}
 	}
 
-
+	//穴に当たった場合
+	if (hit->CheckObjNameHit(OBJ_HOLE) != nullptr)
+	{
+		if (hole != nullptr)
+		{
+			if (m_px + block->GetScroll() < 700.0f)
+				m_hole_out = true;
+		}
+		else
+			m_hole_out = false;
+	}
 
 	//ランナーに当たった時-------------------------------------
 	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。

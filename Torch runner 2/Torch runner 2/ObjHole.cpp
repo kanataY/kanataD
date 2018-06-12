@@ -45,11 +45,11 @@ void CObjHole::Init()
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
 
-		//穴以外なら終了させる
-		if (block->GetMap(m_rx, m_ry + j) != 3)
-		{
-			break;
-		}
+		////穴以外なら終了させる
+		//if (block->GetMap(m_rx, m_ry + j) != 3)
+		//{
+		//	break;
+		//}
 		//穴以外なら終了させる
 		if (block->GetMap(m_rx, m_ry - j) != 3)
 		{
