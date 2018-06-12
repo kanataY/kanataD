@@ -715,6 +715,7 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
 	{
 		//ランナーに火がついてるなら消える
-		m_stick_fire = false;
+		if(m_jamp_control == false) //ジャンプしているときは火は消えない
+			m_stick_fire = false;
 	}
 }
