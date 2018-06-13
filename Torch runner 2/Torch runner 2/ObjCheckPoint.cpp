@@ -72,6 +72,14 @@ void CObjCheckPoint::Action()
 
 		m_vx += 1.0f;
 	}
+
+	//シーン移動する。
+	if (m_time > 220)
+	{
+		//((UserData*)Save::GetData())->m_stage_count += 1;
+		Scene::SetScene(new CSceneMain(2));
+	}
+
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
 	hit->SetPos(m_px + block->GetScroll() + 50.0f, m_py + 180.0f);
