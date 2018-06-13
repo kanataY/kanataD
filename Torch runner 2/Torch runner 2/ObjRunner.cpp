@@ -102,21 +102,25 @@ void CObjRunner::Action()
 	//死んだときーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 	if (m_death == true)//死んだとき
 	{
-		//ジャンプしたときにそのまま行ってしまうので戻す。
-		if (m_py <= 277) //道路より上に行かないようにする
-			m_py = 277;
-
-		m_stick_fire = false;
-		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-		m_ani_max_time = 3;   //アニメーションの速度を上げる
-
-		if(m_px  < 300.0f)//３００の地点まで進む
-			m_px += 2;
-		else
+		//穴に落ちてない時だけ
+		if (m_hole_control == false)
 		{
-			m_death = false; //動かせるようにする
-			m_ani_max_time = 5;//タイムを戻す
-			m_invincible = 50; //しばらくの間無敵時間を設ける
+			//ジャンプしたときにそのまま行ってしまうので戻す。
+			if (m_py <= 277) //道路より上に行かないようにする
+				m_py = 277;
+
+			m_stick_fire = false;
+			m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
+			m_ani_max_time = 3;   //アニメーションの速度を上げる
+
+			if (m_px < 300.0f)//３００の地点まで進む
+				m_px += 2;
+			else
+			{
+				m_death = false; //動かせるようにする
+				m_ani_max_time = 5;//タイムを戻す
+				m_invincible = 50; //しばらくの間無敵時間を設ける
+			}
 		}
 	}
 
