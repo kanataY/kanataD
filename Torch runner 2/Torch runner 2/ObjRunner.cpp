@@ -102,29 +102,33 @@ void CObjRunner::Action()
 	//死んだときーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 	if (m_death == true)//死んだとき
 	{
-		//ジャンプしたときにそのまま行ってしまうので戻す。
-		if (m_py <= 277) //道路より上に行かないようにする
-			m_py = 277;
-
-		m_stick_fire = false;
-		m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-		m_ani_max_time = 3;   //アニメーションの速度を上げる
-
-		if(m_px  < 300.0f)//３００の地点まで進む
-			m_px += 2;
-		else
+		//穴に落ちてない時だけ
+		if (m_hole_control == false)
 		{
-			m_death = false; //動かせるようにする
-			m_ani_max_time = 5;//タイムを戻す
-			m_invincible = 50; //しばらくの間無敵時間を設ける
+			//ジャンプしたときにそのまま行ってしまうので戻す。
+			if (m_py <= 277) //道路より上に行かないようにする
+				m_py = 277;
+
+			m_stick_fire = false;
+			m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
+			m_ani_max_time = 3;   //アニメーションの速度を上げる
+
+			if (m_px < 300.0f)//３００の地点まで進む
+				m_px += 2;
+			else
+			{
+				m_death = false; //動かせるようにする
+				m_ani_max_time = 5;//タイムを戻す
+				m_invincible = 50; //しばらくの間無敵時間を設ける
+			}
 		}
 	}
 
 	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_check_transfer == false)
-	{
+	/*if (m_check_transfer == false)
+	{*/
 		m_ani_time++;//フレーム動作感覚タイムを進める
 		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
 		{
@@ -135,7 +139,7 @@ void CObjRunner::Action()
 		{
 			m_ani_frame = 0;
 		}
-	}
+	//}
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
@@ -222,8 +226,8 @@ void CObjRunner::Action()
 		//聖火をかざす終了-----------------------------------------------------------------------------
 
 		//ジャンプ---------------------------
-		//スクロールがとまっていたらジャンプできない
-		if (m_check_vx == false)
+		//チェックポイントが出てきたらジャンプできない
+		if (check == nullptr)
 		{
 			bool m_hag = false;
 			if (okama != nullptr)
@@ -449,7 +453,6 @@ void CObjRunner::Action()
 				else
 				{
 					m_ani_change = 0;//通常の状態で待つ
-					m_ani_frame = 1;
 				}
 			}
 
@@ -466,8 +469,10 @@ void CObjRunner::Action()
 			{
 				m_vx = 0.0f;
 			}
+			else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
+				m_vx -= 0.3f; //強制スクロール用移動量
 			else
-			m_vx -= 0.3f; //強制スクロール用移動量
+				m_vx -= 0.6f; //強制スクロール用移動量
 
 			//摩擦
 			m_vx += -(m_vx * 0.15f);
@@ -495,10 +500,21 @@ void CObjRunner::Draw()
 	RECT_F dst2; //描画先表示位置
 
 	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
-	src.m_top = 1.0f;
-	src.m_left = 0.0f + m_ani_frame * 64;
-	src.m_right =  64.0f + m_ani_frame * 64;
-	src.m_bottom = 257.0f;
+	//チェックポイントに入っていたら立ち姿に変える
+	if (m_check_transfer == false)
+	{
+		src.m_top = 1.0f;
+		src.m_left = 0.0f + m_ani_frame * 64;
+		src.m_right = 64.0f + m_ani_frame * 64;
+		src.m_bottom = 257.0f;
+	}
+	else
+	{
+		src.m_top = 1.0f;
+		src.m_left = 0.0f + 64.0f;
+		src.m_right = 64.0f + 64.0f;
+		src.m_bottom = 257.0f;
+	}
 
 	//表示位置の設定
 	dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
@@ -715,6 +731,7 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
 	{
 		//ランナーに火がついてるなら消える
-		m_stick_fire = false;
+		if(m_jamp_control == false) //ジャンプしているときは火は消えない
+			m_stick_fire = false;
 	}
 }

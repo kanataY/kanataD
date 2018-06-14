@@ -29,6 +29,9 @@ private:
 	float m_vy;
 	int   m_time;     //タイム
 	int   m_time_warning; //警告出してるタイム
+	int   m_time_hole;     //穴を回避するタイム
+	bool  m_hole_out;
+	float ar;
 	int  m_rebagacha;//レバガチャ
 	int  m_r_time;   //レバガチャした後の後ずさる距離に使う
 	int m_time_fire;     //タイム
@@ -44,7 +47,7 @@ private:
 	bool m_rebagacha_cotrol_l; // Lレバガチャを制御
 	bool m_rebagacha_cotrol_u; // Uレバガチャを制御
 	bool m_rebagacha_cotrol_d; // Dレバガチャを制御
-
+	bool m_crates_jamp; //木箱をジャンプして回避
 
 	//-アニメーション
 	int m_ani_time; //アニメーションフレーム動作感覚

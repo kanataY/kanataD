@@ -156,12 +156,13 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	int size;			   //ステージ情報の大きさ
 
 	//ステージごとにステージの名前を格納
-	switch (((UserData*)Save::GetData())->m_stage_count = 1)
+	switch (((UserData*)Save::GetData())->m_stage_count)
 	{
 	case 1:
 		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み
 		break;
-
+	case 2:
+		p = Save::ExternalDataOpen(L"Stage02.csv", &size);//外部データ読み込み
 		break;
 	default:
 		MessageBox(0, L"ステージ番号が正しくありません。", NULL, MB_OK);
