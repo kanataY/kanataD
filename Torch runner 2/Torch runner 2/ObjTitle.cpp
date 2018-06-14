@@ -32,51 +32,74 @@ void CObjTitle::Init()
 
 	m_key_flag = 0;
 	m_key_control = false;
-	m_key_control_time = 0;
-	m_enter_flag = false;
-	m_enter_flag_time = 0;
+	m_enter_control = false;
+	m_scene_start_control = 0;
 }
 
 //アクション
 void CObjTitle::Action()
 {
+	m_scene_start_control++;
 
 	//十字キーの上か下を押したとき
 	if (Input::GetVKey(VK_UP) == true || Input::GetVKey(VK_DOWN) == true)
 	{
+		//キーのコントロールがfalseなら
 		if (m_key_control == false)
 		{
+			//キーのコントロールをtrueにする
 			m_key_control = true;
+
 			//フラグが0の時
 			if (m_key_flag == 0)
 				//フラグを1に
 				m_key_flag = 1;
+
 			//フラグが１の時
 			else if (m_key_flag == 1)
 				//フラグを0に
 				m_key_flag = 0;
 		}
 	}
+	//十字キーが押されてない時
 	else
 	{
-		if (m_key_control_time>5)
+		//キーのコントロールはfalse
+		m_key_control = false;
+	}
+	//エンターキーを押された時2frame経っていたら
+	if (Input::GetVKey(VK_RETURN) == true&&m_scene_start_control >=2)
+	{
+		//エンターコントロールがfalseの時
+		if (m_enter_control==false)
 		{
-			m_key_control = false;
-			m_key_control_time = 0;
+			//メニューへの位置なら
+			if (m_key_flag == 0)
+			{
+				
+				//シーンをメニューへ
+				Scene::SetScene(new CSceneMenu());
+			}
+			//終了の位置なら
+			if (m_key_flag == 1)
+			{
+				//ゲームを終了させる
+				CMultiThread::End();
+			}
+			//エンターキーを押した状態と判定する
+			m_enter_control = true;
 		}
 	}
-	if (m_key_control == true)
+	//エンターキーを押された時2frame経っていなかったら
+	else if (Input::GetVKey(VK_RETURN) == true && m_scene_start_control <= 2)
 	{
-		m_key_control_time++;
+		//エンターキーは押している状態とする。
+		m_enter_control = true;
 	}
-
-	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 0)
+	else
 	{
-		Scene::SetScene(new CSceneMenu());
-	}
-	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 1)
-	{
-		CMultiThread::End();
+		//エンターキーは押してはいない状態とする
+		m_enter_control = false;
 	}
 }
 
@@ -121,7 +144,7 @@ void CObjTitle::Draw()
 
 	//1番目に登録しているsrc・dst・cで描画する
 	Draw::Draw(1, &src, &dst, c, 0.0f);
-	///-------------------------------------------------------------
+	//-------------------------------------------------------------
 
 	//メニューの文字-------------------------------------------
 	//切り取り位置設定
@@ -193,5 +216,5 @@ void CObjTitle::Draw()
 		//4番目に登録しているsrc・dst・cで描画する
 		Draw::Draw(4, &src, &dst, c, 0.0f);
 	}
-	///-------------------------------------------------------------
+	//-------------------------------------------------------------
 }

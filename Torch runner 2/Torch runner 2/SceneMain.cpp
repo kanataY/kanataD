@@ -90,8 +90,12 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\hero\\youtuber_death.png", 26, TEX_SIZE_192);    //YouTuberの死亡
 	//外部グラフィックファイルを読み込み27番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Track2.png", 27, TEX_SIZE_512);    //トラック2
-	//外部グラフィックファイルを読み込み24番に登録(128ピクセル)
+	//外部グラフィックファイルを読み込み28番に登録(128ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\remaining.png", 28, TEX_SIZE_128);    //残機
+	//外部グラフィックファイルを読み込み29番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\fan.png", 29, TEX_SIZE_512);    //ファン
+	//外部グラフィックファイルを読み込み30番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 30, TEX_SIZE_512);    //ファン
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner(remaining);
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);

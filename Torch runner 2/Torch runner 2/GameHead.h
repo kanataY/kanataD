@@ -30,6 +30,7 @@ enum OBJ_NAME
 	OBJ_GAME_CLEAR,			//ゲームクリア
 	OBJ_RANKING,			//ランキング
 	OBJ_MENU,				//メニュー
+	OBJ_OPERATION,			//操作説明
 };
 //------------------------------------------------
 
@@ -90,6 +91,7 @@ struct UserData
 #include "ObjRanking.h"			//ランキング
 #include "ObjMenu.h"			//メニュー
 #include "ObjGameClear.h"		//クリア
+#include "ObjOperation.h"		//操作説明
 //補助系
 #include "Correction.h"			//補正
 //------------------------------------------------
@@ -101,6 +103,7 @@ struct UserData
 #include "SceneMenu.h"			//シーンメニュー
 #include "SceneRanking.h"		//シーンランキング
 #include "SceneGameClear.h"		//シーンクリア
+#include "SceneOperation.h"		//シーン操作説明
 
 //-----------------------------------------------
 

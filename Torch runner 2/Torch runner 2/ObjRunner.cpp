@@ -190,7 +190,7 @@ void CObjRunner::Action()
 
 		//聖火をかざす（火をうつす）---------------------------------------------
 
-		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
+		if (m_hole_control == false)  //穴に落ちていない場合（当たっていない）
 		{
 			if (Input::GetVKey('O') == true)
 			{
@@ -205,7 +205,7 @@ void CObjRunner::Action()
 			}
 			else
 			{
-				if (m_torch_time_control > 30) //３０フレームたつと次が触れる
+				if (m_torch_time_control > 30) //30フレームたつと次が触れる
 				{
 					m_torch_control = false;
 					m_ani_change = 0;         //ランナーの画像をもとに戻す
