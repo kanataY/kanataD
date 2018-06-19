@@ -127,19 +127,16 @@ void CObjRunner::Action()
 	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	/*if (m_check_transfer == false)
-	{*/
-		m_ani_time++;//フレーム動作感覚タイムを進める
-		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-		{
-			m_ani_frame++;//フレームを進める
-			m_ani_time = 0;
-		}
-		if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-		{
-			m_ani_frame = 0;
-		}
-	//}
+	m_ani_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	{
+		m_ani_frame++;//フレームを進める
+		m_ani_time = 0;
+	}
+	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+	{
+		m_ani_frame = 0;
+	}
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
@@ -149,7 +146,7 @@ void CObjRunner::Action()
 
 		if (m_py >= 536) //一番下より下に行かないようにする
 			m_py = 536;
-		if (m_jamp_control_2 == false || m_check_vx == true )        //ジャンプをしてない時
+		if (m_jamp_control_2 == false || check != nullptr )        //ジャンプをしてない時
 		{
 			if (m_py <= 277) //道路より上に行かないようにする
 				m_py = 277;

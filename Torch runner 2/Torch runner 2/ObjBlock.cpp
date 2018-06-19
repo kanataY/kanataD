@@ -31,7 +31,6 @@ void CObjBlock::Init()
 
 	m_scroll = 0.0f;
 	m_scroll_run = 800.0f;
-	((UserData*)Save::GetData())->m_stage_count = 1; // ‰¼
 }
 
 //ƒAƒNƒVƒ‡ƒ“

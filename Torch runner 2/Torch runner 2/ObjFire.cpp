@@ -54,7 +54,7 @@ void CObjFire::Action()
 			hit->SetPos(m_px + block->GetScroll(), m_py);
 		}
 
-		if (m_time > 101)//ˆê’èŠÔ‚½‚Á‚½‚çÁ‚·
+		if (m_time > 71)//ˆê’èŠÔ‚½‚Á‚½‚çÁ‚·
 		{
 			if (m_fire_hit == 1) //lŠÔŠÖŒW‚¾‚Á‚½‚ç‰J‚ğ~‚ç‚·
 				block->SetRain(true);

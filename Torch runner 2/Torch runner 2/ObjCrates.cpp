@@ -125,7 +125,7 @@ void CObjCrates::HitBox()
 		if (fire != nullptr)
 		{
 			m_time++; //ˆê’èŠÔ‚½‚Á‚½‚ç–Ø” ‚ğÁ‚·B
-			if (m_time > 99)
+			if (m_time > 70)
 			{
 				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//©g‚Éíœ–½—ß‚ğo‚·

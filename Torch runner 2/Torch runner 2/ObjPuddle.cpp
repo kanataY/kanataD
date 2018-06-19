@@ -54,6 +54,34 @@ void CObjPuddle::Init()
 			break;
 		}
 	}
+
+	//for (int x = 1; x < 10; x++)  //マップのXの値だけ探す
+	//{
+	//	//ブロック情報を持ってくる
+	//	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+	//	//マップ番号を取ってくる　
+	//	if (block->GetMap(m_rx + x, m_ry) == 5)//水たまりが下にあるなら増やす
+	//	{
+	//		m_drow_down++;
+	//	}
+
+	//	if (block->GetMap(m_rx - x, m_ry) == 5)//水たまりが上にあるなら下にあるのを消す
+	//	{
+	//		this->SetStatus(false);		//自身に削除命令を出す
+	//		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	//	}
+
+	//	//水たまり以外なら終了させる
+	//	if (block->GetMap(m_rx + x, m_ry) != 5)
+	//	{
+	//		break;
+	//	}
+	//	//水たまり以外なら終了させる
+	//	if (block->GetMap(m_rx - x, m_ry) != 5)
+	//	{
+	//		break;
+	//	}
+	//}
 	
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 55, 45 * (float)m_drow_down, ELEMENT_ITEM, OBJ_PUDDLE, 1);
