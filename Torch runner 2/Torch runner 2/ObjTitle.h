@@ -14,10 +14,9 @@ public:
 	void Action();	//アクション
 	void Draw();	//ドロー
 private:
-	int m_key_flag;//1:ステージセレクト2:ランキング3:タイトルに戻る4:操作説明
+	int m_key_flag;//1:メニューへ2:終了
 	bool m_key_control;//キーの制御用
-	int m_key_control_time;//キーの制御のタイム
-	bool m_enter_flag;//エンターをおしっぱの時のフラグ
-	int m_enter_flag_time;//エンターキーの押してるときの時間を計測する変数
+	bool m_enter_control;//エンターをおしっぱの時のフラグ
+	int m_scene_start_control;//タイトルに飛んだ時にすぐMenuに飛ぶのを防ぐ変数
 
 };

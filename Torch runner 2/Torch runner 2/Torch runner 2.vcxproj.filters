@@ -79,6 +79,9 @@
     <Filter Include="ソース ファイル\GAMEMAIN\Warning">
       <UniqueIdentifier>{3c57765d-f995-48c6-bec4-936253da7c85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\OPERATION">
+      <UniqueIdentifier>{d4266aca-18ef-4668-ad42-4458e7ced3b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameL\Audio.cpp">
@@ -194,6 +197,12 @@
     </ClCompile>
     <ClCompile Include="ObjWarning.cpp">
       <Filter>ソース ファイル\GAMEMAIN\Warning</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjOperation.cpp">
+      <Filter>ソース ファイル\Scene\OPERATION</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneOperation.cpp">
+      <Filter>ソース ファイル\Scene\OPERATION</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="ObjWarning.h">
       <Filter>ソース ファイル\GAMEMAIN\Warning</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjOperation.h">
+      <Filter>ソース ファイル\Scene\OPERATION</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneOperation.h">
+      <Filter>ソース ファイル\Scene\OPERATION</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

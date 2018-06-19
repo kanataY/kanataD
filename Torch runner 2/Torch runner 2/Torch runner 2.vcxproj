@@ -156,8 +156,10 @@
     <ClCompile Include="SceneGameOver.cpp" />
     <ClCompile Include="SceneMain.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
+    <ClCompile Include="SceneOperation.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="SceneRanking.cpp" />
+    <ClCompile Include="ObjOperation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ObjCheckPoint.h" />
@@ -183,6 +185,7 @@
     <ClInclude Include="ObjHole.h" />
     <ClInclude Include="ObjMenu.h" />
     <ClInclude Include="ObjOkama.h" />
+    <ClInclude Include="ObjOperation.h" />
     <ClInclude Include="ObjPuddle.h" />
     <ClInclude Include="ObjRain.h" />
     <ClInclude Include="ObjRanking.h" />
@@ -197,6 +200,7 @@
     <ClInclude Include="SceneGameOver.h" />
     <ClInclude Include="SceneMain.h" />
     <ClInclude Include="SceneMenu.h" />
+    <ClInclude Include="SceneOperation.h" />
     <ClInclude Include="SceneRanking.h" />
     <ClInclude Include="SceneTitle.h" />
   </ItemGroup>

@@ -17,7 +17,7 @@ void CObjMenu::Init()
 {
 	m_key_flag = 0;
 	m_key_control = false;
-	m_key_control_time = 0;
+
 	((UserData*)Save::GetData())->m_stage_count = 1;
 }
 
@@ -81,36 +81,44 @@ void CObjMenu::Action()
 	}
 	else
 	{
-		if (m_key_control_time>5)
+		
+		m_key_control = false;
+		
+	}
+
+	//エンターキーを押したとき
+	if (Input::GetVKey(VK_RETURN) == true)
+	{
+		//エンターキーを押してない状態であれば
+		if (m_enter_control == false)
 		{
-			m_key_control = false;
-			m_key_control_time = 0;
+			if (m_key_flag == 0)
+			{
+				Scene::SetScene(new CSceneMain(3));
+			}
+			if (m_key_flag == 1)
+			{
+				Scene::SetScene(new CSceneRanking());
+			}
+			if (m_key_flag == 2)
+			{
+				Scene::SetScene(new CSceneTitle());
+			}
+			if (m_key_flag == 3)
+			{
+				Scene::SetScene(new CSceneOperation());
+			}
+
+			//エンターキーを押した状態と判定する
+			m_enter_control = true;
 		}
 	}
-	if (m_key_control == true)
+	//エンターキーを押していない時
+	else
 	{
-		m_key_control_time++;
+		//エンターキーは押していないと判定する。
+		m_enter_control = false;
 	}
-
-
-
-	if (Input::GetVKey(VK_RETURN) == true&&m_key_flag==0)
-	{
-		Scene::SetScene(new CSceneMain(3));
-	}
-	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 1)
-	{
-		Scene::SetScene(new CSceneRanking());
-	}
-	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 2)
-	{
-		Scene::SetScene(new CSceneTitle());
-	}
-	if (Input::GetVKey(VK_RETURN) == true && m_key_flag == 3)
-	{
-		Scene::SetScene(new CSceneMain(3));
-	}
-
 }
 
 //ドロー
