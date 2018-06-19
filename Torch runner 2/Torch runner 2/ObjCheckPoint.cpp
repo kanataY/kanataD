@@ -38,7 +38,8 @@ void CObjCheckPoint::Init()
 //アクション
 void CObjCheckPoint::Action()
 {
-	
+	//ゲージ情報を持ってくる
+	CObjGauge* gauge = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
@@ -76,7 +77,8 @@ void CObjCheckPoint::Action()
 	//シーン移動する。
 	if (m_time > 220)
 	{
-		//((UserData*)Save::GetData())->m_stage_count += 1;
+		((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100;
+		((UserData*)Save::GetData())->m_stage_count += 1;
 		Scene::SetScene(new CSceneMain(2));
 	}
 

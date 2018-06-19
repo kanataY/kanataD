@@ -54,6 +54,11 @@ void CObjCrates::Action()
 
 	if (m_s_o == 1)
 	{
+		//‰Š‚ª‚Â‚¢‚Ä‚éó‘Ô
+		if (m_fire_control == true)
+		{
+			((UserData*)Save::GetData())->m_point += 300;
+		}
 		this->SetStatus(false);		//©g‚Éíœ–½—ß‚ğo‚·
 		Hits::DeleteHitBox(this);	//Š—L‚·‚éHitBox‚Éíœ‚·‚é
 	}

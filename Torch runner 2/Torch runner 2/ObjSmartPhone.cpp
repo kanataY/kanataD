@@ -179,6 +179,8 @@ void CObjSmartphone::HitBox()
 			m_time_fire++; //一定時間たったらスマホ少年を消す。
 			if (m_time_fire > 99)
 			{
+				//スコア増加
+				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}

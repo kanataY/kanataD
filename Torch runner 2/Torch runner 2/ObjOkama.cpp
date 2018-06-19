@@ -190,6 +190,7 @@ void CObjOkama::Action()
 			m_r_time++;
 			if (m_r_time > 5) //しばらくしたら消える
 			{
+				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}
@@ -280,6 +281,11 @@ void CObjOkama::Action()
 
 		if (m_s_o == 1)
 		{
+			//炎がついてる状態
+			if (m_fire_control == true)
+			{
+				((UserData*)Save::GetData())->m_point += 300;
+			}
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
@@ -456,6 +462,7 @@ void CObjOkama::HitBox()
 		}
 		if (fire == nullptr && m_time_fire > 9) //炎が消えたらオカマも消えるようにする
 		{
+			((UserData*)Save::GetData())->m_point += 300;
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}

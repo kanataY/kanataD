@@ -250,7 +250,7 @@ void CObjRunner::Action()
 			float m_jamp_y_2 = 0.8f;
 			if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
 			{
-				m_jamp_y_1 = 2.4;
+				m_jamp_y_1 = 2.4f;
 				m_jamp_y_2 = 1.2f;
 			}
 
