@@ -38,7 +38,7 @@ void CObjCrates::Action()
 
 	//•â³‚Ìî•ñ‚ğ‚Á‚Ä‚­‚é
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Y‚ÌˆÊ’u‚ª‚¨‚©‚µ‚©‚Á‚½‚ç’²®‚·‚é
+	m_py = cor->RangeY(m_py,false); //Y‚ÌˆÊ’u‚ª‚¨‚©‚µ‚©‚Á‚½‚ç’²®‚·‚é
 
 	CObj::SetPrio((int)m_py); //•`‰æ—Dæ‡ˆÊ•ÏX
 

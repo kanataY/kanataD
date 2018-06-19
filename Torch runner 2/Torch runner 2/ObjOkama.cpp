@@ -173,7 +173,7 @@ void CObjOkama::Action()
 		//穴に当たってない時は
 		if (m_hole_out == false && m_avoidance == false)
 		{
-			m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+			m_py = cor->RangeY(m_py,false); //Yの位置がおかしかったら調整する
 		}
 
 		//HitBoxの位置の変更

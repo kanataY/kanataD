@@ -33,7 +33,7 @@ void CObjWarning::Action()
 {
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+	m_py = cor->RangeY(m_py,false); //Yの位置がおかしかったら調整する
 
 	m_ani_time++;//フレーム動作感覚タイムを進める
 	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら

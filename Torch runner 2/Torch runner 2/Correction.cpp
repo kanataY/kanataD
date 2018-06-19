@@ -36,12 +36,15 @@ void CObjCorrection::Draw()
 }
 
 //オブジェクト生成したときにYが歩ける範囲より外か中だったら調整する
-float CObjCorrection::RangeY(float y)
+float CObjCorrection::RangeY(float y, bool b)
 {
-
-	if (y > OUTOFRANGE_DOWN)  //歩ける範囲より下にいる場合ギリギリまで戻す
-		return OUTOFRANGE_DOWN;
-	else if (y < OUTOFRANGE_UP)//歩ける範囲より上にいる場合ギリギリまで戻す
+	//スマホ少年は下にも行く
+	if (b == false)
+	{
+		if (y > OUTOFRANGE_DOWN)  //歩ける範囲より下にいる場合ギリギリまで戻す
+			return OUTOFRANGE_DOWN;
+	}
+	if (y < OUTOFRANGE_UP)//歩ける範囲より上にいる場合ギリギリまで戻す
 		return OUTOFRANGE_UP;
 
 	return y;

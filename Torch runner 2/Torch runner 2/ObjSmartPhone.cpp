@@ -85,7 +85,7 @@ void CObjSmartphone::Action()
 
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+	m_py = cor->RangeY(m_py,true); //Yの位置がおかしかったら調整する
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
