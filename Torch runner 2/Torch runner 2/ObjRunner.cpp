@@ -81,7 +81,7 @@ void CObjRunner::Action()
 	if (gau->GetGauge() == 192)
 	{
 		m_ani_change = 25;
-		if (m_remaining <= 0)
+		if (m_remaining <= 1)
 		{
 			Scene::SetScene(new CSceneGameOver());
 		}
@@ -664,6 +664,13 @@ void CObjRunner::Draw()
 	//ï`âÊ
 	Draw::Draw(28, &src, &dst, c, 0.0f);
 	//---------------------------------------------------------------------------------
+
+	//ìæì_ÇÃï`âÊÅ[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[Å[
+	float cc[4] = { 0.0f,0.0f,0.0f,1.0f };
+	wchar_t str[128];
+	swprintf_s(str, L"ìæì_ÅF%dì_", ((UserData*)Save::GetData())->m_point);
+	Font::StrDraw(str, 350, 16, 32, cc);
+	//Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|Å|
 }
 
 void CObjRunner::HitBox()
