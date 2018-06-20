@@ -50,6 +50,9 @@ void CObjRunner::Init()
 	m_jamp_control_2 = false;
 	m_time = 0;
 
+	m_jamp_y_1 = 1.6f;
+	m_jamp_y_2 = 0.8f;
+
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
@@ -235,6 +238,7 @@ void CObjRunner::Action()
 
 			if (m_jamp_control == false)
 			{
+				m_jamp_y_position = m_py;
 				if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
 				{
 					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
@@ -246,8 +250,6 @@ void CObjRunner::Action()
 			}
 
 			//ジャンプ量
-			float m_jamp_y_1 = 1.6f;
-			float m_jamp_y_2 = 0.8f;
 			if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
 			{
 				m_jamp_y_1 = 2.4;
@@ -266,18 +268,30 @@ void CObjRunner::Action()
 							if (m_py > 280)//道幅ギリギリ
 								m_vy += m_jamp_y_1;
 							else
+							{
 								m_vy += -m_jamp_y_2;
+								m_jamp_y_position += m_jamp_y_2;
+							}
 						}
 						else
+						{
 							m_vy += m_jamp_y_1;//自由落下運動
+							m_jamp_y_position += m_jamp_y_1;
+						}
 					}
-					else                     //ジャンプするとき上のほうにいた場合はただジャンプする
+					else
+						//ジャンプするとき上のほうにいた場合はただジャンプする
+					{
 						m_vy += m_jamp_y_1;
+						m_jamp_y_position += m_jamp_y_1;
+					}
+					
 				}
 				else if (m_time < 20)
 				{
 					if (m_py < 280)//道幅ギリギリ
 					{
+						m_jamp_y_position += -m_jamp_y_1;
 						m_vy += -m_jamp_y_1;
 						jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
 					}
@@ -286,6 +300,8 @@ void CObjRunner::Action()
 						if (Input::GetVKey('W') == true)//上移動
 						{
 							m_vy += -m_jamp_y_2;
+							m_jamp_y_position += -m_jamp_y_2;
+							
 						}
 						else
 							m_vy += -m_jamp_y_1;//自由落下運動
@@ -305,6 +321,7 @@ void CObjRunner::Action()
 					}
 				}
 			}
+			
 		}
 
 		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
@@ -493,6 +510,8 @@ void CObjRunner::Draw()
 {
 	//描画カラー情報
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
+	//影の描画のためのカラー情報
+	float shadowcolor[4] = { 1.0f,1.0f,1.0f,0.4f };
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
@@ -641,9 +660,44 @@ void CObjRunner::Draw()
 		//描画
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
+	//影-------------------------------------------------------------
+	if (m_jamp_control == false)
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 64.0f;
+		src.m_bottom = 64.0f;
 
+		//表示位置の設定
+		dst.m_top = 60.0f + m_py;
+		dst.m_left = -30.0f + m_px;
+		dst.m_right = 55.0f + m_px;
+		dst.m_bottom = 68.0f + m_py;
+
+		//描画
+		Draw::Draw(31, &src, &dst, c, 1.0f);
+	}
+	else
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 64.0f;
+		src.m_bottom = 64.0f;
+
+		//表示位置の設定
+		dst.m_top = 60.0f+ m_jamp_y_position;
+		dst.m_left = -30.0f + m_px;
+		dst.m_right = 55.0f + m_px;
+		dst.m_bottom = 68.0f + m_jamp_y_position;
+
+		//描画
+		Draw::Draw(31, &src, &dst, shadowcolor, 1.0f);
+	}
+	//--------------------------------------------------------------
 	//残機-------------------------------------------------------------------------------
-	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 64.0f;

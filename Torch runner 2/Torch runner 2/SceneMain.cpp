@@ -96,6 +96,8 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\object\\fan.png", 29, TEX_SIZE_512);    //ファン
 	//外部グラフィックファイルを読み込み30番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 30, TEX_SIZE_512);    //ファン
+	//外部グラフィックファイルを読み込み30番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\syadow.png", 31, TEX_SIZE_64);    //影
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner(remaining);
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
