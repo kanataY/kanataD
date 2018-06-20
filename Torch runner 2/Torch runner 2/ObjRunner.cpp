@@ -84,7 +84,7 @@ void CObjRunner::Action()
 	if (gau->GetGauge() == 192)
 	{
 		m_ani_change = 25;
-		if (m_remaining <= 0)
+		if (m_remaining <= 1)
 		{
 			Scene::SetScene(new CSceneGameOver());
 		}
@@ -130,19 +130,16 @@ void CObjRunner::Action()
 	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
 	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	/*if (m_check_transfer == false)
-	{*/
-		m_ani_time++;//フレーム動作感覚タイムを進める
-		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-		{
-			m_ani_frame++;//フレームを進める
-			m_ani_time = 0;
-		}
-		if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-		{
-			m_ani_frame = 0;
-		}
-	//}
+	m_ani_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	{
+		m_ani_frame++;//フレームを進める
+		m_ani_time = 0;
+	}
+	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+	{
+		m_ani_frame = 0;
+	}
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
@@ -152,7 +149,7 @@ void CObjRunner::Action()
 
 		if (m_py >= 536) //一番下より下に行かないようにする
 			m_py = 536;
-		if (m_jamp_control_2 == false || m_check_vx == true )        //ジャンプをしてない時
+		if (m_jamp_control_2 == false || check != nullptr )        //ジャンプをしてない時
 		{
 			if (m_py <= 277) //道路より上に行かないようにする
 				m_py = 277;
@@ -252,7 +249,7 @@ void CObjRunner::Action()
 			//ジャンプ量
 			if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
 			{
-				m_jamp_y_1 = 2.4;
+				m_jamp_y_1 = 2.4f;
 				m_jamp_y_2 = 1.2f;
 			}
 
@@ -718,6 +715,13 @@ void CObjRunner::Draw()
 	//描画
 	Draw::Draw(28, &src, &dst, c, 0.0f);
 	//---------------------------------------------------------------------------------
+
+	//得点の描画ーーーーーーーーーーーーーーーーーーーーーーーーーーー
+	float cc[4] = { 0.0f,0.0f,0.0f,1.0f };
+	wchar_t str[128];
+	swprintf_s(str, L"得点：%d点", ((UserData*)Save::GetData())->m_point);
+	Font::StrDraw(str, 350, 16, 32, cc);
+	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 }
 
 void CObjRunner::HitBox()

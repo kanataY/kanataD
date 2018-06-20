@@ -86,4 +86,53 @@ void CObjRain::Draw()
 
 	//描画
 	Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+
+	//ステージ３なら 雨を増やす
+	if (((UserData*)Save::GetData())->m_stage_count == 3)
+	{
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px - 10.0f;
+		dst.m_right = 800.0f + m_px - 10.0f;
+		dst.m_bottom = 600.0f + m_py;
+
+		//描画
+		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + 10.0f;
+		dst.m_left = 0.0f + m_px;
+		dst.m_right = 800.0f + m_px;
+		dst.m_bottom = 600.0f + m_py+10.0f;
+
+		//描画
+		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px - 10.0f;
+		dst.m_right = 800.0f + m_px - 10.0f;
+		dst.m_bottom = 600.0f + m_py;
+
+		//描画
+		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + 10.0f;
+		dst.m_left = 0.0f + m_px;
+		dst.m_right = 800.0f + m_px;
+		dst.m_bottom = 600.0f + m_py + 10.0f;
+
+		//描画
+		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py;
+		dst.m_left = 0.0f + m_px;
+		dst.m_right = 800.0f + m_px;
+		dst.m_bottom = 600.0f + m_py;
+
+		//描画
+		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+	}
 }

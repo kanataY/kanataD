@@ -173,7 +173,7 @@ void CObjOkama::Action()
 		//穴に当たってない時は
 		if (m_hole_out == false && m_avoidance == false)
 		{
-			m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+			m_py = cor->RangeY(m_py,false); //Yの位置がおかしかったら調整する
 		}
 
 		//HitBoxの位置の変更
@@ -190,6 +190,7 @@ void CObjOkama::Action()
 			m_r_time++;
 			if (m_r_time > 5) //しばらくしたら消える
 			{
+				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}
@@ -280,6 +281,11 @@ void CObjOkama::Action()
 
 		if (m_s_o == 1)
 		{
+			//炎がついてる状態
+			if (m_fire_control == true)
+			{
+				((UserData*)Save::GetData())->m_point += 1000;
+			}
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
@@ -454,8 +460,9 @@ void CObjOkama::HitBox()
 		{
 			m_time_fire++; //一定時間たったらオカマを消す。
 		}
-		if (fire == nullptr && m_time_fire > 9) //炎が消えたらオカマも消えるようにする
+		if (m_time_fire > 70) //炎が消えたらオカマも消えるようにする
 		{
+			((UserData*)Save::GetData())->m_point += 1000;
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}

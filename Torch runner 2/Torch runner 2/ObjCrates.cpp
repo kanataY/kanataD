@@ -2,9 +2,10 @@
 #include "GameL\DrawTexture.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\SceneManager.h"
+#include "GameL\UserData.h"
 
 #include "GameHead.h"
-#include "ObjCrates.h"
+#include "ObjCrates.h"m
 
 //使用するネームスペース
 using namespace GameL;
@@ -37,7 +38,7 @@ void CObjCrates::Action()
 
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
+	m_py = cor->RangeY(m_py,false); //Yの位置がおかしかったら調整する
 
 	CObj::SetPrio((int)m_py); //描画優先順位変更
 
@@ -53,6 +54,11 @@ void CObjCrates::Action()
 
 	if (m_s_o == 1)
 	{
+		//炎がついてる状態
+		if (m_fire_control == true)
+		{
+			((UserData*)Save::GetData())->m_point += 300;
+		}
 		this->SetStatus(false);		//自身に削除命令を出す
 		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 	}
@@ -68,7 +74,7 @@ void CObjCrates::Draw()
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
 
-				//切り取り位置の設定
+	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 64.0f;
@@ -119,8 +125,9 @@ void CObjCrates::HitBox()
 		if (fire != nullptr)
 		{
 			m_time++; //一定時間たったら木箱を消す。
-			if (m_time > 99)
+			if (m_time > 70)
 			{
+				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}

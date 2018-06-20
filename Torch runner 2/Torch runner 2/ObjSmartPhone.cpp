@@ -2,6 +2,7 @@
 #include "GameL\DrawTexture.h"
 #include "GameL\WinInputs.h"
 #include "GameL\SceneManager.h"
+#include "GameL\SceneObjManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
 
@@ -38,38 +39,88 @@ void CObjSmartphone::Init()
 //アクション
 void CObjSmartphone::Action()
 {
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
 	m_time++;
-	if (m_time < 60)  //60フレームになるまでは動かない
+
+	//ステージ２なら
+	if (((UserData*)Save::GetData())->m_stage_count == 2)
 	{
-		if (m_middle == true) //ランナー以外のHitBoxに当たった時真ん中よりしたなら
+		if (m_time < 60)  //60フレームになるまでは動かない
 		{
-			m_vx += 0.15f;    //上に動かせる
-			m_vy += -0.15f;
+			if (m_middle == true) //ランナー以外のHitBoxに当たった時真ん中よりしたなら
+			{
+				m_vx += 0.15f;    //上に動かせる
+				m_vy += -0.15f;
+			}
+			if (m_middle == false)//ランナー以外のHitBoxに当たった時真ん中より上なら
+			{
+				m_vx += 0.15f;   //下に動かせる
+				m_vy += 0.15f;
+			}
 		}
-		if (m_middle == false)//ランナー以外のHitBoxに当たった時真ん中より上なら
+		if (m_time > 60 && m_time < 120)//下に移動
 		{
-			m_vx += 0.15f;   //下に動かせる
+			m_vx += 0.15f;
 			m_vy += 0.15f;
 		}
+		if (m_time > 120 && m_time < 240)//上に移動
+		{
+			m_vx += 0.15f;
+			m_vy += -0.15f;
+		}
+		if (m_time > 240 && m_time < 300)//下に移動
+		{
+			m_vx += 0.15f;
+			m_vy += 0.15f;
+		}
+		if (m_time > 300)//ループさせる
+			m_time = 60;
 	}
-	if (m_time > 60 && m_time < 120)//下に移動
+	
+	//ステージ３なら
+	if (((UserData*)Save::GetData())->m_stage_count == 3)
 	{
-		m_vx += 0.15f;
-		m_vy += 0.15f;
-	}
-	if (m_time > 120 && m_time < 240)//上に移動
-	{
-		m_vx += 0.15f;
-		m_vy += -0.15f;
-	}
-	if (m_time > 240 && m_time < 300)//下に移動
-	{
-		m_vx += 0.15f;
-		m_vy += 0.15f;
-	}
-	if(m_time > 300)//ループさせる
-		m_time = 60;
+		float okax = runner->GetX() - (m_px + block->GetScroll());
+		float okay = runner->GetY() - m_py;
 
+		//atan2で角度を求める
+		float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+		//-180～-0を180～360に変換
+		if (r2 < 0)
+		{
+			r2 = 360 - abs(r2);
+		};
+
+		float ar = r2;
+
+		if (ar < 0)
+		{
+			ar = 360 - abs(ar);
+		}
+
+		//スマホの現在の向いてる角度を取る
+		float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+		//-180～-0を180～360に変換
+		if (bor < 0)
+		{
+			bor = 360 - abs(bor);
+		};
+		float br = bor;
+
+		//ランナーのほうにホーミングする
+		//移動方向をランナーの方向にする
+		m_vy = sin(3.14f / 180 * ar);
+		m_vy *= 7;
+
+		m_vx += 0.15f;
+	}
 	//---------------------
 
 	m_ani_time++;//フレーム動作感覚タイムを進める
@@ -85,10 +136,7 @@ void CObjSmartphone::Action()
 
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
-	m_py = cor->RangeY(m_py); //Yの位置がおかしかったら調整する
-
-	//ブロック情報を持ってくる
-	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+	m_py = cor->RangeY(m_py,true); //Yの位置がおかしかったら調整する
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
@@ -104,7 +152,18 @@ void CObjSmartphone::Action()
 	m_px += m_vx;
 	m_py += m_vy;
 
+	//画面外に行くと死ぬ
+	bool m_s_o = cor->Screen_Out(m_px + 250.0f);
+
+	if (m_s_o == 1)
+	{
+		this->SetStatus(false);		//自身に削除命令を出す
+		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+	}
+
 	CObj::SetPrio((int)m_py); //描画優先順位変更
+
+
 }
 
 //描画
@@ -177,12 +236,18 @@ void CObjSmartphone::HitBox()
 			m_vx = 0.0f; //火がついてる間は動けなくする
 			m_vy = 0.0f;
 			m_time_fire++; //一定時間たったらスマホ少年を消す。
-			if (m_time_fire > 99)
+			if (m_time_fire > 65)
 			{
+				//スコア増加
+				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}
 		}
 	}
-
+	//穴に当たっていると後ずさる
+	if (hit->CheckObjNameHit(OBJ_HOLE) != nullptr)
+	{
+		m_vx -= 0.5f; //後ずさり
+	}
 }

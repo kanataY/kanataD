@@ -34,6 +34,7 @@ void CSceneMain::InitScene()
 	//マップ作製
 	int map[MAP_Y][MAP_X];
 	MapCreate(map);
+
 	//外部グラフィックファイルを読み込み0番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\runner.png", 0, TEX_SIZE_256);    //第一走者
 	//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
@@ -158,12 +159,15 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	int size;			   //ステージ情報の大きさ
 
 	//ステージごとにステージの名前を格納
-	switch (((UserData*)Save::GetData())->m_stage_count)
+	switch (((UserData*)Save::GetData())->m_stage_count = 3)
 	{
 	case 1:
 		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み
 		break;
 	case 2:
+		p = Save::ExternalDataOpen(L"Stage02.csv", &size);//外部データ読み込み
+		break;
+	case 3:
 		p = Save::ExternalDataOpen(L"Stage02.csv", &size);//外部データ読み込み
 		break;
 	default:

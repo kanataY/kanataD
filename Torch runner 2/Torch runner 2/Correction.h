@@ -18,7 +18,7 @@ public:
 	void Init();									//イニシャライズ
 	void Action();									//アクション
 	void Draw();									//ドロー
-	float RangeY(float y);							//範囲外にいるときにただす
+	float RangeY(float y, bool b);							//範囲外にいるときにただす
 	float RangeYPuddle(float y);					//範囲外にいるときにただす水たまりバージョン
 	float RangeYTrack(float y);					//範囲外にいるときにただすトラックバージョン
 	void  FireDisplayCrates(float x, float y);		//炎を表示させる 箱限定

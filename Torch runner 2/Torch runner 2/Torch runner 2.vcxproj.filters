@@ -311,9 +311,6 @@
     <ClInclude Include="ObjRanking.h">
       <Filter>ソース ファイル\Scene\RANKING</Filter>
     </ClInclude>
-    <ClInclude Include="SceneRanking.h">
-      <Filter>ソース ファイル\Scene\RANKING</Filter>
-    </ClInclude>
     <ClInclude Include="ObjCheckPoint.h">
       <Filter>ソース ファイル\GAMEMAIN\CheckPoint</Filter>
     </ClInclude>
@@ -328,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="SceneOperation.h">
       <Filter>ソース ファイル\Scene\OPERATION</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneRanking.h">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
