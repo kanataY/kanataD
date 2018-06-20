@@ -177,13 +177,20 @@ void CObjRunner::Action()
 		if (Input::GetVKey('W') == true && m_py > 277)//上移動
 		{
 			m_vy += -m_speed;
+			m_jamp_y_position += -m_speed;
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
 			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
+			{
 				m_vy += m_speed;
+				m_jamp_y_position += m_speed;
+			}
 			else
+			{
 				m_vy += m_speed - 0.6f;
+				m_jamp_y_position += -m_speed;
+			}
 		}
 
 		//摩擦
@@ -233,13 +240,14 @@ void CObjRunner::Action()
 			if (okama != nullptr)
 				m_hag = okama->GetHug();
 
+			//ジャンプしていない
 			if (m_jamp_control == false)
 			{
-				m_jamp_y_position = m_py;
 				if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
 				{
 					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
 					{
+						m_jamp_y_position = m_py;
 						m_jamp_control = true;		//ジャンプしている
 						m_jamp_control_2 = true;
 					}
@@ -265,30 +273,25 @@ void CObjRunner::Action()
 							if (m_py > 280)//道幅ギリギリ
 								m_vy += m_jamp_y_1;
 							else
-							{
 								m_vy += -m_jamp_y_2;
-								m_jamp_y_position += m_jamp_y_2;
-							}
+
 						}
 						else
 						{
 							m_vy += m_jamp_y_1;//自由落下運動
-							m_jamp_y_position += m_jamp_y_1;
 						}
+
 					}
 					else
 						//ジャンプするとき上のほうにいた場合はただジャンプする
-					{
 						m_vy += m_jamp_y_1;
-						m_jamp_y_position += m_jamp_y_1;
-					}
+
 					
 				}
 				else if (m_time < 20)
 				{
 					if (m_py < 280)//道幅ギリギリ
 					{
-						m_jamp_y_position += -m_jamp_y_1;
 						m_vy += -m_jamp_y_1;
 						jamp_memo = 999.0f; //ジャンプする時上のほうにいた場合は記録する
 					}
@@ -297,11 +300,11 @@ void CObjRunner::Action()
 						if (Input::GetVKey('W') == true)//上移動
 						{
 							m_vy += -m_jamp_y_2;
-							m_jamp_y_position += -m_jamp_y_2;
-							
 						}
 						else
+						{
 							m_vy += -m_jamp_y_1;//自由落下運動
+						}
 					}
 				}
 				if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
@@ -667,7 +670,7 @@ void CObjRunner::Draw()
 		src.m_bottom = 64.0f;
 
 		//表示位置の設定
-		dst.m_top = 60.0f + m_py;
+		dst.m_top =	60.0f + m_py;
 		dst.m_left = -30.0f + m_px;
 		dst.m_right = 55.0f + m_px;
 		dst.m_bottom = 68.0f + m_py;

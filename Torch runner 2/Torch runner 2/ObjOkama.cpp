@@ -123,42 +123,44 @@ void CObjOkama::Action()
 		//しばらく進んでからホーミングする------------------------------------------------------------
 		if (m_time > 40)
 		{
-			float okax = runner->GetX() - (m_px + block->GetScroll());
-			float okay = runner->GetY() - m_py;
-
-			//atan2で角度を求める
-			float r2 = atan2(okay, okax)*180.0f / 3.14f;
-
-			//-180～-0を180～360に変換
-			if (r2 < 0)
-			{
-				r2 = 360 - abs(r2);
-			};
-
-			float ar = r2;
-
-			if (ar < 0)
-			{
-				ar = 360 - abs(ar);
-			}
-
-			//オカマの現在の向いてる角度を取る
-			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
-
-			//-180～-0を180～360に変換
-			if (bor < 0)
-			{
-				bor = 360 - abs(bor);
-			};
-			float br = bor;
-
-			//ランナーのほうにホーミングする
 			if (m_homing == false)
 			{
-				//移動方向をランナーの方向にする
+
+				float okax = runner->GetX() - (m_px + block->GetScroll());
+				float okay = runner->GetY() - m_py;
+
+				//atan2で角度を求める
+				float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+				//-180～-0を180～360に変換
+				if (r2 < 0)
+				{
+					r2 = 360 - abs(r2);
+				};
+
+				float ar = r2;
+
+				if (ar < 0)
+				{
+					ar = 360 - abs(ar);
+				}
+
+				//オカマの現在の向いてる角度を取る
+				float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+				//-180～-0を180～360に変換
+				if (bor < 0)
+				{
+					bor = 360 - abs(bor);
+				};
+				float br = bor;
+
+				//ランナーのほうにホーミングする
+
+					//移動方向をランナーの方向にする
 				m_vx = cos(3.14f / 180 * ar);
 				m_vy = sin(3.14f / 180 * ar);
-				m_vx *= 10; // 移動速度を10べぇにする
+				m_vx *= 10; // 移動速度を10倍にする
 				m_vy *= 10;
 				m_homing = true;
 				//ランナーの方にホーミングしたらアニメーション感覚を1にする
