@@ -116,23 +116,5 @@ void CObjRain::Draw()
 
 		//ï`âÊ
 		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
-
-		//ï\é¶à íuÇÃê›íË
-		dst.m_top = 0.0f + m_py + 10.0f;
-		dst.m_left = 0.0f + m_px;
-		dst.m_right = 800.0f + m_px;
-		dst.m_bottom = 600.0f + m_py + 10.0f;
-
-		//ï`âÊ
-		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
-
-		//ï\é¶à íuÇÃê›íË
-		dst.m_top = 0.0f + m_py;
-		dst.m_left = 0.0f + m_px;
-		dst.m_right = 800.0f + m_px;
-		dst.m_bottom = 600.0f + m_py;
-
-		//ï`âÊ
-		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
 	}
 }

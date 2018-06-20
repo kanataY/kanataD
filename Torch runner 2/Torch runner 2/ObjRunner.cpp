@@ -177,19 +177,16 @@ void CObjRunner::Action()
 		if (Input::GetVKey('W') == true && m_py > 277)//上移動
 		{
 			m_vy += -m_speed;
-			m_jamp_y_position += -m_speed;
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
 			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
 			{
 				m_vy += m_speed;
-				m_jamp_y_position += m_speed;
 			}
 			else
 			{
 				m_vy += m_speed - 0.6f;
-				m_jamp_y_position += -m_speed;
 			}
 		}
 
@@ -701,7 +698,7 @@ void CObjRunner::Draw()
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 64.0f;
-	src.m_bottom = 128.0f;
+	src.m_bottom = 192.0f;
 
 	//表示位置の設定
 	dst.m_top = 0.0f + 10.0f;
