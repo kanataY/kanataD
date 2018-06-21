@@ -31,16 +31,7 @@ CSceneGameClear::~CSceneGameClear()
 void CSceneGameClear::InitScene()
 {
 	//外部グラフィックファイルを読み込み0番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\GameClear\\GameClear.png", 0, TEX_SIZE_512);
-
-	//外部グラフィックファイルを読み込み1番に登録(1024×1024ピクセル)
-	Draw::LoadImageW(L"Image\\GameClear\\end.png", 1, TEX_SIZE_1024);
-
-	//外部グラフィックファイルを読み込み2番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\GameClear\\Menutransfer.png", 2, TEX_SIZE_512);
-
-	//外部グラフィックファイルを読み込み3番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\GameClear\\SR.png", 3, TEX_SIZE_512);
+	Draw::LoadImageW(L"Image\\back\\GameClear.png", 0, TEX_SIZE_512);
 
 	/*//音楽読み込み
 	Audio::LoadAudio(0, L"gameclear.wav", BACK_MUSIC);

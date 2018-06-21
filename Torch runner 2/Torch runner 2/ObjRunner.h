@@ -41,6 +41,9 @@ private:
 	int   m_invincible; //無敵時間
 	int   m_check_time; //チェックポイントのタイム管理
 	int   m_remaining;  //残機
+	float m_jamp_y_1 ;	//ジャンプ量
+	float m_jamp_y_2 ;	//ジャンプしてる時の上移動
+	float m_jamp_y_position;//ジャンプするときの主人公のY位置取得用
 
 	//描画関連
 	float m_hole_fall;  //穴に落ちた時の描画するところを変える変数

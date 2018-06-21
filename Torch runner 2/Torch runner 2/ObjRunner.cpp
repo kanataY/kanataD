@@ -50,6 +50,9 @@ void CObjRunner::Init()
 	m_jamp_control_2 = false;
 	m_time = 0;
 
+	m_jamp_y_1 = 1.6f;
+	m_jamp_y_2 = 0.8f;
+
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
@@ -178,9 +181,13 @@ void CObjRunner::Action()
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
 			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
+			{
 				m_vy += m_speed;
+			}
 			else
+			{
 				m_vy += m_speed - 0.6f;
+			}
 		}
 
 		//摩擦
@@ -230,12 +237,14 @@ void CObjRunner::Action()
 			if (okama != nullptr)
 				m_hag = okama->GetHug();
 
+			//ジャンプしていない
 			if (m_jamp_control == false)
 			{
 				if (m_hag == false && m_hole_control == false) //抱きつかれてない、穴に落ちてない時ジャンプできる。
 				{
 					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
 					{
+						m_jamp_y_position = m_py;
 						m_jamp_control = true;		//ジャンプしている
 						m_jamp_control_2 = true;
 					}
@@ -243,8 +252,6 @@ void CObjRunner::Action()
 			}
 
 			//ジャンプ量
-			float m_jamp_y_1 = 1.6f;
-			float m_jamp_y_2 = 0.8f;
 			if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
 			{
 				m_jamp_y_1 = 2.4f;
@@ -264,12 +271,19 @@ void CObjRunner::Action()
 								m_vy += m_jamp_y_1;
 							else
 								m_vy += -m_jamp_y_2;
+
 						}
 						else
+						{
 							m_vy += m_jamp_y_1;//自由落下運動
+						}
+
 					}
-					else                     //ジャンプするとき上のほうにいた場合はただジャンプする
+					else
+						//ジャンプするとき上のほうにいた場合はただジャンプする
 						m_vy += m_jamp_y_1;
+
+					
 				}
 				else if (m_time < 20)
 				{
@@ -285,7 +299,9 @@ void CObjRunner::Action()
 							m_vy += -m_jamp_y_2;
 						}
 						else
+						{
 							m_vy += -m_jamp_y_1;//自由落下運動
+						}
 					}
 				}
 				if (m_time > 45 && m_time < 57)//時間が来たらジャンプを終了させる
@@ -302,6 +318,7 @@ void CObjRunner::Action()
 					}
 				}
 			}
+			
 		}
 
 		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
@@ -490,6 +507,8 @@ void CObjRunner::Draw()
 {
 	//描画カラー情報
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
+	//影の描画のためのカラー情報
+	float shadowcolor[4] = { 1.0f,1.0f,1.0f,0.4f };
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
@@ -638,13 +657,48 @@ void CObjRunner::Draw()
 		//描画
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
+	//影-------------------------------------------------------------
+	if (m_jamp_control == false)
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 64.0f;
+		src.m_bottom = 64.0f;
 
+		//表示位置の設定
+		dst.m_top =	60.0f + m_py;
+		dst.m_left = -30.0f + m_px;
+		dst.m_right = 55.0f + m_px;
+		dst.m_bottom = 68.0f + m_py;
+
+		//描画
+		Draw::Draw(31, &src, &dst, c, 1.0f);
+	}
+	else
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 64.0f;
+		src.m_bottom = 64.0f;
+
+		//表示位置の設定
+		dst.m_top = 60.0f+ m_jamp_y_position;
+		dst.m_left = -30.0f + m_px;
+		dst.m_right = 55.0f + m_px;
+		dst.m_bottom = 68.0f + m_jamp_y_position;
+
+		//描画
+		Draw::Draw(31, &src, &dst, shadowcolor, 1.0f);
+	}
+	//--------------------------------------------------------------
 	//残機-------------------------------------------------------------------------------
-	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
 	src.m_right = 64.0f;
-	src.m_bottom = 128.0f;
+	src.m_bottom = 192.0f;
 
 	//表示位置の設定
 	dst.m_top = 0.0f + 10.0f;

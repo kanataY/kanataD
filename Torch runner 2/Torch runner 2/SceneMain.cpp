@@ -92,11 +92,22 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み27番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Track2.png", 27, TEX_SIZE_512);    //トラック2
 	//外部グラフィックファイルを読み込み28番に登録(128ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\remaining.png", 28, TEX_SIZE_128);    //残機
+	Draw::LoadImageW(L"Image\\hero\\remaining.png", 28, TEX_SIZE_192);    //残機
 	//外部グラフィックファイルを読み込み29番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\fan.png", 29, TEX_SIZE_512);    //ファン
 	//外部グラフィックファイルを読み込み30番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 30, TEX_SIZE_512);    //ファン
+	//外部グラフィックファイルを読み込み31番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\Shadow.png", 31, TEX_SIZE_64);    //影
+	//外部グラフィックファイルを読み込み32番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\grandfather.png", 32, TEX_SIZE_256);    //主人公3
+	//外部グラフィックファイルを読み込み33番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\grandfather_transfer.png", 33, TEX_SIZE_256);    //主人公3の移す
+	//外部グラフィックファイルを読み込み34番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\grandfather_death.png", 34, TEX_SIZE_192);    //主人公3の死亡
+	//外部グラフィックファイルを読み込み35番に登録(256ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\grandfather_death.png", 35, TEX_SIZE_256);    //主人公3の無敵
+
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner(remaining);
 	Objs::InsertObj(obj, OBJ_RUNNER, 13);
@@ -157,7 +168,7 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	int size;			   //ステージ情報の大きさ
 
 	//ステージごとにステージの名前を格納
-	switch (((UserData*)Save::GetData())->m_stage_count = 3)
+	switch (((UserData*)Save::GetData())->m_stage_count)
 	{
 	case 1:
 		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み
