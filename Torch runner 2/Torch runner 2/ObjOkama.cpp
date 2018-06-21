@@ -291,6 +291,8 @@ void CObjOkama::Action()
 			{
 				((UserData*)Save::GetData())->m_point += 1000;
 			}
+			else
+				((UserData*)Save::GetData())->m_point += 150;
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
@@ -500,7 +502,7 @@ void CObjOkama::HitBox()
 	}
 
 	//ランナーに当たった時-------------------------------------
-	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。
+	if (runner->GetInvincible() < 0 && runner->GetDeath() == false && runner->GetJamp() == false) //無敵時間でなければ判定を設ける。
 	{
 		if (runner->GetHoleFallCon() == false) //ランナーが穴に落ちていなければ
 		{

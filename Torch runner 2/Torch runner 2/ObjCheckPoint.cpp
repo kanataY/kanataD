@@ -80,12 +80,12 @@ void CObjCheckPoint::Action()
 		((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100;
 		((UserData*)Save::GetData())->m_stage_count += 1;
 		
-		if (((UserData*)Save::GetData())->m_stage_count == 3)
+		if (((UserData*)Save::GetData())->m_stage_count == 4)
 		{
 			Scene::SetScene(new CSceneGameClear());
 		}
 		else
-		Scene::SetScene(new CSceneMain(2));
+			Scene::SetScene(new CSceneMain(3));
 	}
 
 	//HitBox�̈ʒu�̕ύX

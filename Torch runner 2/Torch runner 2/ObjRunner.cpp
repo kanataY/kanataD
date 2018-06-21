@@ -960,7 +960,7 @@ void CObjRunner::HitBox()
 		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 		{
 			//スマホ少年と当たった場合
-			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr)
+			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr && m_jamp_control == false)
 			{
 				if ((sumaho->GetX() + block->GetScroll()) < m_px)
 				{

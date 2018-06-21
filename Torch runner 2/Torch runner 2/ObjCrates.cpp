@@ -147,7 +147,7 @@ void CObjCrates::HitBox()
 	//ランナーと当たっている場合
 	if (runner->GetInvincible() < 0) //無敵時間でなければ判定を設ける。
 	{
-		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
+		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr  && runner->GetJamp() == false)
 		{
 			//木箱とランナーがどの角度で当たっているかを確認
 			HIT_DATA** hit_data;						//当たったときの細かな情報を入れるための構造体
