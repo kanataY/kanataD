@@ -56,7 +56,19 @@ void CObjRunner::Init()
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
-	m_ani_change = 0;
+	
+						//ステージが1の時
+	if (((UserData*)Save::GetData())->m_stage_count = 1)
+		m_ani_change = 0;//アニメーションを0に
+
+						 //ステージが2の時
+	if (((UserData*)Save::GetData())->m_stage_count = 2)
+		m_ani_change = 19;//アニメーションを19に
+						  //ステージが3の時
+	if (((UserData*)Save::GetData())->m_stage_count = 3)
+		m_ani_change = 32;//アニメーションを32に
+	
+	
 
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 18, 64, ELEMENT_RUNNER, OBJ_RUNNER, 1);
@@ -83,7 +95,18 @@ void CObjRunner::Action()
 	//ゲージがなくなった時----------------------------------------------------------------------
 	if (gau->GetGauge() == 192)
 	{
-		m_ani_change = 25;
+		//ステージ1なら
+		if (((UserData*)Save::GetData())->m_stage_count = 1)
+			m_ani_change = 25;//ステージ1の死亡シーン
+		
+		//ステージ2なら
+		if (((UserData*)Save::GetData())->m_stage_count = 2)
+			m_ani_change = 26;//ステージ2の死亡シーン
+
+		//ステージ3なら
+		if (((UserData*)Save::GetData())->m_stage_count = 3)
+			m_ani_change = 34;//ステージ3の死亡シーン
+		
 		if (m_remaining <= 1)
 		{
 			Scene::SetScene(new CSceneGameOver());
@@ -204,7 +227,18 @@ void CObjRunner::Action()
 			{
 				if (m_torch_control == false)
 				{
-					m_ani_change = 8; //アニメーションの絵を８番に変える
+					//ステージ1の時
+					if (((UserData*)Save::GetData())->m_stage_count == 1)
+						m_ani_change = 8; //アニメーションの絵を８番に変える
+
+					//ステージ2の時
+					if (((UserData*)Save::GetData())->m_stage_count == 2)
+						m_ani_change = 20; //アニメーションの絵を８番に変える
+
+					//ステージ3の時
+					if (((UserData*)Save::GetData())->m_stage_count == 3)
+						m_ani_change = 33; //アニメーションの絵を33番に変える
+
 					m_torch_control = true;
 					//聖火を出現させる 
 					CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
@@ -215,8 +249,18 @@ void CObjRunner::Action()
 			{
 				if (m_torch_time_control > 30) //30フレームたつと次が触れる
 				{
-					m_torch_control = false;
-					m_ani_change = 0;         //ランナーの画像をもとに戻す
+					m_torch_control = false; 
+					//ステージが1の時
+					if (((UserData*)Save::GetData())->m_stage_count = 1)
+						m_ani_change = 0;//アニメーションを0に
+
+					//ステージが2の時
+					if (((UserData*)Save::GetData())->m_stage_count = 2)
+						m_ani_change = 19;//アニメーションを19に
+					//ステージが3の時
+					if (((UserData*)Save::GetData())->m_stage_count = 3)
+						m_ani_change = 32;//アニメーションを32に
+				
 					m_torch_time_control = 0;
 				}
 			}
@@ -329,7 +373,16 @@ void CObjRunner::Action()
 		//穴関連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 		{
-			m_ani_change = 0;
+			//ステージが1の時
+			if (((UserData*)Save::GetData())->m_stage_count = 1)
+				m_ani_change = 0;//アニメーションを0に
+
+								 //ステージが2の時
+			if (((UserData*)Save::GetData())->m_stage_count = 2)
+				m_ani_change = 19;//アニメーションを19に
+								  //ステージが3の時
+			if (((UserData*)Save::GetData())->m_stage_count = 3)
+				m_ani_change = 32;//アニメーションを32に
 			m_vx = 0.0f; //ランナーを移動させないようにする。
 			m_vy = 0.0f;
 		}
@@ -413,7 +466,16 @@ void CObjRunner::Action()
 		}
 		if (m_check_control_x == true)
 		{
-			m_ani_change = 0;
+			//ステージが1の時
+			if (((UserData*)Save::GetData())->m_stage_count = 1)
+				m_ani_change = 0;//アニメーションを0に
+
+			//ステージが2の時
+			if (((UserData*)Save::GetData())->m_stage_count = 2)
+				m_ani_change = 19;//アニメーションを19に
+			//ステージが3の時
+			if (((UserData*)Save::GetData())->m_stage_count = 3)
+				m_ani_change = 32;//アニメーションを32に
 			//チェックポイントにいる第二のランナーの位置を取得する
 			float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
 			float okay = (check->GetY()  * 3.0f) - m_py;
@@ -450,26 +512,63 @@ void CObjRunner::Action()
 				//移動方向をランナーの方向にする
 				m_vx = cos(3.14f / 180 * ar);
 				m_vy = sin(3.14f / 180 * ar);
-				m_vx *= 2; // 移動速度を2べぇにする
+				m_vx *= 2; // 移動速度を2倍にする
 				m_vy *= 2;
 				m_homing = true;
 			}
-
-			//第二のランナーの目の前に来た時
-			if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+			
+			if (((UserData*)Save::GetData())->m_stage_count = 1)
 			{
-				m_check_time++; //タイムを進める
-				m_check_transfer = true;
-				m_vx = 0.0f; //移動量を０にする
-				m_vy = 0.0f;
-				if (m_check_time < 50) //振り下ろす
-					m_ani_change = 8;
-				else
+				//第二のランナーの目の前に来た時
+				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
 				{
-					m_ani_change = 0;//通常の状態で待つ
+					m_check_time++; //タイムを進める
+					m_check_transfer = true;
+					m_vx = 0.0f; //移動量を０にする
+					m_vy = 0.0f;
+					if (m_check_time < 50) //振り下ろす
+						m_ani_change = 8;
+					else
+					{
+						m_ani_change = 0;//通常の状態で待つ
+					}
 				}
 			}
 
+			if (((UserData*)Save::GetData())->m_stage_count = 2)
+			{
+				//第二のランナーの目の前に来た時
+				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+				{
+					m_check_time++; //タイムを進める
+					m_check_transfer = true;
+					m_vx = 0.0f; //移動量を０にする
+					m_vy = 0.0f;
+					if (m_check_time < 50) //振り下ろす
+						m_ani_change = 20;
+					else
+					{
+						m_ani_change = 19;//通常の状態で待つ
+					}
+				}
+			}
+			if (((UserData*)Save::GetData())->m_stage_count = 3)
+			{
+				//第二のランナーの目の前に来た時
+				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+				{
+					m_check_time++; //タイムを進める
+					m_check_transfer = true;
+					m_vx = 0.0f; //移動量を０にする
+					m_vy = 0.0f;
+					if (m_check_time < 50) //振り下ろす
+						m_ani_change = 33;
+					else
+					{
+						m_ani_change = 32;//通常の状態で待つ
+					}
+				}
+			}
 			//位置の更新
 			m_px += m_vx;
 			m_py += m_vy;
@@ -505,6 +604,7 @@ void CObjRunner::Action()
 //描画
 void CObjRunner::Draw()
 {
+	//ランナー-----------------------------------------------------------------
 	//描画カラー情報
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
 	//影の描画のためのカラー情報
@@ -515,46 +615,132 @@ void CObjRunner::Draw()
 	RECT_F src2; //描画元切り取り位置
 	RECT_F dst2; //描画先表示位置
 
-	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
-	//チェックポイントに入っていたら立ち姿に変える
-
-	if (m_check_transfer == false)
+	if (((UserData*)Save::GetData())->m_stage_count = 1)
 	{
-		src.m_top = 1.0f;
-		src.m_left = 0.0f + m_ani_frame * 64;
-		src.m_right = 64.0f + m_ani_frame * 64;
-		src.m_bottom = 257.0f;
-	}
-	else
-	{
-		src.m_top = 1.0f;
-		src.m_left = 0.0f + 64.0f;
-		src.m_right = 64.0f + 64.0f;
-		src.m_bottom = 257.0f;
-	}
-
-	//表示位置の設定
-	dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
-	dst.m_left = 0.0f+ m_px + (m_hole_fall / 3);
-	dst.m_right = 64.0f + m_px - m_hole_fall;
-	dst.m_bottom = 64.0f + m_py - m_hole_fall;
-
-	if (m_ani_change == 25)
-	{
-		src.m_top = 1.0f;
-		src.m_left = 0.0f + m_ani_frame * 64;
-		src.m_right = 64.0f + m_ani_frame * 64;
-		src.m_bottom = 193.0f;
+		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+		//チェックポイントに入っていたら立ち姿に変える
+		if (m_check_transfer == false)
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 257.0f;
+		}
+		else
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + 64.0f;
+			src.m_right = 64.0f + 64.0f;
+			src.m_bottom = 257.0f;
+		}
 
 		//表示位置の設定
-		dst.m_top = 0.0f + m_py;
-		dst.m_left = 0.0f + m_px;
-		dst.m_right = 64.0f + m_px;
-		dst.m_bottom = 64.0f + m_py;
+		dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
+		dst.m_left = 0.0f + m_px + (m_hole_fall / 3);
+		dst.m_right = 64.0f + m_px - m_hole_fall;
+		dst.m_bottom = 64.0f + m_py - m_hole_fall;
 
+		if (m_ani_change == 25)
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 193.0f;
+
+			//表示位置の設定
+			dst.m_top = 0.0f + m_py;
+			dst.m_left = 0.0f + m_px;
+			dst.m_right = 64.0f + m_px;
+			dst.m_bottom = 64.0f + m_py;
+
+		}//描画
+		Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 	}
-	//描画
-	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
+	if (((UserData*)Save::GetData())->m_stage_count = 2)
+	{
+		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+		//チェックポイントに入っていたら立ち姿に変える
+		if (m_check_transfer == false)
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 257.0f;
+		}
+		else
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + 64.0f;
+			src.m_right = 64.0f + 64.0f;
+			src.m_bottom = 257.0f;
+		}
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
+		dst.m_left = 0.0f + m_px + (m_hole_fall / 3);
+		dst.m_right = 64.0f + m_px - m_hole_fall;
+		dst.m_bottom = 64.0f + m_py - m_hole_fall;
+
+		if (m_ani_change == 26)
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 193.0f;
+
+			//表示位置の設定
+			dst.m_top = 0.0f + m_py;
+			dst.m_left = 0.0f + m_px;
+			dst.m_right = 64.0f + m_px;
+			dst.m_bottom = 64.0f + m_py;
+
+		}
+		//描画
+		Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
+	}
+	if (((UserData*)Save::GetData())->m_stage_count = 3)
+	{
+		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
+		//チェックポイントに入っていたら立ち姿に変える
+		if (m_check_transfer == false)
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 257.0f;
+		}
+		else
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + 64.0f;
+			src.m_right = 64.0f + 64.0f;
+			src.m_bottom = 257.0f;
+		}
+
+		//表示位置の設定
+		dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
+		dst.m_left = 0.0f + m_px + (m_hole_fall / 3);
+		dst.m_right = 64.0f + m_px - m_hole_fall;
+		dst.m_bottom = 64.0f + m_py - m_hole_fall;
+
+		if (m_ani_change == 34)
+		{
+			src.m_top = 1.0f;
+			src.m_left = 0.0f + m_ani_frame * 64;
+			src.m_right = 64.0f + m_ani_frame * 64;
+			src.m_bottom = 193.0f;
+
+			//表示位置の設定
+			dst.m_top = 0.0f + m_py;
+			dst.m_left = 0.0f + m_px;
+			dst.m_right = 64.0f + m_px;
+			dst.m_bottom = 64.0f + m_py;
+
+		}
+		//描画
+		Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
+	}
+	
 	//--------------------------------無敵点滅-----------------------------------
 	if (m_invincible > 0 && m_death == false)
 	{
@@ -582,7 +768,7 @@ void CObjRunner::Draw()
 	src2.m_bottom = 64.0f;
 
 	//表示位置の設定
-	if (m_ani_change == 0) //腕を振り下ろしていない
+	if (m_ani_change == 0 || m_ani_change == 19 || m_ani_change == 32) //腕を振り下ろしていない
 	{
 		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 		{
@@ -625,7 +811,7 @@ void CObjRunner::Draw()
 	src3.m_right = 64.0f + m_ani_frame * 64;
 	src3.m_bottom = 320.0f;
 
-	if (m_ani_change == 0)//腕を振り下ろしていない
+	if (m_ani_change == 0||m_ani_change==19||m_ani_change==32)//腕を振り下ろしていない
 	{
 		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 		{
@@ -695,18 +881,48 @@ void CObjRunner::Draw()
 	}
 	//--------------------------------------------------------------
 	//残機-------------------------------------------------------------------------------
-	//切り取り位置の設定
-	src.m_top = 0.0f;
-	src.m_left = 0.0f;
-	src.m_right = 64.0f;
-	src.m_bottom = 192.0f;
+	if ((((UserData*)Save::GetData())->m_stage_count = 1))
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 64.0f;
+		src.m_bottom = 192.0f;
 
-	//表示位置の設定
-	dst.m_top = 0.0f + 10.0f;
-	dst.m_left = 0.0f + 680.0f;
-	dst.m_right = 40.0f + 680.0f;
-	dst.m_bottom = 40.0f + 10.0f;
+		//表示位置の設定
+		dst.m_top = 0.0f + 10.0f;
+		dst.m_left = 0.0f + 680.0f;
+		dst.m_right = 40.0f + 680.0f;
+		dst.m_bottom = 40.0f + 10.0f;
+	}
+	if ((((UserData*)Save::GetData())->m_stage_count = 2))
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 64.0f;
+		src.m_right = 128.0f;
+		src.m_bottom = 192.0f;
 
+		//表示位置の設定
+		dst.m_top = 0.0f + 10.0f;
+		dst.m_left = 0.0f + 680.0f;
+		dst.m_right = 40.0f + 680.0f;
+		dst.m_bottom = 40.0f + 10.0f;
+	}
+	if ((((UserData*)Save::GetData())->m_stage_count = 3))
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 128.0f;
+		src.m_right = 192.0f;
+		src.m_bottom = 192.0f;
+
+		//表示位置の設定
+		dst.m_top = 0.0f + 10.0f;
+		dst.m_left = 0.0f + 680.0f;
+		dst.m_right = 40.0f + 680.0f;
+		dst.m_bottom = 40.0f + 10.0f;
+	}
 	//残りの数字を描画する
 	static wchar_t  c_siro[8];
 	static float cl_siro[4] = { 0.0f,0.0f,0.0f,1.0f };

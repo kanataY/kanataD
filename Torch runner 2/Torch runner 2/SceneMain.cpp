@@ -74,9 +74,9 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み18番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\back\\checkpoint.png", 18, TEX_SIZE_256);    //チェックポイント
 	//外部グラフィックファイルを読み込み19番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\youtuber.png", 19, TEX_SIZE_256);    //YouTubeｒ
+	Draw::LoadImageW(L"Image\\hero\\youtuber.png", 19, TEX_SIZE_256);    //YouTuber
 	//外部グラフィックファイルを読み込み20番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 20, TEX_SIZE_256);    //YouTuberの振りかざし
+	Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 20, TEX_SIZE_256);  //YouTuberの振りかざし
 	//外部グラフィックファイルを読み込み21番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\Track.png", 21, TEX_SIZE_512);    //トラック
 	//外部グラフィックファイルを読み込み22番に登録(256ピクセル)
