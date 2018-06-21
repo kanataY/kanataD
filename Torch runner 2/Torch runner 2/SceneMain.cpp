@@ -123,35 +123,6 @@ void CSceneMain::InitScene()
 	//補正オブジェクト作成
 	CObjCorrection* cor = new CObjCorrection();
 	Objs::InsertObj(cor, CORRECTION, 13);
-
-	//オカマバズーカ
-	/*CObjOkama* o = new CObjOkama(800.0f, 450.0f);
-	Objs::InsertObj(o, OBJ_OKAMA, 13);
-	*/
-	/*CObjOkama* o2 = new CObjOkama(800.0f, 500.0f);
-	Objs::InsertObj(o2, OBJ_OKAMA, 13);
-
-	CObjOkama* o3 = new CObjOkama(800.0f, 550.0f);
-	Objs::InsertObj(o3, OBJ_OKAMA, 13);
-
-	CObjOkama* o4 = new CObjOkama(800.0f, 600.0f);
-	Objs::InsertObj(o4, OBJ_OKAMA, 13);
-
-	CObjOkama* o5 = new CObjOkama(800.0f, 350.0f);
-	Objs::InsertObj(o5, OBJ_OKAMA, 13);
-
-	CObjOkama* o6 = new CObjOkama(800.0f, 300.0f);
-	Objs::InsertObj(o6, OBJ_OKAMA, 13);*/
-
-	/*
-	CObjRain* r = new CObjRain(0.0f, 0.0f);
-	Objs::InsertObj(r, OBJ_RAIN, 1300);*/
-
-	//CObjTrack* t = new CObjTrack(600, 400);
-	//Objs::InsertObj(t, OBJ_TRACK, 30);
-
-	//CObjWarning* war = new CObjWarning(500, 400);
-	//Objs::InsertObj(war, OBJ_WARNING, 20);
 }
 
 //実行中メソッド
@@ -168,7 +139,7 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	int size;			   //ステージ情報の大きさ
 
 	//ステージごとにステージの名前を格納
-	switch (((UserData*)Save::GetData())->m_stage_count = 3)
+	switch (((UserData*)Save::GetData())->m_stage_count)
 	{
 	case 1:
 		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み

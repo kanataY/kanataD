@@ -95,15 +95,15 @@ void CObjRunner::Action()
 	if (gau->GetGauge() == 192)
 	{
 		//ステージ1なら
-		if (((UserData*)Save::GetData())->m_stage_count = 1)
+		if (((UserData*)Save::GetData())->m_stage_count == 1)
 			m_ani_change = 25;//ステージ1の死亡シーン
 		
 		//ステージ2なら
-		if (((UserData*)Save::GetData())->m_stage_count = 2)
+		if (((UserData*)Save::GetData())->m_stage_count == 2)
 			m_ani_change = 26;//ステージ2の死亡シーン
 
 		//ステージ3なら
-		if (((UserData*)Save::GetData())->m_stage_count = 3)
+		if (((UserData*)Save::GetData())->m_stage_count == 3)
 			m_ani_change = 34;//ステージ3の死亡シーン
 		
 		if (m_remaining <= 1)
@@ -250,14 +250,14 @@ void CObjRunner::Action()
 				{
 					m_torch_control = false; 
 					//ステージが1の時
-					if (((UserData*)Save::GetData())->m_stage_count = 1)
+					if (((UserData*)Save::GetData())->m_stage_count == 1)
 						m_ani_change = 0;//アニメーションを0に
 
 					//ステージが2の時
-					if (((UserData*)Save::GetData())->m_stage_count = 2)
+					if (((UserData*)Save::GetData())->m_stage_count == 2)
 						m_ani_change = 19;//アニメーションを19に
 					//ステージが3の時
-					if (((UserData*)Save::GetData())->m_stage_count = 3)
+					if (((UserData*)Save::GetData())->m_stage_count == 3)
 						m_ani_change = 32;//アニメーションを32に
 				
 					m_torch_time_control = 0;
@@ -373,14 +373,14 @@ void CObjRunner::Action()
 		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 		{
 			//ステージが1の時
-			if (((UserData*)Save::GetData())->m_stage_count = 1)
+			if (((UserData*)Save::GetData())->m_stage_count == 1)
 				m_ani_change = 0;//アニメーションを0に
 
 								 //ステージが2の時
-			if (((UserData*)Save::GetData())->m_stage_count = 2)
+			if (((UserData*)Save::GetData())->m_stage_count == 2)
 				m_ani_change = 19;//アニメーションを19に
 								  //ステージが3の時
-			if (((UserData*)Save::GetData())->m_stage_count = 3)
+			if (((UserData*)Save::GetData())->m_stage_count == 3)
 				m_ani_change = 32;//アニメーションを32に
 			m_vx = 0.0f; //ランナーを移動させないようにする。
 			m_vy = 0.0f;
@@ -466,14 +466,14 @@ void CObjRunner::Action()
 		if (m_check_control_x == true)
 		{
 			//ステージが1の時
-			if (((UserData*)Save::GetData())->m_stage_count = 1)
+			if (((UserData*)Save::GetData())->m_stage_count == 1)
 				m_ani_change = 0;//アニメーションを0に
 
 			//ステージが2の時
-			if (((UserData*)Save::GetData())->m_stage_count = 2)
+			if (((UserData*)Save::GetData())->m_stage_count == 2)
 				m_ani_change = 19;//アニメーションを19に
 			//ステージが3の時
-			if (((UserData*)Save::GetData())->m_stage_count = 3)
+			if (((UserData*)Save::GetData())->m_stage_count == 3)
 				m_ani_change = 32;//アニメーションを32に
 			//チェックポイントにいる第二のランナーの位置を取得する
 			float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
@@ -516,7 +516,7 @@ void CObjRunner::Action()
 				m_homing = true;
 			}
 			
-			if (((UserData*)Save::GetData())->m_stage_count = 1)
+			if (((UserData*)Save::GetData())->m_stage_count == 1)
 			{
 				//第二のランナーの目の前に来た時
 				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
@@ -534,7 +534,7 @@ void CObjRunner::Action()
 				}
 			}
 
-			if (((UserData*)Save::GetData())->m_stage_count = 2)
+			if (((UserData*)Save::GetData())->m_stage_count == 2)
 			{
 				//第二のランナーの目の前に来た時
 				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
@@ -551,7 +551,7 @@ void CObjRunner::Action()
 					}
 				}
 			}
-			if (((UserData*)Save::GetData())->m_stage_count = 3)
+			if (((UserData*)Save::GetData())->m_stage_count == 3)
 			{
 				//第二のランナーの目の前に来た時
 				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
@@ -615,7 +615,7 @@ void CObjRunner::Draw()
 	RECT_F dst2; //描画先表示位置
 	//ステージ1のランナーのびょうが----------------------------------------------------
 	//ステージ1の時
-	if (((UserData*)Save::GetData())->m_stage_count = 1)
+	if (((UserData*)Save::GetData())->m_stage_count == 1)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
 		//チェックポイントに入っていたら立ち姿に変える
@@ -658,7 +658,7 @@ void CObjRunner::Draw()
 	}
 	//ステージ2ランナーの描画---------------------------------------------------------------------------
 	//ステージ2の時
-	if (((UserData*)Save::GetData())->m_stage_count = 2)
+	if (((UserData*)Save::GetData())->m_stage_count == 2)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
 		//チェックポイントに入っていたら立ち姿に変える
@@ -702,7 +702,7 @@ void CObjRunner::Draw()
 	}
 	//ステージ3ランナーの描画----------------------------------------------------------------------------------------
 	//ステージ3の時
-	if (((UserData*)Save::GetData())->m_stage_count = 3)
+	if (((UserData*)Save::GetData())->m_stage_count == 3)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
 		//チェックポイントに入っていたら立ち姿に変える
@@ -889,7 +889,7 @@ void CObjRunner::Draw()
 	}
 	//--------------------------------------------------------------
 	//残機-------------------------------------------------------------------------------
-	if ((((UserData*)Save::GetData())->m_stage_count = 1))
+	if ((((UserData*)Save::GetData())->m_stage_count ==1))
 	{
 		//切り取り位置の設定
 		src.m_top = 0.0f;
@@ -903,7 +903,7 @@ void CObjRunner::Draw()
 		dst.m_right = 40.0f + 680.0f;
 		dst.m_bottom = 40.0f + 10.0f;
 	}
-	if ((((UserData*)Save::GetData())->m_stage_count = 2))
+	if ((((UserData*)Save::GetData())->m_stage_count == 2))
 	{
 		//切り取り位置の設定
 		src.m_top = 0.0f;
@@ -917,7 +917,7 @@ void CObjRunner::Draw()
 		dst.m_right = 40.0f + 680.0f;
 		dst.m_bottom = 40.0f + 10.0f;
 	}
-	if ((((UserData*)Save::GetData())->m_stage_count = 3))
+	if ((((UserData*)Save::GetData())->m_stage_count == 3))
 	{
 		//切り取り位置の設定
 		src.m_top = 0.0f;
