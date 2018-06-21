@@ -23,19 +23,16 @@ void CObjGameOver::Action()
 {
 	m_time++;
 
-	if (Input::GetVKey(VK_RETURN) == true )
+	//メニュー画面へ
+	if (Input::GetVKey('A') == true)
 	{
-		if (m_key_flag == true)
-		{
-			Scene::SetScene(new CSceneMenu());
-			m_key_flag = false;
-		}
+		Scene::SetScene(new CSceneMenu());
 	}
-	else
+	//ランキング画面へ
+	if (Input::GetVKey('S') == true)
 	{
-		m_key_flag = true;
+		Scene::SetScene(new CSceneRanking());
 	}
-
 	//スコアをランキングの最後に入れる
 	((UserData*)Save::GetData())->m_ranking[RANKING_MAX_COUNT - 1] = ((UserData*)Save::GetData())->m_point;
 }
@@ -63,7 +60,17 @@ void CObjGameOver::Draw()
 
 	Draw::Draw(0, &src, &dst, c, 0.0f);
 
-	
+	//スコア
+	//得点の描画ーーーーーーーーーーーーーーーーーーーーーーーーーーー
+	wchar_t str[128];
+	swprintf_s(str, L"スコア：%d点", ((UserData*)Save::GetData())->m_point);
+	Font::StrDraw(str, 220, 210, 38, c);
+	//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+	//メニュー遷移説明
+	Font::StrDraw(L"Aでメニューへ", 20, 550, 24, c);
+
+	//ランキング遷移説明
+	Font::StrDraw(L"Sでランキングへ", 600, 550, 24, c);
 	//----------------------------------------------------
 
 }

@@ -67,9 +67,6 @@
     <Filter Include="ソース ファイル\Scene\RANKING">
       <UniqueIdentifier>{42e9063c-17f5-4bce-ad37-ab55ed91f50a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Scene\GAMEMENU\GAMECLEAR">
-      <UniqueIdentifier>{11dc65d4-5793-4067-8ef0-1d11abb865f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\GAMEMAIN\CheckPoint">
       <UniqueIdentifier>{2db2c4b5-1af9-4132-b7de-c125ab3df192}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Scene\OPERATION">
       <UniqueIdentifier>{d4266aca-18ef-4668-ad42-4458e7ced3b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\GAMECLEAR">
+      <UniqueIdentifier>{11dc65d4-5793-4067-8ef0-1d11abb865f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,10 +178,10 @@
       <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
     </ClCompile>
     <ClCompile Include="SceneGameClear.cpp">
-      <Filter>ソース ファイル\Scene\GAMEMENU\GAMECLEAR</Filter>
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
     </ClCompile>
     <ClCompile Include="ObjGameClear.cpp">
-      <Filter>ソース ファイル\Scene\GAMEMENU\GAMECLEAR</Filter>
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
     </ClCompile>
     <ClCompile Include="ObjRanking.cpp">
       <Filter>ソース ファイル\Scene\RANKING</Filter>
@@ -303,10 +303,10 @@
       <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
     </ClInclude>
     <ClInclude Include="SceneGameClear.h">
-      <Filter>ソース ファイル\Scene\GAMEMENU\GAMECLEAR</Filter>
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
     </ClInclude>
     <ClInclude Include="ObjGameClear.h">
-      <Filter>ソース ファイル\Scene\GAMEMENU\GAMECLEAR</Filter>
+      <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
     </ClInclude>
     <ClInclude Include="ObjRanking.h">
       <Filter>ソース ファイル\Scene\RANKING</Filter>
