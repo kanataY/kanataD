@@ -14,10 +14,10 @@ public:
 	void Action();	//アクション
 	void Draw();	//ドロー
 private:
-	float m_x; //主人公のX位置
-	float m_y;	//主人公のY位置
-	float m_vx;//X方向の移動ベクトル
-	float m_vy;//Y方向の移動ベクトル
-	float m_sppde_power;//スピードパワー
 	int m_time; //時間管理
+	int m_ani_time; //アニメーションフレーム動作感覚
+	int m_ani_frame;//描画フレーム
+	float m_ani_max_time;   //アニメーション動作間隔最大値
+
+	bool m_o_tap_flag;  //oを押した時のフラグ
 };

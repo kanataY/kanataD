@@ -30,9 +30,24 @@ CSceneGameClear::~CSceneGameClear()
 //初期化メソッド
 void CSceneGameClear::InitScene()
 {
-	//外部グラフィックファイルを読み込み0番に登録(512×512ピクセル)
-	Draw::LoadImageW(L"Image\\back\\GameClear.png", 0, TEX_SIZE_512);
+	//外部グラフィックファイルを読み込み0番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\Fire.png", 0, TEX_SIZE_320);
+	//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\clear1.png", 1, TEX_SIZE_800);
+	//外部グラフィックファイルを読み込み2番に登録(1024ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\clear2.png", 2, TEX_SIZE_800);
+	//外部グラフィックファイルを読み込み3番に登録(1024ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\clear3.png", 3, TEX_SIZE_800);
+	//外部グラフィックファイルを読み込み4番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\clear_mozi.png", 4, TEX_SIZE_512);
+	//外部グラフィックファイルを読み込み5番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\o.png", 5, TEX_SIZE_64);
+	//外部グラフィックファイルを読み込み5番に登録(1024ピクセル)
+	Draw::LoadImageW(L"Image\\back\\Clear\\clear.png", 6, TEX_SIZE_1024);
+	
 
+
+	
 	/*//音楽読み込み
 	Audio::LoadAudio(0, L"gameclear.wav", BACK_MUSIC);
 

@@ -517,6 +517,7 @@ void CObjRunner::Draw()
 
 	//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
 	//チェックポイントに入っていたら立ち姿に変える
+
 	if (m_check_transfer == false)
 	{
 		src.m_top = 1.0f;
