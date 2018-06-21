@@ -106,7 +106,7 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み34番に登録(256ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\grandfather_death.png", 34, TEX_SIZE_192);    //主人公3の死亡
 	//外部グラフィックファイルを読み込み35番に登録(256ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\grandfather_death.png", 35, TEX_SIZE_256);    //主人公3の無敵
+	Draw::LoadImageW(L"Image\\hero\\grandfather_invincible.png", 35, TEX_SIZE_256);    //主人公3の無敵
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner(remaining);

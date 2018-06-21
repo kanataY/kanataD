@@ -57,15 +57,14 @@ void CObjRunner::Init()
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
 	
-						//ステージが1の時
-	if (((UserData*)Save::GetData())->m_stage_count = 1)
+	//ステージが1の時
+	if (((UserData*)Save::GetData())->m_stage_count == 1)
 		m_ani_change = 0;//アニメーションを0に
-
-						 //ステージが2の時
-	if (((UserData*)Save::GetData())->m_stage_count = 2)
+	//ステージが2の時
+	if (((UserData*)Save::GetData())->m_stage_count == 2)
 		m_ani_change = 19;//アニメーションを19に
-						  //ステージが3の時
-	if (((UserData*)Save::GetData())->m_stage_count = 3)
+	 //ステージが3の時
+	if (((UserData*)Save::GetData())->m_stage_count == 3)
 		m_ani_change = 32;//アニメーションを32に
 	
 	
@@ -614,7 +613,8 @@ void CObjRunner::Draw()
 	RECT_F dst; //描画先表示位置
 	RECT_F src2; //描画元切り取り位置
 	RECT_F dst2; //描画先表示位置
-
+	//ステージ1のランナーのびょうが----------------------------------------------------
+	//ステージ1の時
 	if (((UserData*)Save::GetData())->m_stage_count = 1)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
@@ -656,6 +656,8 @@ void CObjRunner::Draw()
 		}//描画
 		Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 	}
+	//ステージ2ランナーの描画---------------------------------------------------------------------------
+	//ステージ2の時
 	if (((UserData*)Save::GetData())->m_stage_count = 2)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
@@ -698,6 +700,8 @@ void CObjRunner::Draw()
 		//描画
 		Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 	}
+	//ステージ3ランナーの描画----------------------------------------------------------------------------------------
+	//ステージ3の時
 	if (((UserData*)Save::GetData())->m_stage_count = 3)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
@@ -756,8 +760,12 @@ void CObjRunner::Draw()
 		dst.m_right = 64.0f + m_px;
 		dst.m_bottom = 64.0f + m_py;
 
-		//描画
-		Draw::Draw(22, &src, &dst, c, 0.0f);
+		if (((UserData*)Save::GetData())->m_stage_count == 1)
+			Draw::Draw(22, &src, &dst, c, 0.0f);
+		if (((UserData*)Save::GetData())->m_stage_count == 2)
+			Draw::Draw(23, &src, &dst, c, 0.0f);
+		if (((UserData*)Save::GetData())->m_stage_count == 3)
+			Draw::Draw(35, &src, &dst, c, 0.0f);
 	}
 
 	//ーーーーーーーーーーーーーーーーー聖火のもつとこーーーーーーーーーーーー
