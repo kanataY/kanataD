@@ -287,7 +287,7 @@ void CObjRunner::Action()
 				{
 					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
 					{
-						m_jamp_y_position = m_py;
+  						m_jamp_y_position = m_py;
 						m_jamp_control = true;		//ジャンプしている
 						m_jamp_control_2 = true;
 					}
