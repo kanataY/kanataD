@@ -123,7 +123,7 @@ void CObjOkama::Action()
 		//しばらく進んでからホーミングする-----------------------------------------------------------
 		if (m_time > 40)
 		{
-			if (m_homing == false)
+			if (m_homing == false && runner->GetJamp() == false)
 			{
 
 				float okax = runner->GetX() - (m_px + block->GetScroll());
@@ -188,7 +188,7 @@ void CObjOkama::Action()
 		HitBox(); //HitBox関連
 
 		//レバガチャーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-		if (m_rebagacha > 15) //レバガチャ15回したら
+		if (m_rebagacha > 10) //レバガチャ15回したら
 		{
 			m_hug = false;
 			m_vx = 100.f; //後ろにぶっ飛ぶ
@@ -236,10 +236,10 @@ void CObjOkama::Action()
 				{
 					//木箱に当たってないことにする
 					m_avoidance = false;
-					if (m_crates_jamp == true) //ジャンプした後にホーミングする
-					{
-						m_homing = false;
-					}
+					//if (m_crates_jamp == true) //ジャンプした後にホーミングする
+					//{
+					//	m_homing = false;
+					//}
 					m_crates_jamp = false;
 				}
 				if (m_avoidance_time > 25)

@@ -47,45 +47,52 @@ void CObjCheckPoint::Action()
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
-	//ランナーが目の前に来た時
-	if (runner->GetCheckTransfer() == true)
+	//ステージ３の時はランナーがそのまま走るので動かさない
+	if (((UserData*)Save::GetData())->m_stage_count == 3)
 	{
 		m_time++;
-		m_ani_change = 20; //腕を振り下ろす
-	}
-
-	if (m_time > 50)	   //振り下ろしてしばらくたったら走り出す
-	{
-		m_pos = 1.0f;      //向きを変える
-		m_ani_change = 19; //走る描画に変える
-
-		//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-		m_ani_time++;//フレーム動作感覚タイムを進める
-		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-		{
-			m_ani_frame++;//フレームを進める
-			m_ani_time = 0;
-		}
-		if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-		{
-			m_ani_frame = 0;
-		}
-
-		m_vx += 1.0f;
-	}
-
-	//シーン移動する。
-	if (m_time > 220)
-	{
-		((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100;
-		((UserData*)Save::GetData())->m_stage_count += 1;
-		
-		if (((UserData*)Save::GetData())->m_stage_count == 4)
+		if (m_time > 220)
 		{
 			Scene::SetScene(new CSceneGameClear());
 		}
-		else
+	}
+	else  //ステージ３以外の時は動く
+	{
+		//ランナーが目の前に来た時
+		if (runner->GetCheckTransfer() == true)
+		{
+			m_time++;
+			m_ani_change = 20; //腕を振り下ろす
+		}
+
+		if (m_time > 50)	   //振り下ろしてしばらくたったら走り出す
+		{
+			m_pos = 1.0f;      //向きを変える
+			m_ani_change = 19; //走る描画に変える
+
+			//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+			m_ani_time++;//フレーム動作感覚タイムを進める
+			if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+			{
+				m_ani_frame++;//フレームを進める
+				m_ani_time = 0;
+			}
+			if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+			{
+				m_ani_frame = 0;
+			}
+
+			m_vx += 1.0f;
+		}
+
+		//シーン移動する。
+		if (m_time > 220)
+		{
+			((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100;
+			((UserData*)Save::GetData())->m_stage_count += 1;
+
 			Scene::SetScene(new CSceneMain(3));
+		}
 	}
 
 	//HitBoxの位置の変更
