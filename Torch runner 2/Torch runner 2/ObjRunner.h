@@ -38,6 +38,7 @@ private:
 	float m_vx;			//移動ベクトル
 	float m_vy;
 	float m_speed;      //主人公の移動量のスピード管理
+	float m_jamp_speed; //ジャンプ時のYの追加移動量管理
 	int   m_invincible; //無敵時間
 	int   m_check_time; //チェックポイントのタイム管理
 	int   m_remaining;  //残機

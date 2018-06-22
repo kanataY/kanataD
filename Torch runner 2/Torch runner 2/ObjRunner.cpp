@@ -27,6 +27,7 @@ void CObjRunner::Init()
 	m_vy = 0.0f;	//移動ベクトル
 	m_invincible = 0;
 	m_speed = 0.8f;
+	m_jamp_speed = 0.0f;
 
 	m_hole_fall = 0.0f;
 
@@ -184,9 +185,13 @@ void CObjRunner::Action()
 		if (m_stick_fire == true)
 		{
 			m_speed = 1.6f;
+			m_jamp_speed = 1.2f;
 		}
 		else
+		{
 			m_speed = 0.8f;
+			m_jamp_speed = 0.6f;
+		}
 
 		if (Input::GetVKey('D') == true)  //右移動
 		{
@@ -213,9 +218,9 @@ void CObjRunner::Action()
 			}
 			else
 			{
-				m_vy += m_speed - 0.6f;
+				m_vy += m_speed - m_jamp_speed;
 				//ジャンプしているときにSを押したとき、影も動くようにする
-				m_jamp_y_position += m_speed + 0.6f;
+				m_jamp_y_position += m_speed + m_jamp_speed;
 			}
 		}
 
