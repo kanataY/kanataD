@@ -199,6 +199,11 @@ void CObjRunner::Action()
 		if (Input::GetVKey('W') == true && m_py > 277)//上移動
 		{
 			m_vy += -m_speed;
+			if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
+			{
+				//ジャンプしているときにSを押したとき、影も動くようにする
+				m_jamp_y_position += -m_speed - 0.9f;
+			}
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
@@ -209,6 +214,8 @@ void CObjRunner::Action()
 			else
 			{
 				m_vy += m_speed - 0.6f;
+				//ジャンプしているときにSを押したとき、影も動くようにする
+				m_jamp_y_position += m_speed + 0.6f;
 			}
 		}
 
@@ -287,7 +294,7 @@ void CObjRunner::Action()
 				{
 					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
 					{
-  						m_jamp_y_position = m_py;
+						m_jamp_y_position = m_py;
 						m_jamp_control = true;		//ジャンプしている
 						m_jamp_control_2 = true;
 					}
@@ -352,7 +359,7 @@ void CObjRunner::Action()
 					m_jamp_control_2 = false;
 					m_vy = 0.0f;
 				}
-				if (m_time > 58) //時間が来たら自由に動けるようになる
+				if (m_time > 90) //時間が来たら自由に動けるようになる (58デフォルト)
 				{
 					if (Input::GetVKey(VK_SPACE) == false)   //スペースを離さない限りジャンプさせない
 					{
@@ -867,7 +874,7 @@ void CObjRunner::Draw()
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
 	//影-------------------------------------------------------------
-	if (m_jamp_control == false)
+	if (m_jamp_control_2 == false)
 	{
 		//切り取り位置の設定
 		src.m_top = 0.0f;
@@ -893,7 +900,7 @@ void CObjRunner::Draw()
 		src.m_bottom = 64.0f;
 
 		//表示位置の設定
-		dst.m_top = 60.0f+ m_jamp_y_position;
+		dst.m_top = 60.0f+ m_jamp_y_position; 
 		dst.m_left = -30.0f + m_px;
 		dst.m_right = 55.0f + m_px;
 		dst.m_bottom = 68.0f + m_jamp_y_position;
