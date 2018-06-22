@@ -102,7 +102,6 @@ void CObjRunner::Action()
 	}
 	if (gau->GetGauge() == 192)
 	{
-		
 		//ステージ1なら
 		if (((UserData*)Save::GetData())->m_stage_count == 1)
 			m_ani_change = 25;//ステージ1の死亡シーン
@@ -184,7 +183,7 @@ void CObjRunner::Action()
 
 		if (m_py >= 536) //一番下より下に行かないようにする
 			m_py = 536;
-		if (m_jamp_control_2 == false || check != nullptr )        //ジャンプをしてない時
+		if (m_jamp_control_2 == false)        //ジャンプをしてない時
 		{
 			if (m_py <= 277) //道路より上に行かないようにする
 				m_py = 277;
@@ -298,8 +297,8 @@ void CObjRunner::Action()
 
 		//ジャンプ---------------------------
 		//チェックポイントが出てきたらジャンプできない
-		if (check == nullptr)
-		{
+		/*if (check == nullptr)
+		{*/
 			bool m_hag = false;
 			if (okama != nullptr)
 				m_hag = okama->GetHug();
@@ -386,7 +385,7 @@ void CObjRunner::Action()
 				}
 			}
 			
-		}
+		//}
 
 		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
@@ -473,9 +472,11 @@ void CObjRunner::Action()
 		CObj::SetPrio((int)m_py); //描画優先順位変更
 	}
 
-	//チェックポイントに入ったら受け渡たすシーンを描画をする。
-	else if (m_check_control == true)
+	
+		//チェックポイントに入ったら受け渡たすシーンを描画をする。
+	else if (m_check_control == true && m_jamp_control_2 == false)
 	{
+
 		//ブロック情報を持ってくる
 		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
@@ -635,6 +636,16 @@ void CObjRunner::Action()
 			m_px += m_vx;
 			m_py += m_vy;
 		}
+	}
+	else if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
+	{
+		//Xの移動量を０にする
+		m_vx = 0.0f;
+
+		//ジャンプしたときに記録した場所に行くまで落ちる
+		if (m_py >= m_jamp_y_position)
+			m_jamp_control_2 = false;
+			m_py += m_jamp_y_1;
 	}
 }
 

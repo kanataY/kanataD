@@ -35,7 +35,7 @@ void CObjCheckPoint::Init()
 		m_ani_change = 19;
 
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 400, 300, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
+	Hits::SetHitBox(this, m_px, m_py, 400, 800, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
 }
 
 //アクション
@@ -52,7 +52,7 @@ void CObjCheckPoint::Action()
 
 	//HitBoxの位置の変更
 	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll() + 50.0f, m_py + 180.0f);
+	hit->SetPos(m_px + block->GetScroll() + 50.0f, m_py - 180.0f);
 
 	//ステージ３の時はランナーがそのまま走るので動かさない
 	if (((UserData*)Save::GetData())->m_stage_count == 3)

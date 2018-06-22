@@ -112,6 +112,9 @@ float CObjCorrection::Screen_In(float x)
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
+	
 	//画面外ならtrueを返す
 	if (x > 750.0f)
 	{
