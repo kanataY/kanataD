@@ -93,8 +93,16 @@ void CObjRunner::Action()
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
 	//ゲージがなくなった時----------------------------------------------------------------------
+	//なくなる瞬間に
+	if (gau->GetGauge() == 191)
+	{
+		//フレームを最初に戻して、フレーム速度を落とす
+		m_ani_frame = 1;
+		m_ani_max_time = 50;
+	}
 	if (gau->GetGauge() == 192)
 	{
+		
 		//ステージ1なら
 		if (((UserData*)Save::GetData())->m_stage_count == 1)
 			m_ani_change = 25;//ステージ1の死亡シーン
@@ -107,20 +115,24 @@ void CObjRunner::Action()
 		if (((UserData*)Save::GetData())->m_stage_count == 3)
 			m_ani_change = 34;//ステージ3の死亡シーン
 		
-		if (m_remaining <= 1)
+		//手をついたら
+		if (m_ani_frame == 2)
 		{
-			Scene::SetScene(new CSceneGameOver());
-		}
-		else
-		{
-			if (m_ani_frame == 3 )
+			//少し時間がたったら消す
+			if (m_ani_time >= 49)
 			{
-				m_remaining -= 1;
-				Scene::SetScene(new CSceneMain(m_remaining));
+				//残機ないときはゲームオーバーに
+				if (m_remaining <= 1)
+				{
+					Scene::SetScene(new CSceneGameOver());
+				}
+				else//残機を減らしてシーンを再開する
+				{
+					m_remaining -= 1;
+					Scene::SetScene(new CSceneMain(m_remaining));
+				}
 			}
 		}
-		
-		m_ani_max_time = 20;
 	}
 
 	//----------------------------------------------------------------------------------------
