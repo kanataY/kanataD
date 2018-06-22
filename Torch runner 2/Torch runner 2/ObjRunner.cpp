@@ -27,6 +27,7 @@ void CObjRunner::Init()
 	m_vy = 0.0f;	//移動ベクトル
 	m_invincible = 0;
 	m_speed = 0.8f;
+	m_jamp_speed = 0.0f;
 
 	m_hole_fall = 0.0f;
 
@@ -94,6 +95,13 @@ void CObjRunner::Action()
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
 	//ゲージがなくなった時----------------------------------------------------------------------
+	//なくなる瞬間に
+	if (gau->GetGauge() == 191)
+	{
+		//フレームを最初に戻して、フレーム速度を落とす
+		m_ani_frame = 1;
+		m_ani_max_time = 50;
+	}
 	if (gau->GetGauge() == 192)
 	{
 		//ステージ1なら
@@ -108,20 +116,24 @@ void CObjRunner::Action()
 		if (((UserData*)Save::GetData())->m_stage_count == 3)
 			m_ani_change = 34;//ステージ3の死亡シーン
 		
-		if (m_remaining <= 1)
+		//手をついたら
+		if (m_ani_frame == 2)
 		{
-			Scene::SetScene(new CSceneGameOver());
-		}
-		else
-		{
-			if (m_ani_frame == 3 )
+			//少し時間がたったら消す
+			if (m_ani_time >= 49)
 			{
-				m_remaining -= 1;
-				Scene::SetScene(new CSceneMain(m_remaining));
+				//残機ないときはゲームオーバーに
+				if (m_remaining <= 1)
+				{
+					Scene::SetScene(new CSceneGameOver());
+				}
+				else//残機を減らしてシーンを再開する
+				{
+					m_remaining -= 1;
+					Scene::SetScene(new CSceneMain(m_remaining));
+				}
 			}
 		}
-		
-		m_ani_max_time = 20;
 	}
 
 	//----------------------------------------------------------------------------------------
@@ -173,7 +185,7 @@ void CObjRunner::Action()
 
 		if (m_py >= 536) //一番下より下に行かないようにする
 			m_py = 536;
-		if (m_jamp_control_2 == false || check != nullptr )        //ジャンプをしてない時
+		if (m_jamp_control_2 == false)        //ジャンプをしてない時
 		{
 			if (m_py <= 277) //道路より上に行かないようにする
 				m_py = 277;
@@ -186,9 +198,13 @@ void CObjRunner::Action()
 		if (m_stick_fire == true)
 		{
 			m_speed = 1.6f;
+			m_jamp_speed = 1.2f;
 		}
 		else
+		{
 			m_speed = 0.8f;
+			m_jamp_speed = 0.6f;
+		}
 
 		if (Input::GetVKey('D') == true)  //右移動
 		{
@@ -201,6 +217,11 @@ void CObjRunner::Action()
 		if (Input::GetVKey('W') == true && m_py > 277)//上移動
 		{
 			m_vy += -m_speed;
+			if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
+			{
+				//ジャンプしているときにSを押したとき、影も動くようにする
+				m_jamp_y_position += -m_speed - 0.9f;
+			}
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
 		{
@@ -210,7 +231,9 @@ void CObjRunner::Action()
 			}
 			else
 			{
-				m_vy += m_speed - 0.6f;
+				m_vy += m_speed - m_jamp_speed;
+				//ジャンプしているときにSを押したとき、影も動くようにする
+				m_jamp_y_position += m_speed + m_jamp_speed;
 			}
 		}
 
@@ -276,8 +299,8 @@ void CObjRunner::Action()
 
 		//ジャンプ---------------------------
 		//チェックポイントが出てきたらジャンプできない
-		if (check == nullptr)
-		{
+		/*if (check == nullptr)
+		{*/
 			bool m_hag = false;
 			if (okama != nullptr)
 				m_hag = okama->GetHug();
@@ -289,7 +312,7 @@ void CObjRunner::Action()
 				{
 					if (Input::GetVKey(VK_SPACE) == true)   //ジャンプする
 					{
-  						m_jamp_y_position = m_py;
+						m_jamp_y_position = m_py;
 						m_jamp_control = true;		//ジャンプしている
 						m_jamp_control_2 = true;
 					}
@@ -354,7 +377,7 @@ void CObjRunner::Action()
 					m_jamp_control_2 = false;
 					m_vy = 0.0f;
 				}
-				if (m_time > 58) //時間が来たら自由に動けるようになる
+				if (m_time > 90) //時間が来たら自由に動けるようになる (58デフォルト)
 				{
 					if (Input::GetVKey(VK_SPACE) == false)   //スペースを離さない限りジャンプさせない
 					{
@@ -364,7 +387,7 @@ void CObjRunner::Action()
 				}
 			}
 			
-		}
+		//}
 
 		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
@@ -378,10 +401,10 @@ void CObjRunner::Action()
 			if (((UserData*)Save::GetData())->m_stage_count == 1)
 				m_ani_change = 0;//アニメーションを0に
 
-								 //ステージが2の時
+			//ステージが2の時
 			if (((UserData*)Save::GetData())->m_stage_count == 2)
 				m_ani_change = 19;//アニメーションを19に
-								  //ステージが3の時
+			//ステージが3の時
 			if (((UserData*)Save::GetData())->m_stage_count == 3)
 				m_ani_change = 32;//アニメーションを32に
 			m_vx = 0.0f; //ランナーを移動させないようにする。
@@ -451,130 +474,146 @@ void CObjRunner::Action()
 		CObj::SetPrio((int)m_py); //描画優先順位変更
 	}
 
-	//チェックポイントに入ったら受け渡たすシーンを描画をする。
-	else if (m_check_control == true)
+	
+		//チェックポイントに入ったら受け渡たすシーンを描画をする。
+	else if (m_check_control == true && m_jamp_control_2 == false)
 	{
+
 		//ブロック情報を持ってくる
 		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
 		//チェックポイントを取得
 		CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
+		//ステージ３の時はホーミングせずにそのまま突き進む
+		if (((UserData*)Save::GetData())->m_stage_count == 3)
+		{
+			m_vx += 0.5f;
+
+			//摩擦
+			m_vx += -(m_vx * 0.15f);
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
+		}
+		else
+		{
+			if (m_check_control_x == true)
+			{
+				//ステージが1の時
+				if (((UserData*)Save::GetData())->m_stage_count == 1)
+					m_ani_change = 0;//アニメーションを0に
+
+				//ステージが2の時
+				if (((UserData*)Save::GetData())->m_stage_count == 2)
+					m_ani_change = 19;//アニメーションを19に
+				//ステージが3の時
+				if (((UserData*)Save::GetData())->m_stage_count == 3)
+					m_ani_change = 32;//アニメーションを32に
+				//チェックポイントにいる第二のランナーの位置を取得する
+				float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
+				float okay = (check->GetY()  * 3.0f) - m_py;
+
+				//atan2で角度を求める
+				float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+				//-180～-0を180～360に変換
+				if (r2 < 0)
+				{
+					r2 = 360 - abs(r2);
+				};
+
+				float ar = r2;
+
+				if (ar < 0)
+				{
+					ar = 360 - abs(ar);
+				}
+
+				//ランナーの現在の向いてる角度を取る
+				float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+				//-180～-0を180～360に変換
+				if (bor < 0)
+				{
+					bor = 360 - abs(bor);
+				};
+				float br = bor;
+
+				//ランナーのほうにホーミングする
+				if (m_homing == false)
+				{
+					//移動方向をランナーの方向にする
+					m_vx = cos(3.14f / 180 * ar);
+					m_vy = sin(3.14f / 180 * ar);
+					m_vx *= 2; // 移動速度を2倍にする
+					m_vy *= 2;
+					m_homing = true;
+				}
+
+				if (((UserData*)Save::GetData())->m_stage_count == 1)
+				{
+					//第二のランナーの目の前に来た時
+					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+					{
+						m_check_time++; //タイムを進める
+						m_check_transfer = true;
+						m_vx = 0.0f; //移動量を０にする
+						m_vy = 0.0f;
+						if (m_check_time < 50) //振り下ろす
+							m_ani_change = 8;
+						else
+						{
+							m_ani_change = 0;//通常の状態で待つ
+						}
+					}
+				}
+
+				if (((UserData*)Save::GetData())->m_stage_count == 2)
+				{
+					//第二のランナーの目の前に来た時
+					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+					{
+						m_check_time++; //タイムを進める
+						m_check_transfer = true;
+						m_vx = 0.0f; //移動量を０にする
+						m_vy = 0.0f;
+						if (m_check_time < 50) //振り下ろす
+							m_ani_change = 20;
+						else
+						{
+							m_ani_change = 19;//通常の状態で待つ
+						}
+					}
+				}
+				if (((UserData*)Save::GetData())->m_stage_count == 3)
+				{
+					//第二のランナーの目の前に来た時
+					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+					{
+						m_check_time++; //タイムを進める
+						m_check_transfer = true;
+						m_vx = 0.0f; //移動量を０にする
+						m_vy = 0.0f;
+						if (m_check_time < 50) //振り下ろす
+							m_ani_change = 33;
+						else
+						{
+							m_ani_change = 32;//通常の状態で待つ
+						}
+					}
+				}
+				//位置の更新
+				m_px += m_vx;
+				m_py += m_vy;
+
+				CObj::SetPrio((int)m_py); //描画優先順位変更
+			}
+		}
 		// チェックポイントが指定の位置にある場合
 		if (check->GetX() + block->GetScroll() < 400)
 		{
 			m_check_control_x = true; //ホーミングをONにする
-		}
-		if (m_check_control_x == true)
-		{
-			//ステージが1の時
-			if (((UserData*)Save::GetData())->m_stage_count == 1)
-				m_ani_change = 0;//アニメーションを0に
-
-			//ステージが2の時
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-				m_ani_change = 19;//アニメーションを19に
-			//ステージが3の時
-			if (((UserData*)Save::GetData())->m_stage_count == 3)
-				m_ani_change = 32;//アニメーションを32に
-			//チェックポイントにいる第二のランナーの位置を取得する
-			float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
-			float okay = (check->GetY()  * 3.0f) - m_py;
-
-			//atan2で角度を求める
-			float r2 = atan2(okay, okax)*180.0f / 3.14f;
-
-			//-180～-0を180～360に変換
-			if (r2 < 0)
-			{
-				r2 = 360 - abs(r2);
-			};
-
-			float ar = r2;
-
-			if (ar < 0)
-			{
-				ar = 360 - abs(ar);
-			}
-
-			//ランナーの現在の向いてる角度を取る
-			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
-
-			//-180～-0を180～360に変換
-			if (bor < 0)
-			{
-				bor = 360 - abs(bor);
-			};
-			float br = bor;
-
-			//ランナーのほうにホーミングする
-			if (m_homing == false)
-			{
-				//移動方向をランナーの方向にする
-				m_vx = cos(3.14f / 180 * ar);
-				m_vy = sin(3.14f / 180 * ar);
-				m_vx *= 2; // 移動速度を2倍にする
-				m_vy *= 2;
-				m_homing = true;
-			}
-			
-			if (((UserData*)Save::GetData())->m_stage_count == 1)
-			{
-				//第二のランナーの目の前に来た時
-				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-				{
-					m_check_time++; //タイムを進める
-					m_check_transfer = true;
-					m_vx = 0.0f; //移動量を０にする
-					m_vy = 0.0f;
-					if (m_check_time < 50) //振り下ろす
-						m_ani_change = 8;
-					else
-					{
-						m_ani_change = 0;//通常の状態で待つ
-					}
-				}
-			}
-
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-			{
-				//第二のランナーの目の前に来た時
-				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-				{
-					m_check_time++; //タイムを進める
-					m_check_transfer = true;
-					m_vx = 0.0f; //移動量を０にする
-					m_vy = 0.0f;
-					if (m_check_time < 50) //振り下ろす
-						m_ani_change = 20;
-					else
-					{
-						m_ani_change = 19;//通常の状態で待つ
-					}
-				}
-			}
-			if (((UserData*)Save::GetData())->m_stage_count == 3)
-			{
-				//第二のランナーの目の前に来た時
-				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-				{
-					m_check_time++; //タイムを進める
-					m_check_transfer = true;
-					m_vx = 0.0f; //移動量を０にする
-					m_vy = 0.0f;
-					if (m_check_time < 50) //振り下ろす
-						m_ani_change = 33;
-					else
-					{
-						m_ani_change = 32;//通常の状態で待つ
-					}
-				}
-			}
-			//位置の更新
-			m_px += m_vx;
-			m_py += m_vy;
-
-			CObj::SetPrio((int)m_py); //描画優先順位変更
 		}
 		else
 		{
@@ -599,6 +638,16 @@ void CObjRunner::Action()
 			m_px += m_vx;
 			m_py += m_vy;
 		}
+	}
+	else if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
+	{
+		//Xの移動量を０にする
+		m_vx = 0.0f;
+
+		//ジャンプしたときに記録した場所に行くまで落ちる
+		if (m_py >= m_jamp_y_position)
+			m_jamp_control_2 = false;
+			m_py += m_jamp_y_1;
 	}
 }
 
@@ -855,7 +904,7 @@ void CObjRunner::Draw()
 		Draw::Draw(6, &src3, &dst3, c, -100.0f);
 	}
 	//影-------------------------------------------------------------
-	if (m_jamp_control == false)
+	if (m_jamp_control_2 == false)
 	{
 		//切り取り位置の設定
 		src.m_top = 0.0f;
@@ -881,7 +930,7 @@ void CObjRunner::Draw()
 		src.m_bottom = 64.0f;
 
 		//表示位置の設定
-		dst.m_top = 60.0f+ m_jamp_y_position;
+		dst.m_top = 60.0f+ m_jamp_y_position; 
 		dst.m_left = -30.0f + m_px;
 		dst.m_right = 55.0f + m_px;
 		dst.m_bottom = 68.0f + m_jamp_y_position;

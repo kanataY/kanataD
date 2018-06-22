@@ -553,7 +553,7 @@ void CObjOkama::HitBox()
 		{
 			m_time_fire++; //一定時間たったらオカマを消す。
 		}
-		if (m_time_fire > 70) //炎が消えたらオカマも消えるようにする
+		if (m_time_fire > 65) //炎が消えたらオカマも消えるようにする
 		{
 			((UserData*)Save::GetData())->m_point += 1000;
 			this->SetStatus(false);		//自身に削除命令を出す
@@ -588,7 +588,7 @@ void CObjOkama::HitBox()
 	}
 
 	//ランナーに当たった時-------------------------------------
-	if (runner->GetInvincible() < 0 && runner->GetDeath() == false && runner->GetJamp() == false) //無敵時間でなければ判定を設ける。
+	if (runner->GetInvincible() < 0 && runner->GetDeath() == false) //無敵時間でなければ判定を設ける。
 	{
 		if (runner->GetHoleFallCon() == false) //ランナーが穴に落ちていなければ
 		{

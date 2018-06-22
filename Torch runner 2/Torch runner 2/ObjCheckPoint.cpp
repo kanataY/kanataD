@@ -12,7 +12,7 @@
 using namespace GameL;
 
 //コンストラクタ
-CObjCheckPoint::CObjCheckPoint(int x,int y)
+CObjCheckPoint::CObjCheckPoint(int x, int y)
 {
 	m_px = (float)x;
 	m_py = (float)y;
@@ -29,10 +29,13 @@ void CObjCheckPoint::Init()
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
-	m_ani_change = 19;
+	if (((UserData*)Save::GetData())->m_stage_count == 2)
+		m_ani_change = 32;
+	else
+		m_ani_change = 19;
 
 	//HitBox
-	Hits::SetHitBox(this, m_px, m_py, 150, 300, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
+	Hits::SetHitBox(this, m_px, m_py, 400, 800, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
 }
 
 //アクション
@@ -47,13 +50,21 @@ void CObjCheckPoint::Action()
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 
+	//HitBoxの位置の変更
+	CHitBox* hit = Hits::GetHitBox(this);
+	hit->SetPos(m_px + block->GetScroll() + 50.0f, m_py - 180.0f);
+
 	//ステージ３の時はランナーがそのまま走るので動かさない
 	if (((UserData*)Save::GetData())->m_stage_count == 3)
 	{
-		m_time++;
-		if (m_time > 220)
+		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr) //主人公と当たっていたら
 		{
-			Scene::SetScene(new CSceneGameClear());
+			m_time++;
+			if (m_time > 180)
+			{
+				((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100; //スコア増加
+				Scene::SetScene(new CSceneGameClear()); //クリア画面へ
+			}
 		}
 	}
 	else  //ステージ３以外の時は動く
@@ -62,13 +73,19 @@ void CObjCheckPoint::Action()
 		if (runner->GetCheckTransfer() == true)
 		{
 			m_time++;
-			m_ani_change = 20; //腕を振り下ろす
+			if (((UserData*)Save::GetData())->m_stage_count == 2)
+				m_ani_change = 33;
+			else
+				m_ani_change = 20; //腕を振り下ろす
 		}
 
 		if (m_time > 50)	   //振り下ろしてしばらくたったら走り出す
 		{
 			m_pos = 1.0f;      //向きを変える
-			m_ani_change = 19; //走る描画に変える
+			if (((UserData*)Save::GetData())->m_stage_count == 2)
+				m_ani_change = 32;
+			else
+				m_ani_change = 19; //走る描画に変える
 
 			//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 			m_ani_time++;//フレーム動作感覚タイムを進める
@@ -94,10 +111,6 @@ void CObjCheckPoint::Action()
 			Scene::SetScene(new CSceneMain(3));
 		}
 	}
-
-	//HitBoxの位置の変更
-	CHitBox* hit = Hits::GetHitBox(this);
-	hit->SetPos(m_px + block->GetScroll() + 50.0f, m_py + 180.0f);
 
 	HitBox();  //当たり判定関連
 }
@@ -130,102 +143,107 @@ void CObjCheckPoint::Draw()
 	//描画
 	Draw::Draw(18, &src, &dst, c, 0.0f);
 
-	RECT_F src2; //描画元切り取り位置
-	RECT_F dst2; //描画先表示位置
-
-	//切り取り位置の設定
-	src2.m_top = 0.0f;
-	src2.m_left = 64.0f + m_ani_frame * 64;
-	src2.m_right = 128.0f + m_ani_frame * 64;
-	src2.m_bottom = 256.0f;
-
-	//表示位置の設定
-	dst2.m_top = 0.0f + m_py* 3.0f;
-	dst2.m_left = (64.0f -(64.0f * m_pos)) + m_px + block->GetScroll() + 230.0f + m_vx;
-	dst2.m_right = (64.0f * m_pos) + m_px + block->GetScroll() + 230.0f + m_vx;
-	dst2.m_bottom = 64.0f + m_py * 3.0f;
-
-	//描画
-	Draw::Draw(m_ani_change, &src2, &dst2, c, 0.0f);
-
-	//ーーーーーーーーーーーーーーーーー聖火のもつとこーーーーーーーーーーーー
-
-	RECT_F src3; //描画元切り取り位置
-	RECT_F dst3; //描画先表示位置
-
-	//切り取り位置の設定 
-	src3.m_top = 1.0f;
-	src3.m_left = 0.0f;
-	src3.m_right = 64.0f;
-	src3.m_bottom = 64.0f;
-
-	//表示位置の設定
-	if (m_ani_change == 19) //腕を振り下ろしていない
+	//ステージ３以外なら次のランナーを表示する
+	if (((UserData*)Save::GetData())->m_stage_count != 3)
 	{
-		if (m_time > 50)
+		RECT_F src2; //描画元切り取り位置
+		RECT_F dst2; //描画先表示位置
+
+		//切り取り位置の設定
+		src2.m_top = 0.0f;
+		src2.m_left = 64.0f + m_ani_frame * 64;
+		src2.m_right = 128.0f + m_ani_frame * 64;
+		src2.m_bottom = 256.0f;
+
+		//表示位置の設定
+		dst2.m_top = 0.0f + m_py* 3.0f;
+		dst2.m_left = (64.0f - (64.0f * m_pos)) + m_px + block->GetScroll() + 230.0f + m_vx;
+		dst2.m_right = (64.0f * m_pos) + m_px + block->GetScroll() + 230.0f + m_vx;
+		dst2.m_bottom = 64.0f + m_py * 3.0f;
+
+		//描画
+		Draw::Draw(m_ani_change, &src2, &dst2, c, 0.0f);
+
+		//ーーーーーーーーーーーーーーーーー聖火のもつとこーーーーーーーーーーーー
+
+		RECT_F src3; //描画元切り取り位置
+		RECT_F dst3; //描画先表示位置
+
+		//切り取り位置の設定 
+		src3.m_top = 1.0f;
+		src3.m_left = 0.0f;
+		src3.m_right = 64.0f;
+		src3.m_bottom = 64.0f;
+
+
+
+		//表示位置の設定
+		if (m_ani_change == 19 || m_ani_change == 32) //腕を振り下ろしていない
 		{
-			dst3.m_top = 0.0f + m_py * 3.0f - 10.0f;
-			dst3.m_left = 0.0f + m_px + block->GetScroll() + 267.0f + m_vx;
-			dst3.m_right = 20.0f + m_px + block->GetScroll() + 267.0f + m_vx;
-			dst3.m_bottom = 32.0f + m_py * 3.0f - 10.0f;
+			if (m_time > 50)
+			{
+				dst3.m_top = 0.0f + m_py * 3.0f - 10.0f;
+				dst3.m_left = 0.0f + m_px + block->GetScroll() + 267.0f + m_vx;
+				dst3.m_right = 20.0f + m_px + block->GetScroll() + 267.0f + m_vx;
+				dst3.m_bottom = 32.0f + m_py * 3.0f - 10.0f;
+			}
+			else
+			{
+				dst3.m_top = 0.0f + m_py * 3.0f - 10.0f;
+				dst3.m_left = 0.0f + m_px + block->GetScroll() + 240.0f;
+				dst3.m_right = 20.0f + m_px + block->GetScroll() + 240.0f;
+				dst3.m_bottom = 32.0f + m_py * 3.0f - 10.0f;
+			}
+
+			//描画
+			Draw::Draw(9, &src3, &dst3, c, 0.0f);
 		}
-		else
+		else //腕を振り下ろしている
 		{
-			dst3.m_top = 0.0f + m_py * 3.0f - 10.0f;
+			dst3.m_top = 0.0f + m_py * 3.0f + 18.0f;
 			dst3.m_left = 0.0f + m_px + block->GetScroll() + 240.0f;
 			dst3.m_right = 20.0f + m_px + block->GetScroll() + 240.0f;
-			dst3.m_bottom = 32.0f + m_py * 3.0f - 10.0f;
+			dst3.m_bottom = 32.0f + m_py * 3.0f + 18.0f;
+
+			//描画
+			Draw::Draw(9, &src3, &dst3, c, 100.0f);
 		}
 
-		//描画
-		Draw::Draw(9, &src3, &dst3, c, 0.0f);
+		//－－－－－－－－－－－－－－－－－－炎ーーーーーーーーーーーーーー
+		//描画カラー情報
+
+		RECT_F src4; //描画元切り取り位置
+		RECT_F dst4; //描画先表示位置
+
+		//切り取り位置の設定
+		src4.m_top = 0.0f;
+		src4.m_left = 0.0f + m_ani_frame * 64;
+		src4.m_right = 64.0f + m_ani_frame * 64;
+		src4.m_bottom = 320.0f;
+
+		if (m_ani_change == 20 || m_ani_change == 33)//腕を振り下ろしていない
+		{
+			//表示位置の設定
+			dst4.m_top = 0.0f + m_py* 3.0f + 26.0f;
+			dst4.m_left = 0.0f + m_px + block->GetScroll() + 220.0f;
+			dst4.m_right = 25.0f + m_px + block->GetScroll() + 220.0f;
+			dst4.m_bottom = 25.0f + m_py* 3.0f + 26.0f;
+
+			//描画
+			Draw::Draw(6, &src4, &dst4, c, 100.0f);
+		}
+		else if (m_time > 50)
+		{
+			//表示位置の設定
+			dst4.m_top = 0.0f + m_py* 3.0f - 30.0f;
+			dst4.m_left = 0.0f + m_px + block->GetScroll() + 265.0f + m_vx;
+			dst4.m_right = 25.0f + m_px + block->GetScroll() + 265.0f + m_vx;
+			dst4.m_bottom = 25.0f + m_py* 3.0f - 30.0f;
+
+			//描画
+			Draw::Draw(6, &src4, &dst4, c, 0.0f);
+		}
 	}
-	else //腕を振り下ろしている
-	{
-		dst3.m_top = 0.0f + m_py * 3.0f + 18.0f;
-		dst3.m_left = 0.0f + m_px + block->GetScroll() + 240.0f;
-		dst3.m_right = 20.0f + m_px + block->GetScroll() + 240.0f;
-		dst3.m_bottom = 32.0f + m_py * 3.0f + 18.0f;
-
-		//描画
-		Draw::Draw(9, &src3, &dst3, c, 100.0f);
-	}
-
-	//－－－－－－－－－－－－－－－－－－炎ーーーーーーーーーーーーーー
-	//描画カラー情報
-
-	RECT_F src4; //描画元切り取り位置
-	RECT_F dst4; //描画先表示位置
-
-	//切り取り位置の設定
-	src4.m_top = 0.0f;
-	src4.m_left = 0.0f + m_ani_frame * 64;
-	src4.m_right = 64.0f + m_ani_frame * 64;
-	src4.m_bottom = 320.0f;
-
-	if (m_ani_change == 20)//腕を振り下ろしていない
-	{
-		//表示位置の設定
-		dst4.m_top = 0.0f + m_py* 3.0f + 26.0f;
-		dst4.m_left = 0.0f + m_px + block->GetScroll() + 220.0f;
-		dst4.m_right = 25.0f + m_px + block->GetScroll() + 220.0f;
-		dst4.m_bottom = 25.0f + m_py* 3.0f + 26.0f;
-
-		//描画
-		Draw::Draw(6, &src4, &dst4, c, 100.0f);
-	}
-	else if (m_time > 50)
-	{
-		//表示位置の設定
-		dst4.m_top = 0.0f + m_py* 3.0f - 30.0f;
-		dst4.m_left = 0.0f + m_px + block->GetScroll() + 265.0f + m_vx;
-		dst4.m_right = 25.0f + m_px + block->GetScroll() + 265.0f + m_vx;
-		dst4.m_bottom = 25.0f + m_py* 3.0f  - 30.0f;
-
-		//描画
-		Draw::Draw(6, &src4, &dst4, c, 0.0f);
-	}
-
 }
 
 void CObjCheckPoint::HitBox()
