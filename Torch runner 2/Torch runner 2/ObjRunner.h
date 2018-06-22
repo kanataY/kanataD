@@ -26,11 +26,13 @@ public:
 	bool  GetDeath() { return m_death; }				//ランナーが死んでいるかどうかを入れる。
 	bool  GetStickFire() {return m_stick_fire;}			//ランナーに火がついているかどうかを調べる変数
 	bool  GetJamp() { return m_jamp_control; }			//ジャンプしているかどうかを渡す
+	void  SetRain(bool rain) { m_rain = rain; }			//雨取得用
+	void  SetRainTime(bool rain_time) { m_rain_time = rain_time; }//雨の降っている時間取得
 	void  SetX(float x) { m_px = x; }					//m_px,m_pyの値をほかのcppでもいじれるようにする
 	void  SetY(float y) { m_py = y; }
 	void  SetVX(float x) { m_vx = x; }					//m_vx,m_vyの値をほかのcppでもいじれるようにする
 	void  SetVY(float y) { m_vy = y; }
-	void  SetHoleFall(float f) { m_hole_fall += f; } //穴に落ちた時描画を変えるようSetHoleFallCon
+	void  SetHoleFall(float f) { m_hole_fall += f; }    //穴に落ちた時描画を変えるようSetHoleFallCon
 
 private:
 	float m_px;			//位置
@@ -62,7 +64,8 @@ private:
 	bool m_death;					//ランナーが死んだとき
 	bool m_stick_fire;              //火が付いたかどうか
 	bool m_check_vx;				//チェックポイントによってスクロールができなくなったかどうか
-
+	bool m_rain;					//雨を降らす
+	bool m_rain_time;				//雨が降った時の時間
 	//ジャンプ系（調整するので消すor帰る）
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる
 	bool m_jamp_control; //ジャンプしているかどうかを調べる（制御する）

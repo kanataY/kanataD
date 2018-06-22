@@ -23,6 +23,7 @@ public:
 	int  GetMap(int x, int y);//マップ情報の取得
 	void  SetMap(int x, int y, int m) { m_map[y][x] = m; }
 	void  SetRain(bool r) { m_rain = r; }
+	bool  GetRain() { return m_rain; }
 
 private:
 	float m_px;		//位置

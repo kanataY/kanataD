@@ -108,7 +108,6 @@ void CObjFire::Draw()
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-
 	//ランナー以外に火が付いた場合はこっち
 	if (m_fire_hit != 2)
 	{
