@@ -376,10 +376,10 @@ void CObjRunner::Action()
 			if (((UserData*)Save::GetData())->m_stage_count == 1)
 				m_ani_change = 0;//アニメーションを0に
 
-								 //ステージが2の時
+			//ステージが2の時
 			if (((UserData*)Save::GetData())->m_stage_count == 2)
 				m_ani_change = 19;//アニメーションを19に
-								  //ステージが3の時
+			//ステージが3の時
 			if (((UserData*)Save::GetData())->m_stage_count == 3)
 				m_ani_change = 32;//アニメーションを32に
 			m_vx = 0.0f; //ランナーを移動させないようにする。
@@ -458,121 +458,135 @@ void CObjRunner::Action()
 		//チェックポイントを取得
 		CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
+		//ステージ３の時はホーミングせずにそのまま突き進む
+		if (((UserData*)Save::GetData())->m_stage_count == 3)
+		{
+			m_vx += 0.5f;
+
+			//摩擦
+			m_vx += -(m_vx * 0.15f);
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
+		}
+		else
+		{
+			if (m_check_control_x == true)
+			{
+				//ステージが1の時
+				if (((UserData*)Save::GetData())->m_stage_count == 1)
+					m_ani_change = 0;//アニメーションを0に
+
+				//ステージが2の時
+				if (((UserData*)Save::GetData())->m_stage_count == 2)
+					m_ani_change = 19;//アニメーションを19に
+				//ステージが3の時
+				if (((UserData*)Save::GetData())->m_stage_count == 3)
+					m_ani_change = 32;//アニメーションを32に
+				//チェックポイントにいる第二のランナーの位置を取得する
+				float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
+				float okay = (check->GetY()  * 3.0f) - m_py;
+
+				//atan2で角度を求める
+				float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+				//-180～-0を180～360に変換
+				if (r2 < 0)
+				{
+					r2 = 360 - abs(r2);
+				};
+
+				float ar = r2;
+
+				if (ar < 0)
+				{
+					ar = 360 - abs(ar);
+				}
+
+				//ランナーの現在の向いてる角度を取る
+				float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+				//-180～-0を180～360に変換
+				if (bor < 0)
+				{
+					bor = 360 - abs(bor);
+				};
+				float br = bor;
+
+				//ランナーのほうにホーミングする
+				if (m_homing == false)
+				{
+					//移動方向をランナーの方向にする
+					m_vx = cos(3.14f / 180 * ar);
+					m_vy = sin(3.14f / 180 * ar);
+					m_vx *= 2; // 移動速度を2倍にする
+					m_vy *= 2;
+					m_homing = true;
+				}
+
+				if (((UserData*)Save::GetData())->m_stage_count == 1)
+				{
+					//第二のランナーの目の前に来た時
+					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+					{
+						m_check_time++; //タイムを進める
+						m_check_transfer = true;
+						m_vx = 0.0f; //移動量を０にする
+						m_vy = 0.0f;
+						if (m_check_time < 50) //振り下ろす
+							m_ani_change = 8;
+						else
+						{
+							m_ani_change = 0;//通常の状態で待つ
+						}
+					}
+				}
+
+				if (((UserData*)Save::GetData())->m_stage_count == 2)
+				{
+					//第二のランナーの目の前に来た時
+					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+					{
+						m_check_time++; //タイムを進める
+						m_check_transfer = true;
+						m_vx = 0.0f; //移動量を０にする
+						m_vy = 0.0f;
+						if (m_check_time < 50) //振り下ろす
+							m_ani_change = 20;
+						else
+						{
+							m_ani_change = 19;//通常の状態で待つ
+						}
+					}
+				}
+				if (((UserData*)Save::GetData())->m_stage_count == 3)
+				{
+					//第二のランナーの目の前に来た時
+					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+					{
+						m_check_time++; //タイムを進める
+						m_check_transfer = true;
+						m_vx = 0.0f; //移動量を０にする
+						m_vy = 0.0f;
+						if (m_check_time < 50) //振り下ろす
+							m_ani_change = 33;
+						else
+						{
+							m_ani_change = 32;//通常の状態で待つ
+						}
+					}
+				}
+				//位置の更新
+				m_px += m_vx;
+				m_py += m_vy;
+
+				CObj::SetPrio((int)m_py); //描画優先順位変更
+			}
+		}
 		// チェックポイントが指定の位置にある場合
 		if (check->GetX() + block->GetScroll() < 400)
 		{
 			m_check_control_x = true; //ホーミングをONにする
-		}
-		if (m_check_control_x == true)
-		{
-			//ステージが1の時
-			if (((UserData*)Save::GetData())->m_stage_count == 1)
-				m_ani_change = 0;//アニメーションを0に
-
-			//ステージが2の時
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-				m_ani_change = 19;//アニメーションを19に
-			//ステージが3の時
-			if (((UserData*)Save::GetData())->m_stage_count == 3)
-				m_ani_change = 32;//アニメーションを32に
-			//チェックポイントにいる第二のランナーの位置を取得する
-			float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
-			float okay = (check->GetY()  * 3.0f) - m_py;
-
-			//atan2で角度を求める
-			float r2 = atan2(okay, okax)*180.0f / 3.14f;
-
-			//-180～-0を180～360に変換
-			if (r2 < 0)
-			{
-				r2 = 360 - abs(r2);
-			};
-
-			float ar = r2;
-
-			if (ar < 0)
-			{
-				ar = 360 - abs(ar);
-			}
-
-			//ランナーの現在の向いてる角度を取る
-			float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
-
-			//-180～-0を180～360に変換
-			if (bor < 0)
-			{
-				bor = 360 - abs(bor);
-			};
-			float br = bor;
-
-			//ランナーのほうにホーミングする
-			if (m_homing == false)
-			{
-				//移動方向をランナーの方向にする
-				m_vx = cos(3.14f / 180 * ar);
-				m_vy = sin(3.14f / 180 * ar);
-				m_vx *= 2; // 移動速度を2倍にする
-				m_vy *= 2;
-				m_homing = true;
-			}
-			
-			if (((UserData*)Save::GetData())->m_stage_count == 1)
-			{
-				//第二のランナーの目の前に来た時
-				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-				{
-					m_check_time++; //タイムを進める
-					m_check_transfer = true;
-					m_vx = 0.0f; //移動量を０にする
-					m_vy = 0.0f;
-					if (m_check_time < 50) //振り下ろす
-						m_ani_change = 8;
-					else
-					{
-						m_ani_change = 0;//通常の状態で待つ
-					}
-				}
-			}
-
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-			{
-				//第二のランナーの目の前に来た時
-				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-				{
-					m_check_time++; //タイムを進める
-					m_check_transfer = true;
-					m_vx = 0.0f; //移動量を０にする
-					m_vy = 0.0f;
-					if (m_check_time < 50) //振り下ろす
-						m_ani_change = 20;
-					else
-					{
-						m_ani_change = 19;//通常の状態で待つ
-					}
-				}
-			}
-			if (((UserData*)Save::GetData())->m_stage_count == 3)
-			{
-				//第二のランナーの目の前に来た時
-				if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-				{
-					m_check_time++; //タイムを進める
-					m_check_transfer = true;
-					m_vx = 0.0f; //移動量を０にする
-					m_vy = 0.0f;
-					if (m_check_time < 50) //振り下ろす
-						m_ani_change = 33;
-					else
-					{
-						m_ani_change = 32;//通常の状態で待つ
-					}
-				}
-			}
-			//位置の更新
-			m_px += m_vx;
-			m_py += m_vy;
-
-			CObj::SetPrio((int)m_py); //描画優先順位変更
 		}
 		else
 		{

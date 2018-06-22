@@ -467,7 +467,7 @@ void CObjOkama::HitBox()
 		{
 			m_time_fire++; //一定時間たったらオカマを消す。
 		}
-		if (m_time_fire > 70) //炎が消えたらオカマも消えるようにする
+		if (m_time_fire > 65) //炎が消えたらオカマも消えるようにする
 		{
 			((UserData*)Save::GetData())->m_point += 1000;
 			this->SetStatus(false);		//自身に削除命令を出す
