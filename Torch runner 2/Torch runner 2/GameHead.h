@@ -52,7 +52,7 @@ struct UserData
 {
 	int mSeveData;	//サンプルセーブデータ
 	int m_stage_count;//ステージの種類
-	int m_ranking[10];	//ランキング格納配列
+	int m_ranking[3];	//ランキング格納配列
 	int m_zainki;       //残機
 	int m_point;		//GameMainで得たポイント
 	

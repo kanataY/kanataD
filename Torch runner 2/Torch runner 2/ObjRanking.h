@@ -5,9 +5,6 @@
 using namespace GameL;
 
 #define RANKING_MAX_COUNT 3
-
-#define RETURN_X 10
-#define RETURN_Y 550
 #define RETURN_SIZE 20
 
 //オブジェクト：ランキング
