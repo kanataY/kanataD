@@ -105,7 +105,7 @@ void CObjCheckPoint::Action()
 		//ƒV[ƒ“ˆÚ“®‚·‚éB
 		if (m_time > 220)
 		{
-			((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100;
+			((UserData*)Save::GetData())->m_point += (192 - (int)gauge->GetGauge()) * 100;
 			((UserData*)Save::GetData())->m_stage_count += 1;
 
 			Scene::SetScene(new CSceneMain(3));
