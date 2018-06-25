@@ -80,7 +80,7 @@ void CObjRanking::Draw()
 	//ƒ‰ƒ“ƒLƒ“ƒO‚ğ•¶š—ñ‰»
 	for (int ranking_count = 0; ranking_count < 3; ranking_count++)
 	{
-		//ƒ‰ƒ“ƒjƒ“ƒO‚Ìranking_count”Ô‚Ì”’l‚ğŠi”[
+		//ƒ‰ƒ“ƒLƒ“ƒO‚Ìranking_count”Ô‚Ì”’l‚ğŠi”[
 		int ranking = ((UserData*)Save::GetData())->m_ranking[ranking_count];
 
 		//‡ˆÊ•`‰æ
