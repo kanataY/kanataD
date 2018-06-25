@@ -37,11 +37,11 @@ void CObjTrack::Init()
 
 	if (block->GetMap(m_rx, m_ry) == 7)//マップ上にトラックがあった時
 	{
-		m_ani_change = 0;//0にする
+		m_ani_change = 21;//21にする
 	}
 	if (block->GetMap(m_rx, m_ry) == 8)//マップ上にトラック2があった時
 	{
-		m_ani_change = 1;//1にする
+		m_ani_change = 27;//27にする
 	}
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 128, 68, ELEMENT_ENEMY, OBJ_TRACK, 1);
@@ -128,41 +128,21 @@ void CObjTrack::Draw()
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 	//m_ani_changeが0の時トラックの描画
-	if (m_ani_change == 0)
-	{
-		//切り取り位置の設定
-		src.m_top = 0.0f;
-		src.m_left = 0.0f + m_ani_frame * 128;
-		src.m_right = 128.0f + m_ani_frame * 128;
-		src.m_bottom = 512.0f;
 
-		//表示位置の設定
-		dst.m_top = 0.0f + m_py;
-		dst.m_left = 0.0f + m_px + block->GetScroll();
-		dst.m_right = 128.0f + m_px + block->GetScroll();
-		dst.m_bottom = 128.0f + m_py;
+	//切り取り位置の設定
+	src.m_top = 0.0f;
+	src.m_left = 0.0f + m_ani_frame * 128.0f;
+	src.m_right = 128.0f + m_ani_frame * 128.0f;
+	src.m_bottom = 512.0f;
 
-		//描画
-		Draw::Draw(21, &src, &dst, c, 0.0f);
-	}
-	//m_ani_changeが1の時トラック2の描画
-	if (m_ani_change == 1)
-	{
-		//切り取り位置の設定
-		src.m_top = 0.0f;
-		src.m_left = 0.0f + m_ani_frame * 128;
-		src.m_right = 128.0f + m_ani_frame * 128;
-		src.m_bottom = 512.0f;
+	//表示位置の設定
+	dst.m_top = 0.0f + m_py;
+	dst.m_left = 0.0f + m_px + block->GetScroll();
+	dst.m_right = 128.0f + m_px + block->GetScroll();
+	dst.m_bottom = 128.0f + m_py;
 
-		//表示位置の設定
-		dst.m_top = 0.0f + m_py;
-		dst.m_left = 0.0f + m_px + block->GetScroll();
-		dst.m_right = 128.0f + m_px + block->GetScroll();
-		dst.m_bottom = 128.0f + m_py;
-
-		//描画
-		Draw::Draw(27, &src, &dst, c, 0.0f);
-	}
+	//描画
+	Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 }
 
 void CObjTrack::HitBox()

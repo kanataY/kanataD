@@ -299,9 +299,6 @@
     <ClInclude Include="ObjMenu.h">
       <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
     </ClInclude>
-    <ClInclude Include="SceneMenu.h">
-      <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
-    </ClInclude>
     <ClInclude Include="SceneGameClear.h">
       <Filter>ソース ファイル\Scene\GAMECLEAR</Filter>
     </ClInclude>
@@ -328,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="SceneRanking.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMenu.h">
+      <Filter>ソース ファイル\Scene\GAMEOVER</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

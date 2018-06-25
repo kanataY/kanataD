@@ -39,9 +39,10 @@ void CObjBlock::Action()
 	//背景関連ーーーーーーーーーーーーーーーーーーーーーーーー
 	//ランナーの位置を取得
 	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
-
 	//チェックポイントを取得
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+	//火の取得
+	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
 
 	float rx = runner->GetX();
 	float ry = runner->GetY();
@@ -222,8 +223,12 @@ void CObjBlock::Action()
 	{
 		CObjRain* r = new CObjRain(0.0f, 0.0f);
 		Objs::InsertObj(r, OBJ_RAIN, 1300);
-
+		runner->SetRain(true);
 		m_rain = false;
+	}
+	else
+	{
+		runner->SetRain(false);
 	}
 }
 
@@ -250,7 +255,7 @@ void CObjBlock::Draw()
 	dst.m_right = 805.0f + m_bx1;
 	dst.m_bottom = 700.0f ;
 
-	//描画
+	//描
 	Draw::Draw(1, &src, &dst, c, 0.0f);
 
 	//背景２

@@ -17,5 +17,14 @@ private:
 	int m_scene_flag;//画像変更用 　0:操作説明 1:移すの説明
 	bool m_enter_control;//エンターキーの制御用のフラグ
 	bool m_zkey_control; //Zキーの制御用のフラグ
-	bool m_scene_start_control;//操作説明に飛んだ時にscene_flagが1になるのを防ぐ変数
+	int  m_scene_start_control_time;//二度押しないと進まない現象を改善するための変数
+
+	//-アニメーション
+	int m_ani_time; //アニメーションフレーム動作感覚
+	int m_ani_frame;//描画フレーム
+	float m_ani_max_time;   //アニメーション動作間隔最大値
+
+	int m_okam_ani_time; //アニメーションフレーム動作感覚
+	int m_okam_ani_frame;//描画フレーム
+	float m_okam_ani_max_time;   //アニメーション動作間隔最大値
 };

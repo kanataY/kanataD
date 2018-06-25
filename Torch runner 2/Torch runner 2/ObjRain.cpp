@@ -24,27 +24,33 @@ void CObjRain::Init()
 	m_time = 0;
 
 	m_ani_time = 0;
-	m_ani_frame = 0;  //静止フレームを初期にする
-	m_ani_max_time = 10; //アニメーション間隔幅
+	m_ani_frame = 0;	//静止フレームを初期にする
+	m_ani_max_time = 10;//アニメーション間隔幅
 }
 
 //アクション
 void CObjRain::Action()
 {
 	//ゲージの情報を持ってくる
-	CObjGauge* gau = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
-
+	CObjGauge* gauge = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
+	//ランナーの位置を取得
+	CObjRunner* runner = (CObjRunner*)Objs::GetObj(OBJ_RUNNER);
 	m_time++; //タイムを進める
 
 	if (m_time > 250)//一定時間たったら消す
 	{
+		runner->SetRainTime(true);		//雨が降り終わった情報を渡す
 		this->SetStatus(false);		//自身に削除命令を出す
+	}
+	else
+	{
+		runner->SetRainTime(false);		//雨が降っている
 	}
 
 	//ゲージを減らす
 	if (m_time % 50 == 0)
 	{
-		gau->SetGauge(1);
+		gauge->SetGauge(1);
 	}
 
 	m_ani_time++;//フレーム動作感覚タイムを進める
@@ -53,7 +59,7 @@ void CObjRain::Action()
 		m_ani_frame++;//フレームを進める
 		m_ani_time = 0;
 	}
-	if (m_ani_frame == 2)//フレームが最後まで進んだら戻
+	if (m_ani_frame == 2)//フレームが最後まで進んだら戻る
 	{
 		m_ani_frame = 0;
 	}

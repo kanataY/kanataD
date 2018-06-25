@@ -96,7 +96,7 @@ void CSceneMain::InitScene()
 	//外部グラフィックファイルを読み込み29番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\fan.png", 29, TEX_SIZE_512);    //ファン
 	//外部グラフィックファイルを読み込み30番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 30, TEX_SIZE_512);    //ファン
+	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 30, TEX_SIZE_512);    //ファンのハグ
 	//外部グラフィックファイルを読み込み31番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\Shadow.png", 31, TEX_SIZE_64);    //影
 	//外部グラフィックファイルを読み込み32番に登録(256ピクセル)
@@ -139,7 +139,7 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	int size;			   //ステージ情報の大きさ
 
 	//ステージごとにステージの名前を格納
-	switch (((UserData*)Save::GetData())->m_stage_count)
+	switch (((UserData*)Save::GetData())->m_stage_count=2)
 	{
 	case 1:
 		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み

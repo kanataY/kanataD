@@ -45,6 +45,8 @@ void CObjRunner::Init()
 	m_death = false;
 	m_stick_fire = false;
 	m_check_vx = false;
+	m_rain = false;
+	m_rain_time = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -1065,5 +1067,14 @@ void CObjRunner::HitBox()
 		//ランナーに火がついてるなら消える
 		if(m_jamp_control == false) //ジャンプしているときは火は消えない
 			m_stick_fire = false;
+	}
+	//雨が降った場合
+	if (m_rain == true)
+	{
+		m_stick_fire = false;
+		if (m_rain_time == true)
+		{
+			m_rain = false;
+		}
 	}
 }
