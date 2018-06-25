@@ -22,6 +22,7 @@ private:
 	float m_ani_max_time;   //アニメーション動作間隔最大値
 	bool m_o_tap_flag;  //oを押した時のフラグ
 
+	bool m_audio_flag;  //音楽を鳴らすときのフラグ
 	bool m_ranking_in_floag; //ランキング入りしたかどうかフラグ　ON:した　OFF：していない
 	void Ranking();//スコアの結果がランキングの中にランクインしたかどうかを調べる関数
 };

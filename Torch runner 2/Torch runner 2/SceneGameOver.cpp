@@ -48,7 +48,7 @@ void CSceneGameOver::InitScene()
 	CObjGameOver* obj = new CObjGameOver();
 	Objs::InsertObj(obj, OBJ_GAME_OVER, 10);
 
-	Audio::LoadAudio(2, L"BGM&SE\\BGMGameOver_.wav", BACK_MUSIC);
+	Audio::LoadAudio(0, L"BGM&SE\\BGMGameOver_.wav", BACK_MUSIC);
 	//音楽スタート
 	Audio::Start(0);
 }

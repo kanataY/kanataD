@@ -130,7 +130,7 @@ void CSceneMain::InitScene()
 	Audio::LoadAudio(0, L"BGM&SE\\BGMGameMain_.wav", BACK_MUSIC);
 
 	Audio::LoadAudio(1, L"BGM&SE\\dashu_.wav", EFFECT); // ‘–‚é‰¹
-	Audio::LoadAudio(2, L"BGM&SE\\Fier2_.wav", EFFECT); // ”R‚¦‚é‰¹
+	Audio::LoadAudio(2, L"BGM&SE\\Fier2__.wav", EFFECT); // ”R‚¦‚é‰¹
 	Audio::LoadAudio(3, L"BGM&SE\\jump_.wav", EFFECT);  // ƒWƒƒƒ“ƒv
 	Audio::LoadAudio(4, L"BGM&SE\\rakka_.wav", EFFECT); // —‚¿‚é‰¹
 	Audio::LoadAudio(5, L"BGM&SE\\water_.wav", EFFECT); // …‚É—‚¿‚½‰¹

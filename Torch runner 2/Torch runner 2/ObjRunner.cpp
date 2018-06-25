@@ -80,6 +80,9 @@ void CObjRunner::Init()
 //アクション
 void CObjRunner::Action()
 {
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 
@@ -121,7 +124,7 @@ void CObjRunner::Action()
 		if (m_ani_frame == 2)
 		{
 			//少し時間がたったら消す
-			if (m_ani_time >= 49)
+			if (m_ani_time >= 45)
 			{
 				//残機ないときはゲームオーバーに
 				if (m_remaining <= 1)
@@ -181,7 +184,7 @@ void CObjRunner::Action()
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
-	if (m_check_control == false && m_death == false)
+	if (m_check_control == false && m_death == false &&gau->GetGauge() != 192)
 	{
 		//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
@@ -222,7 +225,7 @@ void CObjRunner::Action()
 			if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
 			{
 				//ジャンプしているときにSを押したとき、影も動くようにする
-				m_jamp_y_position += -m_speed - 0.9f;
+				m_jamp_y_position += -m_speed - 0.8f;
 			}
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
@@ -235,6 +238,7 @@ void CObjRunner::Action()
 			{
 				m_vy += m_speed - m_jamp_speed;
 				//ジャンプしているときにSを押したとき、影も動くようにする
+
 				m_jamp_y_position += m_speed + m_jamp_speed;
 			}
 		}
@@ -488,10 +492,6 @@ void CObjRunner::Action()
 		//チェックポイントに入ったら受け渡たすシーンを描画をする。
 	else if (m_check_control == true && m_jamp_control_2 == false)
 	{
-
-		//ブロック情報を持ってくる
-		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
 		//チェックポイントを取得
 		CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
@@ -627,37 +627,52 @@ void CObjRunner::Action()
 		}
 		else
 		{
-			// チェックポイントが指定のいちに行くまでは移動量を0にする
-			if (m_px < 499 && m_px > 490)
-			{
-				m_vx = 0.0f;
-			}
-			else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
-				m_vx -= 0.3f; //強制スクロール用移動量
-			else
-				m_vx -= 0.6f; //強制スクロール用移動量
+				// チェックポイントが指定のいちに行くまでは移動量を0にする
+				if (m_px < 499 && m_px > 490)
+				{
+					m_vx = 0.0f;
+				}
+				else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
+					m_vx -= 0.3f; //強制スクロール用移動量
+				else
+					m_vx -= 0.6f; //強制スクロール用移動量
 
-			//摩擦
-			m_vx += -(m_vx * 0.15f);
+				//摩擦
+				m_vx += -(m_vx * 0.15f);
 
-			//HitBoxの位置の変更
-			CHitBox* hit = Hits::GetHitBox(this);
-			hit->SetPos(m_px + 18.0f, m_py);
+				//HitBoxの位置の変更
+				CHitBox* hit = Hits::GetHitBox(this);
+				hit->SetPos(m_px + 18.0f, m_py);
 
-			//位置の更新
-			m_px += m_vx;
-			m_py += m_vy;
+				//位置の更新
+				m_px += m_vx;
+				m_py += m_vy;
 		}
 	}
 	else if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
 	{
-		//Xの移動量を０にする
-		m_vx = 0.0f;
+		//スクロールが止まったら移動量を０にする
+		if (check->GetX() + block->GetScroll() < 400)
+		{
+			//Xの移動量を０にする
+			m_vx = 0.0f;
+		}
+		else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
+			m_vx -= 0.3f; //強制スクロール用移動量
+		else
+			m_vx -= 0.6f; //強制スクロール用移動量
+
+		//摩擦
+		m_vx += -(m_vx * 0.15f);
 
 		//ジャンプしたときに記録した場所に行くまで落ちる
 		if (m_py >= m_jamp_y_position)
 			m_jamp_control_2 = false;
 			m_py += m_jamp_y_1;
+
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
 	}
 }
 
@@ -674,6 +689,10 @@ void CObjRunner::Draw()
 	RECT_F dst; //描画先表示位置
 	RECT_F src2; //描画元切り取り位置
 	RECT_F dst2; //描画先表示位置
+
+	//ゲージの情報を持ってくる
+	CObjGauge* gau = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
+
 	//ステージ1のランナーのびょうが----------------------------------------------------
 	//ステージ1の時
 	if (((UserData*)Save::GetData())->m_stage_count == 1)
@@ -859,10 +878,21 @@ void CObjRunner::Draw()
 	}
 	else //腕を振り下ろしている
 	{
-		dst2.m_top = 0.0f + m_py +18.0f;
-		dst2.m_left = 0.0f + m_px + 38.0f;
-		dst2.m_right = 20.0f + m_px + 38.0f - m_hole_fall;
-		dst2.m_bottom = 32.0f + m_py +18.0f - m_hole_fall;
+		//ゲージが最後まで減ってない時
+		if (gau->GetGauge() != 192)
+		{
+			dst2.m_top = 0.0f + m_py + 18.0f;
+			dst2.m_left = 0.0f + m_px + 38.0f;
+			dst2.m_right = 20.0f + m_px + 38.0f - m_hole_fall;
+			dst2.m_bottom = 32.0f + m_py + 18.0f - m_hole_fall;
+		}
+		else
+		{
+			dst2.m_top = 0.0f + m_py + 50.0f;
+			dst2.m_left = 0.0f + m_px + 45.0f;
+			dst2.m_right = 20.0f + m_px + 45.0f - m_hole_fall;
+			dst2.m_bottom = 32.0f + m_py + 50.0f - m_hole_fall;
+		}
 
 		//描画
 		Draw::Draw(9, &src2, &dst2, c, -100.0f);
@@ -871,47 +901,51 @@ void CObjRunner::Draw()
 	//－－－－－－－－－－－－－－－－－－炎ーーーーーーーーーーーーーー
 	//描画カラー情報
 
-	RECT_F src3; //描画元切り取り位置
-	RECT_F dst3; //描画先表示位置
-	
-	//切り取り位置の設定
-	src3.m_top = 0.0f;
-	src3.m_left = 0.0f + m_ani_frame * 64;
-	src3.m_right = 64.0f + m_ani_frame * 64;
-	src3.m_bottom = 320.0f;
-
-	if (m_ani_change == 0||m_ani_change==19||m_ani_change==32)//腕を振り下ろしていない
+	//ゲージが最後まで減ってない時に描画する
+	if (gau->GetGauge() != 192)
 	{
-		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+		RECT_F src3; //描画元切り取り位置
+		RECT_F dst3; //描画先表示位置
+
+		//切り取り位置の設定
+		src3.m_top = 0.0f;
+		src3.m_left = 0.0f + m_ani_frame * 64;
+		src3.m_right = 64.0f + m_ani_frame * 64;
+		src3.m_bottom = 320.0f;
+
+		if (m_ani_change == 0 || m_ani_change == 19 || m_ani_change == 32)//腕を振り下ろしていない
+		{
+			if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+			{
+				//表示位置の設定
+				dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
+				dst3.m_left = 0.0f + m_px + 27.0f;
+				dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5f) - 10.0f;
+				dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2.0f);
+			}
+			else
+			{
+				//表示位置の設定
+				dst3.m_top = 0.0f + m_py - 30.0f;
+				dst3.m_left = 0.0f + m_px + 37.0f;
+				dst3.m_right = 25.0f + m_px + 37.0f;
+				dst3.m_bottom = 25.0f + m_py - 30.0f;
+			}
+
+			//描画
+			Draw::Draw(6, &src3, &dst3, c, 0.0f);
+		}
+		else//腕を振り下ろしている
 		{
 			//表示位置の設定
-			dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
-			dst3.m_left = 0.0f + m_px + 27.0f;
-			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5f) - 10.0f;
-			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2.0f);
-		}
-		else
-		{
-			//表示位置の設定
-			dst3.m_top = 0.0f + m_py - 30.0f;
-			dst3.m_left = 0.0f + m_px + 37.0f;
-			dst3.m_right = 25.0f + m_px + 37.0f;
-			dst3.m_bottom = 25.0f + m_py - 30.0f;
-		}
+			dst3.m_top = 0.0f + m_py + 26.0f;
+			dst3.m_left = 0.0f + m_px + 52.0f;
+			dst3.m_right = 25.0f + m_px + 52.0f - m_hole_fall;
+			dst3.m_bottom = 25.0f + m_py + 26.0f - m_hole_fall;
 
-		//描画
-		Draw::Draw(6, &src3, &dst3, c, 0.0f);
-	}
-	else//腕を振り下ろしている
-	{
-		//表示位置の設定
-		dst3.m_top = 0.0f + m_py +26.0f;
-		dst3.m_left = 0.0f + m_px + 52.0f;
-		dst3.m_right = 25.0f + m_px + 52.0f - m_hole_fall;
-		dst3.m_bottom = 25.0f + m_py +26.0f - m_hole_fall;
-
-		//描画
-		Draw::Draw(6, &src3, &dst3, c, -100.0f);
+			//描画
+			Draw::Draw(6, &src3, &dst3, c, -100.0f);
+		}
 	}
 	//影-------------------------------------------------------------
 	if (m_jamp_control_2 == false)
@@ -1029,7 +1063,7 @@ void CObjRunner::HitBox()
 		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 		{
 			//スマホ少年と当たった場合
-			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr && m_jamp_control == false)
+			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr && m_jamp_control_2 == false)
 			{
 				if ((sumaho->GetX() + block->GetScroll()) < m_px)
 				{
@@ -1075,7 +1109,7 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
 	{
 		//ランナーに火がついてるなら消える
-		if(m_jamp_control == false) //ジャンプしているときは火は消えない
+		if(m_jamp_control_2 == false) //ジャンプしているときは火は消えない
 			m_stick_fire = false;
 	}
 	//雨が降った場合

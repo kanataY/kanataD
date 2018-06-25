@@ -43,6 +43,8 @@ void CObjBlock::Action()
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 	//‰Î‚Ìæ“¾
 	CObjFire* fire = (CObjFire*)Objs::GetObj(OBJ_FIRE);
+	//ƒQ[ƒW‚Ìî•ñ‚ğ‚Á‚Ä‚­‚é
+	CObjGauge* gau = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
 
 	float rx = runner->GetX();
 	float ry = runner->GetY();
@@ -64,7 +66,7 @@ void CObjBlock::Action()
 	}
 
 	//Œã•û
-	else if (runner->GetCheckPoint() == true && m_check_x < 400.0f)
+	else if (runner->GetCheckPoint() == true && m_check_x < 400.0f || gau->GetGauge() == 192)
 	{
 		//”wŒi1‚Ì“®ì
 		m_bx1 -= 0.0f;
