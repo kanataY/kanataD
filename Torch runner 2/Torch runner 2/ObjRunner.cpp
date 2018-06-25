@@ -665,12 +665,13 @@ void CObjRunner::Action()
 		//摩擦
 		m_vx += -(m_vx * 0.15f);
 
-		//ジャンプしたときに記録した場所に行くまで落ちる
+		//ジャンプしたときに記録した場所に行くまで落ちる		
 		if (m_py >= m_jamp_y_position)
 			m_jamp_control_2 = false;
 			m_py += m_jamp_y_1;
 
 			//位置の更新
+
 			m_px += m_vx;
 			m_py += m_vy;
 	}

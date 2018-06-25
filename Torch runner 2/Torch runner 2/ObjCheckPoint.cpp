@@ -62,7 +62,7 @@ void CObjCheckPoint::Action()
 			m_time++;
 			if (m_time > 180)
 			{
-				((UserData*)Save::GetData())->m_point += (int)gauge->GetGauge() * 100; //スコア増加
+				((UserData*)Save::GetData())->m_point += (192 - (int)gauge->GetGauge()) * 100; //スコア増加
 				Scene::SetScene(new CSceneGameClear()); //クリア画面へ
 			}
 		}
