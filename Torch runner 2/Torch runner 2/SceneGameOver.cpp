@@ -47,6 +47,10 @@ void CSceneGameOver::InitScene()
 	//ゲームオーバーオブジェクト作成
 	CObjGameOver* obj = new CObjGameOver();
 	Objs::InsertObj(obj, OBJ_GAME_OVER, 10);
+
+	Audio::LoadAudio(2, L"BGM&SE\\BGMGameOver_.wav", BACK_MUSIC);
+	//音楽スタート
+	Audio::Start(0);
 }
 
 //実行中メソッド

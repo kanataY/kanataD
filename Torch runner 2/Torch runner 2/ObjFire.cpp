@@ -4,6 +4,7 @@
 #include "GameL\SceneManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "GameHead.h"
 #include "ObjFire.h"
@@ -44,6 +45,11 @@ void CObjFire::Action()
 
 	m_time++; //タイムを進める
 
+	if (m_time < 2)//
+	{
+		Audio::Start(2);
+	}
+
 	//ランナー以外に火が付いた場合はこっち
 	if (m_fire_hit != 2)
 	{
@@ -56,6 +62,7 @@ void CObjFire::Action()
 
 		if (m_time > 71)//一定時間たったら消す
 		{
+			Audio::Stop(2);
 			if (m_fire_hit == 1) //人間関係だったら雨を降らす
 				block->SetRain(true);
 			this->SetStatus(false);		//自身に削除命令を出す
@@ -72,6 +79,7 @@ void CObjFire::Action()
 		//ランナーについている火が消えたなら
 		if (runner->GetStickFire() == false)
 		{
+			Audio::Stop(2);
 			this->SetStatus(false);		//自身に削除命令を出す
 		}
 	}

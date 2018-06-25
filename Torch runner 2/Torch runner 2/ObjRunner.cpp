@@ -5,6 +5,7 @@
 #include "GameL\HitBoxManager.h"
 #include "GameL\DrawFont.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "GameHead.h"
 #include "ObjRunner.h"
@@ -159,6 +160,7 @@ void CObjRunner::Action()
 				m_death = false; //動かせるようにする
 				m_ani_max_time = 5;//タイムを戻す
 				m_invincible = 50; //しばらくの間無敵時間を設ける
+				Audio::Stop(1);//走る音を止める
 			}
 		}
 	}
@@ -315,6 +317,7 @@ void CObjRunner::Action()
 						m_jamp_y_position = m_py;
 						m_jamp_control = true;		//ジャンプしている
 						m_jamp_control_2 = true;
+						Audio::Start(3);//ジャンプ音
 					}
 				}
 			}
@@ -415,6 +418,10 @@ void CObjRunner::Action()
 		{
 			m_hole_control = true;
 		}
+		if (m_hole_fall < 5 && m_hole_fall > 3)
+		{
+			Audio::Start(4); //落ちている音を鳴らす
+		}
 
 		if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
 		{
@@ -422,6 +429,8 @@ void CObjRunner::Action()
 			m_py = 410.0f;
 			m_hole_control = false;
 			m_death = true;
+			Audio::Start(1);
+			Audio::Stop(4);
 		}
 		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 
@@ -435,6 +444,7 @@ void CObjRunner::Action()
 			m_jamp_control_2 = false;
 			//-----------------------------------------------
 			m_death = true; //死んだ
+			Audio::Start(1);
 		}
 
 		m_invincible--; //無敵時間減少

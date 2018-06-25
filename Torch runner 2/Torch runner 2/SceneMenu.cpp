@@ -59,7 +59,9 @@ void CSceneMenu::InitScene()
 	
 	//バックミュージックスタート
 	//float Volume = Audio::VolumeMaster(0.0f);
-	//Audio::Start(0); //音楽スタート
+	Audio::LoadAudio(0, L"BGM&SE\\Menu.wav", BACK_MUSIC);
+	//音楽スタート
+	Audio::Start(0);
 
 	//メニューオブジェクト作成
 	CObjMenu* obj = new CObjMenu();		//メニューオブジェクト作成

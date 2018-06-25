@@ -5,6 +5,7 @@
 #include "GameL\SceneManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "ObjGameClear.h"
 #include "GameHead.h"
@@ -35,6 +36,9 @@ void CObjGameClear::Action()
 		{
 			//oを押したというフラグを立てる
 			m_o_tap_flag = true;
+
+			//音楽スタート
+			Audio::Start(1);
 		}
 	}
 

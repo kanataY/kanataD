@@ -39,6 +39,12 @@ void CSceneRanking::InitScene()
 	//ランキングオブジェクト作成
 	CObjRanking* obj = new CObjRanking();		//ランキングオブジェクト作成
 	Objs::InsertObj(obj, OBJ_RANKING, 10);		//ランキングオブジェクト登録
+
+												//バックミュージックスタート
+	Audio::LoadAudio(0, L"BGM&SE\\ranking.wav", BACK_MUSIC);
+
+	//音楽スタート
+	Audio::Start(0);
 }
 
 //ランキング実行中メソッド

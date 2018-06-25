@@ -5,6 +5,7 @@
 #include "GameL\SceneObjManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "GameHead.h"
 #include "ObjPuddle.h"
@@ -19,6 +20,7 @@ CObjPuddle::CObjPuddle(int x,int y)
 	m_py = (float)y;
 	m_rx = x / 64;
 	m_ry = y / 64;
+	m_hit = false;
 }
 
 //イニシャライズ
@@ -171,6 +173,12 @@ void CObjPuddle::HitBox()
 			//ランナーの足の位置が水たまりにかかってない場合は判定をなくす
 			if (m_py + (40.0f * ((float)m_drow_down - 1)) > runner->GetY())
 			{
+				//水の音を一回だけ鳴らす
+				if (m_hit == false)
+				{
+					Audio::Start(5);
+					m_hit = true;
+				}
 				if (Input::GetVKey('D') == true)  //右移動
 				{
 					runner->SetVX(-m_run_return_1);//ランナーの移動量を減少させる
@@ -188,6 +196,10 @@ void CObjPuddle::HitBox()
 					runner->SetVY(-m_run_return_2);//ランナーの移動量を減少させる
 				}
 			}
+		}
+		else
+		{
+			m_hit = false;
 		}
 	}
 
