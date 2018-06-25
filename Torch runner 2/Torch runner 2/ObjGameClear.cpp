@@ -20,6 +20,7 @@ void CObjGameClear::Init()
 	m_ani_frame = 0;
 	m_ani_max_time = 5;
 	m_o_tap_flag = false;
+	m_audio_flag = false;
 }
 
 //アクション
@@ -37,8 +38,12 @@ void CObjGameClear::Action()
 			//oを押したというフラグを立てる
 			m_o_tap_flag = true;
 
-			//音楽スタート
-			Audio::Start(1);
+			if (m_audio_flag == false)
+			{
+				//音楽スタート
+				Audio::Start(1);
+				m_audio_flag = true;
+			}
 		}
 	}
 

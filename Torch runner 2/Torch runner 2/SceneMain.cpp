@@ -130,7 +130,7 @@ void CSceneMain::InitScene()
 	Audio::LoadAudio(0, L"BGM&SE\\BGMGameMain_.wav", BACK_MUSIC);
 
 	Audio::LoadAudio(1, L"BGM&SE\\dashu_.wav", EFFECT); // 走る音
-	Audio::LoadAudio(2, L"BGM&SE\\Fier2_.wav", EFFECT); // 燃える音
+	Audio::LoadAudio(2, L"BGM&SE\\Fier2__.wav", EFFECT); // 燃える音
 	Audio::LoadAudio(3, L"BGM&SE\\jump_.wav", EFFECT);  // ジャンプ
 	Audio::LoadAudio(4, L"BGM&SE\\rakka_.wav", EFFECT); // 落ちる音
 	Audio::LoadAudio(5, L"BGM&SE\\water_.wav", EFFECT); // 水に落ちた音
@@ -158,7 +158,7 @@ void CSceneMain::MapCreate(int map[][MAP_X])
 	int size;			   //ステージ情報の大きさ
 
 	//ステージごとにステージの名前を格納
-	switch (((UserData*)Save::GetData())->m_stage_count)
+	switch (((UserData*)Save::GetData())->m_stage_count=3)
 	{
 	case 1:
 		p = Save::ExternalDataOpen(L"Stage01.csv", &size);//外部データ読み込み

@@ -47,7 +47,10 @@ void CObjFire::Action()
 
 	if (m_time < 2)//
 	{
-		Audio::Start(2);
+		if (m_fire_hit == 0)
+		{
+			Audio::Start(2);
+		}
 	}
 
 	//ランナー以外に火が付いた場合はこっち
@@ -62,7 +65,6 @@ void CObjFire::Action()
 
 		if (m_time > 71)//一定時間たったら消す
 		{
-			Audio::Stop(2);
 			if (m_fire_hit == 1) //人間関係だったら雨を降らす
 				block->SetRain(true);
 			this->SetStatus(false);		//自身に削除命令を出す

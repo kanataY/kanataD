@@ -121,7 +121,7 @@ void CObjRunner::Action()
 		if (m_ani_frame == 2)
 		{
 			//少し時間がたったら消す
-			if (m_ani_time >= 49)
+			if (m_ani_time >= 45)
 			{
 				//残機ないときはゲームオーバーに
 				if (m_remaining <= 1)
@@ -181,7 +181,7 @@ void CObjRunner::Action()
 	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
-	if (m_check_control == false && m_death == false)
+	if (m_check_control == false && m_death == false &&gau->GetGauge() != 192)
 	{
 		//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
@@ -674,6 +674,10 @@ void CObjRunner::Draw()
 	RECT_F dst; //描画先表示位置
 	RECT_F src2; //描画元切り取り位置
 	RECT_F dst2; //描画先表示位置
+
+	//ゲージの情報を持ってくる
+	CObjGauge* gau = (CObjGauge*)Objs::GetObj(OBJ_GAUGE);
+
 	//ステージ1のランナーのびょうが----------------------------------------------------
 	//ステージ1の時
 	if (((UserData*)Save::GetData())->m_stage_count == 1)
@@ -859,10 +863,21 @@ void CObjRunner::Draw()
 	}
 	else //腕を振り下ろしている
 	{
-		dst2.m_top = 0.0f + m_py +18.0f;
-		dst2.m_left = 0.0f + m_px + 38.0f;
-		dst2.m_right = 20.0f + m_px + 38.0f - m_hole_fall;
-		dst2.m_bottom = 32.0f + m_py +18.0f - m_hole_fall;
+		//ゲージが最後まで減ってない時
+		if (gau->GetGauge() != 192)
+		{
+			dst2.m_top = 0.0f + m_py + 18.0f;
+			dst2.m_left = 0.0f + m_px + 38.0f;
+			dst2.m_right = 20.0f + m_px + 38.0f - m_hole_fall;
+			dst2.m_bottom = 32.0f + m_py + 18.0f - m_hole_fall;
+		}
+		else
+		{
+			dst2.m_top = 0.0f + m_py + 50.0f;
+			dst2.m_left = 0.0f + m_px + 45.0f;
+			dst2.m_right = 20.0f + m_px + 45.0f - m_hole_fall;
+			dst2.m_bottom = 32.0f + m_py + 50.0f - m_hole_fall;
+		}
 
 		//描画
 		Draw::Draw(9, &src2, &dst2, c, -100.0f);
@@ -871,47 +886,51 @@ void CObjRunner::Draw()
 	//－－－－－－－－－－－－－－－－－－炎ーーーーーーーーーーーーーー
 	//描画カラー情報
 
-	RECT_F src3; //描画元切り取り位置
-	RECT_F dst3; //描画先表示位置
-	
-	//切り取り位置の設定
-	src3.m_top = 0.0f;
-	src3.m_left = 0.0f + m_ani_frame * 64;
-	src3.m_right = 64.0f + m_ani_frame * 64;
-	src3.m_bottom = 320.0f;
-
-	if (m_ani_change == 0||m_ani_change==19||m_ani_change==32)//腕を振り下ろしていない
+	//ゲージが最後まで減ってない時に描画する
+	if (gau->GetGauge() != 192)
 	{
-		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+		RECT_F src3; //描画元切り取り位置
+		RECT_F dst3; //描画先表示位置
+
+		//切り取り位置の設定
+		src3.m_top = 0.0f;
+		src3.m_left = 0.0f + m_ani_frame * 64;
+		src3.m_right = 64.0f + m_ani_frame * 64;
+		src3.m_bottom = 320.0f;
+
+		if (m_ani_change == 0 || m_ani_change == 19 || m_ani_change == 32)//腕を振り下ろしていない
+		{
+			if (m_hole_control == true)  //穴に落ちている場合（当たっている）
+			{
+				//表示位置の設定
+				dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
+				dst3.m_left = 0.0f + m_px + 27.0f;
+				dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5f) - 10.0f;
+				dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2.0f);
+			}
+			else
+			{
+				//表示位置の設定
+				dst3.m_top = 0.0f + m_py - 30.0f;
+				dst3.m_left = 0.0f + m_px + 37.0f;
+				dst3.m_right = 25.0f + m_px + 37.0f;
+				dst3.m_bottom = 25.0f + m_py - 30.0f;
+			}
+
+			//描画
+			Draw::Draw(6, &src3, &dst3, c, 0.0f);
+		}
+		else//腕を振り下ろしている
 		{
 			//表示位置の設定
-			dst3.m_top = 0.0f + m_py - 30.0f + (m_hole_fall);
-			dst3.m_left = 0.0f + m_px + 27.0f;
-			dst3.m_right = 25.0f + m_px + 37.0f - (m_hole_fall / 1.5f) - 10.0f;
-			dst3.m_bottom = 25.0f + m_py - 30.0f + (m_hole_fall / 2.0f);
-		}
-		else
-		{
-			//表示位置の設定
-			dst3.m_top = 0.0f + m_py - 30.0f;
-			dst3.m_left = 0.0f + m_px + 37.0f;
-			dst3.m_right = 25.0f + m_px + 37.0f;
-			dst3.m_bottom = 25.0f + m_py - 30.0f;
-		}
+			dst3.m_top = 0.0f + m_py + 26.0f;
+			dst3.m_left = 0.0f + m_px + 52.0f;
+			dst3.m_right = 25.0f + m_px + 52.0f - m_hole_fall;
+			dst3.m_bottom = 25.0f + m_py + 26.0f - m_hole_fall;
 
-		//描画
-		Draw::Draw(6, &src3, &dst3, c, 0.0f);
-	}
-	else//腕を振り下ろしている
-	{
-		//表示位置の設定
-		dst3.m_top = 0.0f + m_py +26.0f;
-		dst3.m_left = 0.0f + m_px + 52.0f;
-		dst3.m_right = 25.0f + m_px + 52.0f - m_hole_fall;
-		dst3.m_bottom = 25.0f + m_py +26.0f - m_hole_fall;
-
-		//描画
-		Draw::Draw(6, &src3, &dst3, c, -100.0f);
+			//描画
+			Draw::Draw(6, &src3, &dst3, c, -100.0f);
+		}
 	}
 	//影-------------------------------------------------------------
 	if (m_jamp_control_2 == false)
