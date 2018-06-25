@@ -16,6 +16,42 @@ void CObjGameOver::Init()
 	m_key_flag = false;
 	
 	m_time = 0;
+	m_ranking_in_floag = false;
+
+
+	//値交換用
+	int w;
+
+	//スコアをランキングの最後に入れる
+	((UserData*)Save::GetData())->m_ranking[RANKING_MAX_COUNT - 1] = ((UserData*)Save::GetData())->m_point;
+
+	//ランキング変動確認
+	//バブルソート
+	for (int i = 0; i < RANKING_MAX_COUNT - 1; i++)
+	{
+		for (int j = i + 1; j < RANKING_MAX_COUNT; j++)
+		{
+			if (((UserData*)Save::GetData())->m_ranking[i] < ((UserData*)Save::GetData())->m_ranking[j])
+			{
+				//値の変更・名前の変更
+				w = ((UserData*)Save::GetData())->m_ranking[i];
+				((UserData*)Save::GetData())->m_ranking[i] = ((UserData*)Save::GetData())->m_ranking[j];
+				((UserData*)Save::GetData())->m_ranking[j] = w;
+			
+				//スコアがランキング入りを果たしたかどうか
+				if (j == RANKING_MAX_COUNT - 1)
+				{
+					m_ranking_in_floag = true;
+				}
+			}
+		}
+	}
+
+	//ステージ1で初期化する
+	((UserData*)Save::GetData())->m_stage_count = 1;
+
+	//セーブ
+	Save::Seve();
 }
 
 //アクション
@@ -26,6 +62,9 @@ void CObjGameOver::Action()
 	//メニュー画面へ
 	if (Input::GetVKey('A') == true)
 	{
+		//ランキングに反映したスコアを初期化する
+		((UserData*)Save::GetData())->m_point = 0;
+		//メニューに移行
 		Scene::SetScene(new CSceneMenu());
 	}
 	//ランキング画面へ
@@ -33,8 +72,6 @@ void CObjGameOver::Action()
 	{
 		Scene::SetScene(new CSceneRanking());
 	}
-	//スコアをランキングの最後に入れる
-	((UserData*)Save::GetData())->m_ranking[RANKING_MAX_COUNT - 1] = ((UserData*)Save::GetData())->m_point;
 }
 
 //ドロー

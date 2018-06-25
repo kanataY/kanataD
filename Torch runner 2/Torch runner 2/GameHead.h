@@ -45,25 +45,22 @@ enum HIT_ELEMENTS
 	ELEMENT_ITEM,
 };
 //------------------------------------------------
-
+//ゲーム内で使用されるグローバル変数・定数・列挙--
+#define RANKING_MAX_COUNT (4) // ランキング数+1
+#define MAX_CHAR_COUNT (6)	   // 入力できる文字数 
 //------------------------------------------------
 //セーブ＆ロードとシーン間のやり取りするデータ
 struct UserData
 {
 	int mSeveData;	//サンプルセーブデータ
-	int m_stage_count;//ステージの種類
-	int m_ranking[10];	//ランキング格納配列
-	int m_zainki;       //残機
 	int m_point;		//GameMainで得たポイント
-	
+	int m_stage_count;//ステージの種類
+	int m_ranking[RANKING_MAX_COUNT];//ランキング格納配列
+	/*wchar_t m_name[RANKING_MAX_COUNT][MAX_CHAR_COUNT];*/
 };
 //------------------------------------------------
 
 
-//ゲーム内で使用されるグローバル変数・定数・列挙--
-
-
-//------------------------------------------------
 //ゲーム内で使用するクラスヘッダ------------------
 
 

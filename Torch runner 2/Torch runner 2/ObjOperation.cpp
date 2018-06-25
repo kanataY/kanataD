@@ -208,12 +208,12 @@ void CObjOperation::Draw()
 		//進ときに使う文字設定
 		swprintf_s(str, L"Enterkeyで次へ");
 		//進ときに使う文字を描画
-		Font::StrDraw(str, 655, 580, RETURN_SIZE, c);
+		Font::StrDraw(str, 655, 580, 20, c);
 
 		//戻るときに使う文字設定
 		swprintf_s(str, L"ZkeyでMenuへ");
 		//戻るときに使う文字を描画
-		Font::StrDraw(str, 5, 580, RETURN_SIZE, c);
+		Font::StrDraw(str, 5, 580, 20, c);
 	}
 	//シーン2の時
 	if (m_scene_flag == 1)
@@ -287,11 +287,11 @@ void CObjOperation::Draw()
 		//進ときに使う文字設定
 		swprintf_s(str, L"Enterkeyで次へ");
 		//進ときに使う文字を描画
-		Font::StrDraw(str, 655, 580, RETURN_SIZE, c);
+		Font::StrDraw(str, 655, 580, 20, c);
 		//戻るときに使う文字設定
 		swprintf_s(str, L"Zkeyで前へ");
 		//戻るときに使う文字を描画
-		Font::StrDraw(str, 5, 580, RETURN_SIZE, c);
+		Font::StrDraw(str, 5, 580, 20, c);
 	}
 
 	//シーン3の時
@@ -367,11 +367,11 @@ void CObjOperation::Draw()
 		//進ときに使う文字設定
 		swprintf_s(str, L"EnterkeyでMenuへ");
 		//進ときに使う文字を描画
-		Font::StrDraw(str, 635, 580, RETURN_SIZE, c);
+		Font::StrDraw(str, 635, 580, 20, c);
 		//戻るときに使う文字設定
 		swprintf_s(str, L"Zkeyで前へ");
 		//戻るときに使う文字を描画
-		Font::StrDraw(str, 5, 580, RETURN_SIZE, c);
+		Font::StrDraw(str, 5, 580, 20, c);
 
 
 	}
