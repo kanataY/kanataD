@@ -121,7 +121,7 @@ void CObjRunner::Action()
 		m_ani_frame = 1;
 		m_ani_max_time = 50;
 	}
-	else if (gau->GetGauge() == 192)
+	else if (gau->GetGauge() == 192 && m_jamp_control_2 == false)
 	{
 		//ステージ1なら
 		if (((UserData*)Save::GetData())->m_stage_count == 1)
@@ -153,6 +153,14 @@ void CObjRunner::Action()
 				}
 			}
 		}
+	}
+	else if (gau->GetGauge() == 192 && m_jamp_control_2 == true)
+	{
+		m_ani_frame = 1;
+		//ジャンプしたときに記録した場所に行くまで落ちる		
+		if (m_py >= m_jamp_y_position)
+			m_jamp_control_2 = false;
+		m_py += m_jamp_y_1;
 	}
 
 	//----------------------------------------------------------------------------------------

@@ -36,7 +36,7 @@ void CObjGauge::Action()
 	if (runner->GetCheckPoint() == false)
 	{
 		m_time++;
-		if (m_time % 2 == 0) //27フレームごとにゲージが減るようにする
+		if (m_time % 27 == 0) //27フレームごとにゲージが減るようにする
 		{
 			m_gauge_decrease++;
 		}
