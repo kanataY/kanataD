@@ -5,7 +5,7 @@
 #include "GameL\UserData.h"
 
 #include "GameHead.h"
-#include "ObjCrates.h"m
+#include "ObjCrates.h"
 
 //使用するネームスペース
 using namespace GameL;
@@ -125,7 +125,7 @@ void CObjCrates::HitBox()
 		if (fire != nullptr)
 		{
 			m_time++; //一定時間たったら木箱を消す。
-			if (m_time > 70)
+			if (m_time > 69)
 			{
 				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す

@@ -4,6 +4,7 @@
 #include "GameL\SceneManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "GameHead.h"
 #include "ObjTrack.h"
@@ -69,9 +70,15 @@ void CObjTrack::Action()
 		Objs::InsertObj(war, OBJ_WARNING, 20);
 	}
 	//警告が消えたのでトラックをいまの右端にもどす。
-	if (m_time_warning > 60 && m_time_warning < 65)
+	if (m_time_warning > 60 && m_time_warning < 64)
 	{
 		m_px = 790.0f - block->GetScroll();
+	}
+
+	//トラックのプップー音
+	if (m_time_warning == 64)
+	{
+		Audio::Start(6);
 	}
 
 	//警告が終わった後出てくる
@@ -161,7 +168,7 @@ void CObjTrack::HitBox()
 		if (hit->CheckObjNameHit(OBJ_RUNNER) != nullptr)
 		{
 			//m_ani_cangeが0の時トラック1の仕様にする
-			if (m_ani_change == 0)
+			if (m_ani_change == 21)
 			{
 				//トラックのY軸の位置+65.0fよりランナーの位置が上なら
 				if (m_py + 65.0f > runner->GetY())
@@ -171,7 +178,7 @@ void CObjTrack::HitBox()
 				}
 			}
 			//m_ani_cangeが1の時トラック2の仕様にする
-			if (m_ani_change == 1)
+			if (m_ani_change == 27)
 			{
 				//トラックのY軸の位置+65.0fよりランナーの位置が上なら
 				if (m_py + 65.0f > runner->GetY())

@@ -48,15 +48,8 @@ void CSceneGameClear::InitScene()
 
 
 	
-	/*//音楽読み込み
-	Audio::LoadAudio(0, L"gameclear.wav", BACK_MUSIC);
-
-	//ボリュームを1.0に戻す
-	float v = Audio::VolumeMaster(0);
-	v = Audio::VolumeMaster((1.0 - v));
-
-	//音楽スタート
-	Audio::Start(0);*/
+	Audio::LoadAudio(1, L"BGM&SE\\BGMClear_.wav", BACK_MUSIC);
+	
 
 	//クリアオブジェクト作成
 	CObjGameClear* obj = new CObjGameClear();		//クリアオブジェクト作成

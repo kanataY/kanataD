@@ -48,8 +48,10 @@ void CSceneTitle::InitScene()
 	//音楽情報の読み込み
 
 	//バックミュージックスタート
-	//float Volume = Audio::VolumeMaster(0.0f);
-	//Audio::Start(0); //音楽スタート
+	Audio::LoadAudio(0, L"BGM&SE\\BGMTitle_.wav", BACK_MUSIC);
+
+	//音楽スタート
+	Audio::Start(0);
 
 	//タイトルオブジェクト作成
 	CObjTitle* obj = new CObjTitle();

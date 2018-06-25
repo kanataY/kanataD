@@ -48,6 +48,12 @@ void CSceneOperation::InitScene()
 	//説明オブジェクト作成
 	CObjOperation* obj = new CObjOperation();
 	Objs::InsertObj(obj, OBJ_OPERATION, 10);
+
+	//バックミュージックスタート
+	Audio::LoadAudio(0, L"BGM&SE\\syareotu.wav", BACK_MUSIC);
+
+	//音楽スタート
+	Audio::Start(0);
 }
 
 //ゲームメイン実行中メソッド

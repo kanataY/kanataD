@@ -24,6 +24,7 @@ private:
 	float m_py;
 	int m_rx;		//最初の位置を記憶する
 	int m_ry;
+	bool m_hit;     //水に当たった時一回だけ音を鳴らすやつ
 
 	bool m_map_con;  //マップ読み込みを一回だけにする
 	int m_drow_down; //画像の下を伸ばす。
