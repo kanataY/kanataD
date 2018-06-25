@@ -98,6 +98,21 @@ void CObjRunner::Action()
 	//チェックポイントを取得
 	CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
+
+	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+	m_ani_time++;//フレーム動作感覚タイムを進める
+	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+	{
+		m_ani_frame++;//フレームを進める
+		m_ani_time = 0;
+	}
+	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+	{
+		m_ani_frame = 0;
+	}
+	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+
 	//ゲージがなくなった時----------------------------------------------------------------------
 	//なくなる瞬間に
 	if (gau->GetGauge() == 191)
@@ -106,7 +121,7 @@ void CObjRunner::Action()
 		m_ani_frame = 1;
 		m_ani_max_time = 50;
 	}
-	if (gau->GetGauge() == 192)
+	else if (gau->GetGauge() == 192)
 	{
 		//ステージ1なら
 		if (((UserData*)Save::GetData())->m_stage_count == 1)
@@ -141,172 +156,160 @@ void CObjRunner::Action()
 	}
 
 	//----------------------------------------------------------------------------------------
-
-	//死んだときーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	if (m_death == true)//死んだとき
+	else     //ゲージがなくなってない時は動く
 	{
-		//穴に落ちてない時だけ
-		if (m_hole_control == false)
+		//死んだときーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		if (m_death == true)//死んだとき
 		{
-			//ジャンプしたときにそのまま行ってしまうので戻す。
-			if (m_py <= 277) //道路より上に行かないようにする
-				m_py = 277;
-
-			m_stick_fire = false;
-			m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
-			m_ani_max_time = 3;   //アニメーションの速度を上げる
-
-			if (m_px < 300.0f)//３００の地点まで進む
-				m_px += 2;
-			else
+			//穴に落ちてない時だけ
+			if (m_hole_control == false)
 			{
-				m_death = false; //動かせるようにする
-				m_ani_max_time = 5;//タイムを戻す
-				m_invincible = 50; //しばらくの間無敵時間を設ける
-				Audio::Stop(1);//走る音を止める
-			}
-		}
-	}
+				//ジャンプしたときにそのまま行ってしまうので戻す。
+				if (m_py <= 277) //道路より上に行かないようにする
+					m_py = 277;
 
-	//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+				m_stick_fire = false;
+				m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
+				m_ani_max_time = 3;   //アニメーションの速度を上げる
 
-	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	m_ani_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-	{
-		m_ani_frame++;//フレームを進める
-		m_ani_time = 0;
-	}
-	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-	{
-		m_ani_frame = 0;
-	}
-	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
-
-	//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
-	if (m_check_control == false && m_death == false &&gau->GetGauge() != 192)
-	{
-		//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
-
-		if (m_py >= 536) //一番下より下に行かないようにする
-			m_py = 536;
-		if (m_jamp_control_2 == false)        //ジャンプをしてない時
-		{
-			if (m_py <= 277) //道路より上に行かないようにする
-				m_py = 277;
-		}
-
-		m_px = cor->Screen_In(m_px);  //右に行き過ぎないようにする（右の画面外に行かないように）
-
-		//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
-		//移動ーーーーーーーーーーーーーーーーーーーーー
-		if (m_stick_fire == true)
-		{
-			m_speed = 1.6f;
-			m_jamp_speed = 1.2f;
-		}
-		else
-		{
-			m_speed = 0.8f;
-			m_jamp_speed = 0.6f;
-		}
-
-		if (Input::GetVKey('D') == true)  //右移動
-		{
-			m_vx += m_speed;
-		}
-		if (Input::GetVKey('A') == true)  //左移動
-		{
-			m_vx += -m_speed;
-		}
-		if (Input::GetVKey('W') == true && m_py > 277)//上移動
-		{
-			m_vy += -m_speed;
-			if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
-			{
-				//ジャンプしているときにSを押したとき、影も動くようにする
-				m_jamp_y_position += -m_speed - 0.8f;
-			}
-		}
-		if (Input::GetVKey('S') == true && m_py < 536)//下移動
-		{
-			if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
-			{
-				m_vy += m_speed;
-			}
-			else
-			{
-				m_vy += m_speed - m_jamp_speed;
-				//ジャンプしているときにSを押したとき、影も動くようにする
-
-				m_jamp_y_position += m_speed + m_jamp_speed;
-			}
-		}
-
-		//摩擦
-		m_vx += -(m_vx * 0.15f);
-		m_vy += -(m_vy * 0.15f);
-
-		//移動終了---------------------------------------------------
-
-		//聖火をかざす（火をうつす）---------------------------------------------
-
-		if (m_hole_control == false)  //穴に落ちていない場合（当たっていない）
-		{
-			if (Input::GetVKey('O') == true)
-			{
-				if (m_torch_control == false)
+				if (m_px < 300.0f)//３００の地点まで進む
+					m_px += 2;
+				else
 				{
-					//ステージ1の時
-					if (((UserData*)Save::GetData())->m_stage_count == 1)
-						m_ani_change = 8; //アニメーションの絵を８番に変える
-
-					//ステージ2の時
-					if (((UserData*)Save::GetData())->m_stage_count == 2)
-						m_ani_change = 20; //アニメーションの絵を８番に変える
-
-					//ステージ3の時
-					if (((UserData*)Save::GetData())->m_stage_count == 3)
-						m_ani_change = 33; //アニメーションの絵を33番に変える
-
-					m_torch_control = true;
-					//聖火を出現させる 
-					CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
-					Objs::InsertObj(torch, OBJ_TORCH, 20);
-				}
-			}
-			else
-			{
-				if (m_torch_time_control > 30) //30フレームたつと次が触れる
-				{
-					m_torch_control = false; 
-					//ステージが1の時
-					if (((UserData*)Save::GetData())->m_stage_count == 1)
-						m_ani_change = 0;//アニメーションを0に
-
-					//ステージが2の時
-					if (((UserData*)Save::GetData())->m_stage_count == 2)
-						m_ani_change = 19;//アニメーションを19に
-					//ステージが3の時
-					if (((UserData*)Save::GetData())->m_stage_count == 3)
-						m_ani_change = 32;//アニメーションを32に
-				
-					m_torch_time_control = 0;
+					m_death = false; //動かせるようにする
+					m_ani_max_time = 5;//タイムを戻す
+					m_invincible = 50; //しばらくの間無敵時間を設ける
+					Audio::Stop(1);//走る音を止める
 				}
 			}
 		}
 
-		if (m_torch_control == true) //降り下ろしてる状態なら
+		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+		//チェックポイントに入ってなければメインの行動ができる　　死んでなければ
+		if (m_check_control == false && m_death == false && gau->GetGauge() != 192)
 		{
-			m_torch_time_control++;  //時間を進める。
-		}
+			//画面外に行かないようにするーーーーーーーーーーーーーーーーーー
 
-		//聖火をかざす終了-----------------------------------------------------------------------------
+			if (m_py >= 536) //一番下より下に行かないようにする
+				m_py = 536;
+			if (m_jamp_control_2 == false)        //ジャンプをしてない時
+			{
+				if (m_py <= 277) //道路より上に行かないようにする
+					m_py = 277;
+			}
 
-		//ジャンプ---------------------------
-		//チェックポイントが出てきたらジャンプできない
-		/*if (check == nullptr)
-		{*/
+			m_px = cor->Screen_In(m_px);  //右に行き過ぎないようにする（右の画面外に行かないように）
+
+			//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+			//移動ーーーーーーーーーーーーーーーーーーーーー
+			if (m_stick_fire == true)
+			{
+				m_speed = 1.6f;
+				m_jamp_speed = 1.2f;
+			}
+			else
+			{
+				m_speed = 0.8f;
+				m_jamp_speed = 0.6f;
+			}
+
+			if (Input::GetVKey('D') == true)  //右移動
+			{
+				m_vx += m_speed;
+			}
+			if (Input::GetVKey('A') == true)  //左移動
+			{
+				m_vx += -m_speed;
+			}
+			if (Input::GetVKey('W') == true && m_py > 277)//上移動
+			{
+				m_vy += -m_speed;
+				if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
+				{
+					//ジャンプしているときにSを押したとき、影も動くようにする
+					m_jamp_y_position += -m_speed - 0.8f;
+				}
+			}
+			if (Input::GetVKey('S') == true && m_py < 536)//下移動
+			{
+				if (m_jamp_control_2 == false) //ジャンプしてなければ通常移動　してれば遅くする
+				{
+					m_vy += m_speed;
+				}
+				else
+				{
+					m_vy += m_speed - m_jamp_speed;
+					//ジャンプしているときにSを押したとき、影も動くようにする
+
+					m_jamp_y_position += m_speed + m_jamp_speed;
+				}
+			}
+
+			//摩擦
+			m_vx += -(m_vx * 0.15f);
+			m_vy += -(m_vy * 0.15f);
+
+			//移動終了---------------------------------------------------
+
+			//聖火をかざす（火をうつす）---------------------------------------------
+
+			if (m_hole_control == false)  //穴に落ちていない場合（当たっていない）
+			{
+				if (Input::GetVKey('O') == true)
+				{
+					if (m_torch_control == false)
+					{
+						//ステージ1の時
+						if (((UserData*)Save::GetData())->m_stage_count == 1)
+							m_ani_change = 8; //アニメーションの絵を８番に変える
+
+						//ステージ2の時
+						if (((UserData*)Save::GetData())->m_stage_count == 2)
+							m_ani_change = 20; //アニメーションの絵を８番に変える
+
+						//ステージ3の時
+						if (((UserData*)Save::GetData())->m_stage_count == 3)
+							m_ani_change = 33; //アニメーションの絵を33番に変える
+
+						m_torch_control = true;
+						//聖火を出現させる 
+						CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
+						Objs::InsertObj(torch, OBJ_TORCH, 20);
+					}
+				}
+				else
+				{
+					if (m_torch_time_control > 30) //30フレームたつと次が触れる
+					{
+						m_torch_control = false;
+						//ステージが1の時
+						if (((UserData*)Save::GetData())->m_stage_count == 1)
+							m_ani_change = 0;//アニメーションを0に
+
+						//ステージが2の時
+						if (((UserData*)Save::GetData())->m_stage_count == 2)
+							m_ani_change = 19;//アニメーションを19に
+						//ステージが3の時
+						if (((UserData*)Save::GetData())->m_stage_count == 3)
+							m_ani_change = 32;//アニメーションを32に
+
+						m_torch_time_control = 0;
+					}
+				}
+			}
+
+			if (m_torch_control == true) //降り下ろしてる状態なら
+			{
+				m_torch_time_control++;  //時間を進める。
+			}
+
+			//聖火をかざす終了-----------------------------------------------------------------------------
+
+			//ジャンプ---------------------------
+			//チェックポイントが出てきたらジャンプできない
+			/*if (check == nullptr)
+			{*/
 			bool m_hag = false;
 			if (okama != nullptr)
 				m_hag = okama->GetHug();
@@ -358,7 +361,7 @@ void CObjRunner::Action()
 						//ジャンプするとき上のほうにいた場合はただジャンプする
 						m_vy += m_jamp_y_1;
 
-					
+
 				}
 				else if (m_time < 20)
 				{
@@ -393,122 +396,16 @@ void CObjRunner::Action()
 					}
 				}
 			}
-			
-		//}
 
-		//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
+			//}
 
-		//ブロック情報を持ってくる
-		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+			//ジャンプ終了ーーーーーーーーーーーーーーーーーーーーー
 
-		//穴関連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-		if (m_hole_control == true)  //穴に落ちている場合（当たっている）
-		{
-			//ステージが1の時
-			if (((UserData*)Save::GetData())->m_stage_count == 1)
-				m_ani_change = 0;//アニメーションを0に
+			//ブロック情報を持ってくる
+			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
 
-			//ステージが2の時
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-				m_ani_change = 19;//アニメーションを19に
-			//ステージが3の時
-			if (((UserData*)Save::GetData())->m_stage_count == 3)
-				m_ani_change = 32;//アニメーションを32に
-			m_vx = 0.0f; //ランナーを移動させないようにする。
-			m_vy = 0.0f;
-		}
-
-		if (m_hole_fall > 3)
-		{
-			m_hole_control = true;
-		}
-		if (m_hole_fall < 5 && m_hole_fall > 3)
-		{
-			Audio::Start(4); //落ちている音を鳴らす
-		}
-
-		if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
-		{
-			m_px = -80.0f;
-			m_py = 410.0f;
-			m_hole_control = false;
-			m_death = true;
-			Audio::Start(1);
-			Audio::Stop(4);
-		}
-		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-
-		//後ろに行き過ぎた時ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー---
-
-		if (m_px < -50.0f && m_death == false) //スクロールに遅れた時は真ん中で復活
-		{
-			//ジャンプ関連をすべて最初に戻す。
-			m_time = 0;
-			m_jamp_control = false;
-			m_jamp_control_2 = false;
-			//-----------------------------------------------
-			m_death = true; //死んだ
-			Audio::Start(1);
-		}
-
-		m_invincible--; //無敵時間減少
-
-
-		//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
-
-		//HitBoxの位置の変更
-		CHitBox* hit = Hits::GetHitBox(this);
-		hit->SetPos(m_px + 18.0f, m_py);
-
-		//チェックポイントが生成されてるなら調べる
-		if (check != nullptr)
-		{
-			//チェックポイントが指定の位置に
-			if (check->GetX() + block->GetScroll() < 400)
-			{
-				m_check_vx = true; //強制スクロールをしなくさせないようにする
-			}
-		}
-		if(m_check_vx == false)
-		{
-			//火がついているときは強制スクロールを二倍にする
-			if (m_stick_fire == true)
-				m_vx -= 0.6f; //強制スクロール用移動量
-			else
-				m_vx -= 0.3f;
-		}
-
-		//当たり判定関連
-		HitBox();
-
-		//位置の更新
-		m_px += m_vx;
-		m_py += m_vy;
-
-		CObj::SetPrio((int)m_py); //描画優先順位変更
-	}
-
-	
-		//チェックポイントに入ったら受け渡たすシーンを描画をする。
-	else if (m_check_control == true && m_jamp_control_2 == false)
-	{
-		//チェックポイントを取得
-		CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
-
-		//ステージ３の時はホーミングせずにそのまま突き進む
-		if (((UserData*)Save::GetData())->m_stage_count == 3)
-		{
-			m_vx += 0.5f;
-
-			//摩擦
-			m_vx += -(m_vx * 0.15f);
-			//位置の更新
-			m_px += m_vx;
-			m_py += m_vy;
-		}
-		else
-		{
-			if (m_check_control_x == true)
+			//穴関連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+			if (m_hole_control == true)  //穴に落ちている場合（当たっている）
 			{
 				//ステージが1の時
 				if (((UserData*)Save::GetData())->m_stage_count == 1)
@@ -520,113 +417,219 @@ void CObjRunner::Action()
 				//ステージが3の時
 				if (((UserData*)Save::GetData())->m_stage_count == 3)
 					m_ani_change = 32;//アニメーションを32に
-				//チェックポイントにいる第二のランナーの位置を取得する
-				float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
-				float okay = (check->GetY()  * 3.0f) - m_py;
+				m_vx = 0.0f; //ランナーを移動させないようにする。
+				m_vy = 0.0f;
+			}
 
-				//atan2で角度を求める
-				float r2 = atan2(okay, okax)*180.0f / 3.14f;
+			if (m_hole_fall > 3)
+			{
+				m_hole_control = true;
+			}
+			if (m_hole_fall < 5 && m_hole_fall > 3)
+			{
+				Audio::Start(4); //落ちている音を鳴らす
+			}
 
-				//-180～-0を180～360に変換
-				if (r2 < 0)
+			if (m_hole_fall > 50.0f)  //ランナーの描画が一番小さくなった時に
+			{
+				m_px = -80.0f;
+				m_py = 410.0f;
+				m_hole_control = false;
+				m_death = true;
+				Audio::Start(1);
+				Audio::Stop(4);
+			}
+			//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+
+			//後ろに行き過ぎた時ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー---
+
+			if (m_px < -50.0f && m_death == false) //スクロールに遅れた時は真ん中で復活
+			{
+				//ジャンプ関連をすべて最初に戻す。
+				m_time = 0;
+				m_jamp_control = false;
+				m_jamp_control_2 = false;
+				//-----------------------------------------------
+				m_death = true; //死んだ
+				Audio::Start(1);
+			}
+
+			m_invincible--; //無敵時間減少
+
+
+			//－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+			//HitBoxの位置の変更
+			CHitBox* hit = Hits::GetHitBox(this);
+			hit->SetPos(m_px + 18.0f, m_py);
+
+			//チェックポイントが生成されてるなら調べる
+			if (check != nullptr)
+			{
+				//チェックポイントが指定の位置に
+				if (check->GetX() + block->GetScroll() < 400)
 				{
-					r2 = 360 - abs(r2);
-				};
-
-				float ar = r2;
-
-				if (ar < 0)
-				{
-					ar = 360 - abs(ar);
+					m_check_vx = true; //強制スクロールをしなくさせないようにする
 				}
+			}
+			if (m_check_vx == false)
+			{
+				//火がついているときは強制スクロールを二倍にする
+				if (m_stick_fire == true)
+					m_vx -= 0.6f; //強制スクロール用移動量
+				else
+					m_vx -= 0.3f;
+			}
 
-				//ランナーの現在の向いてる角度を取る
-				float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+			//当たり判定関連
+			HitBox();
 
-				//-180～-0を180～360に変換
-				if (bor < 0)
-				{
-					bor = 360 - abs(bor);
-				};
-				float br = bor;
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
 
-				//ランナーのほうにホーミングする
-				if (m_homing == false)
-				{
-					//移動方向をランナーの方向にする
-					m_vx = cos(3.14f / 180 * ar);
-					m_vy = sin(3.14f / 180 * ar);
-					m_vx *= 2; // 移動速度を2倍にする
-					m_vy *= 2;
-					m_homing = true;
-				}
+			CObj::SetPrio((int)m_py); //描画優先順位変更
+		}
 
-				if (((UserData*)Save::GetData())->m_stage_count == 1)
-				{
-					//第二のランナーの目の前に来た時
-					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-					{
-						m_check_time++; //タイムを進める
-						m_check_transfer = true;
-						m_vx = 0.0f; //移動量を０にする
-						m_vy = 0.0f;
-						if (m_check_time < 50) //振り下ろす
-							m_ani_change = 8;
-						else
-						{
-							m_ani_change = 0;//通常の状態で待つ
-						}
-					}
-				}
 
-				if (((UserData*)Save::GetData())->m_stage_count == 2)
-				{
-					//第二のランナーの目の前に来た時
-					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-					{
-						m_check_time++; //タイムを進める
-						m_check_transfer = true;
-						m_vx = 0.0f; //移動量を０にする
-						m_vy = 0.0f;
-						if (m_check_time < 50) //振り下ろす
-							m_ani_change = 20;
-						else
-						{
-							m_ani_change = 19;//通常の状態で待つ
-						}
-					}
-				}
-				if (((UserData*)Save::GetData())->m_stage_count == 3)
-				{
-					//第二のランナーの目の前に来た時
-					if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
-					{
-						m_check_time++; //タイムを進める
-						m_check_transfer = true;
-						m_vx = 0.0f; //移動量を０にする
-						m_vy = 0.0f;
-						if (m_check_time < 50) //振り下ろす
-							m_ani_change = 33;
-						else
-						{
-							m_ani_change = 32;//通常の状態で待つ
-						}
-					}
-				}
+		//チェックポイントに入ったら受け渡たすシーンを描画をする。
+		else if (m_check_control == true && m_jamp_control_2 == false)
+		{
+			//チェックポイントを取得
+			CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
+
+			//ステージ３の時はホーミングせずにそのまま突き進む
+			if (((UserData*)Save::GetData())->m_stage_count == 3)
+			{
+				m_vx += 0.5f;
+
+				//摩擦
+				m_vx += -(m_vx * 0.15f);
 				//位置の更新
 				m_px += m_vx;
 				m_py += m_vy;
-
-				CObj::SetPrio((int)m_py); //描画優先順位変更
 			}
-		}
-		// チェックポイントが指定の位置にある場合
-		if (check->GetX() + block->GetScroll() < 400)
-		{
-			m_check_control_x = true; //ホーミングをONにする
-		}
-		else
-		{
+			else
+			{
+				if (m_check_control_x == true)
+				{
+					//ステージが1の時
+					if (((UserData*)Save::GetData())->m_stage_count == 1)
+						m_ani_change = 0;//アニメーションを0に
+
+					//ステージが2の時
+					if (((UserData*)Save::GetData())->m_stage_count == 2)
+						m_ani_change = 19;//アニメーションを19に
+					//ステージが3の時
+					if (((UserData*)Save::GetData())->m_stage_count == 3)
+						m_ani_change = 32;//アニメーションを32に
+					//チェックポイントにいる第二のランナーの位置を取得する
+					float okax = ((check->GetX() + block->GetScroll()) + 170.0f) - m_px;
+					float okay = (check->GetY()  * 3.0f) - m_py;
+
+					//atan2で角度を求める
+					float r2 = atan2(okay, okax)*180.0f / 3.14f;
+
+					//-180～-0を180～360に変換
+					if (r2 < 0)
+					{
+						r2 = 360 - abs(r2);
+					};
+
+					float ar = r2;
+
+					if (ar < 0)
+					{
+						ar = 360 - abs(ar);
+					}
+
+					//ランナーの現在の向いてる角度を取る
+					float bor = atan2(m_vy, m_vx)*180.0f / 3.14f;
+
+					//-180～-0を180～360に変換
+					if (bor < 0)
+					{
+						bor = 360 - abs(bor);
+					};
+					float br = bor;
+
+					//ランナーのほうにホーミングする
+					if (m_homing == false)
+					{
+						//移動方向をランナーの方向にする
+						m_vx = cos(3.14f / 180 * ar);
+						m_vy = sin(3.14f / 180 * ar);
+						m_vx *= 2; // 移動速度を2倍にする
+						m_vy *= 2;
+						m_homing = true;
+					}
+
+					if (((UserData*)Save::GetData())->m_stage_count == 1)
+					{
+						//第二のランナーの目の前に来た時
+						if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+						{
+							m_check_time++; //タイムを進める
+							m_check_transfer = true;
+							m_vx = 0.0f; //移動量を０にする
+							m_vy = 0.0f;
+							if (m_check_time < 50) //振り下ろす
+								m_ani_change = 8;
+							else
+							{
+								m_ani_change = 0;//通常の状態で待つ
+							}
+						}
+					}
+
+					if (((UserData*)Save::GetData())->m_stage_count == 2)
+					{
+						//第二のランナーの目の前に来た時
+						if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+						{
+							m_check_time++; //タイムを進める
+							m_check_transfer = true;
+							m_vx = 0.0f; //移動量を０にする
+							m_vy = 0.0f;
+							if (m_check_time < 50) //振り下ろす
+								m_ani_change = 20;
+							else
+							{
+								m_ani_change = 19;//通常の状態で待つ
+							}
+						}
+					}
+					if (((UserData*)Save::GetData())->m_stage_count == 3)
+					{
+						//第二のランナーの目の前に来た時
+						if (m_px > ((check->GetX() + block->GetScroll()) + 170.0f))
+						{
+							m_check_time++; //タイムを進める
+							m_check_transfer = true;
+							m_vx = 0.0f; //移動量を０にする
+							m_vy = 0.0f;
+							if (m_check_time < 50) //振り下ろす
+								m_ani_change = 33;
+							else
+							{
+								m_ani_change = 32;//通常の状態で待つ
+							}
+						}
+					}
+					//位置の更新
+					m_px += m_vx;
+					m_py += m_vy;
+
+					CObj::SetPrio((int)m_py); //描画優先順位変更
+				}
+			}
+			// チェックポイントが指定の位置にある場合
+			if (check->GetX() + block->GetScroll() < 400)
+			{
+				m_check_control_x = true; //ホーミングをONにする
+			}
+			else
+			{
 				// チェックポイントが指定のいちに行くまでは移動量を0にする
 				if (m_px < 499 && m_px > 490)
 				{
@@ -647,33 +650,34 @@ void CObjRunner::Action()
 				//位置の更新
 				m_px += m_vx;
 				m_py += m_vy;
+			}
 		}
-	}
-	else if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
-	{
-		//スクロールが止まったら移動量を０にする
-		if (check->GetX() + block->GetScroll() < 400)
+		else if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
 		{
-			//Xの移動量を０にする
-			m_vx = 0.0f;
-		}
-		else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
-			m_vx -= 0.3f; //強制スクロール用移動量
-		else
-			m_vx -= 0.6f; //強制スクロール用移動量
+			//スクロールが止まったら移動量を０にする
+			if (check->GetX() + block->GetScroll() < 400)
+			{
+				//Xの移動量を０にする
+				m_vx = 0.0f;
+			}
+			else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
+				m_vx -= 0.3f; //強制スクロール用移動量
+			else
+				m_vx -= 0.6f; //強制スクロール用移動量
 
-		//摩擦
-		m_vx += -(m_vx * 0.15f);
+			//摩擦
+			m_vx += -(m_vx * 0.15f);
 
-		//ジャンプしたときに記録した場所に行くまで落ちる		
-		if (m_py >= m_jamp_y_position)
-			m_jamp_control_2 = false;
+			//ジャンプしたときに記録した場所に行くまで落ちる		
+			if (m_py >= m_jamp_y_position)
+				m_jamp_control_2 = false;
 			m_py += m_jamp_y_1;
 
 			//位置の更新
 
 			m_px += m_vx;
 			m_py += m_vy;
+		}
 	}
 }
 
@@ -841,12 +845,16 @@ void CObjRunner::Draw()
 		dst.m_right = 64.0f + m_px;
 		dst.m_bottom = 64.0f + m_py;
 
-		if (((UserData*)Save::GetData())->m_stage_count == 1)
-			Draw::Draw(22, &src, &dst, c, 0.0f);
-		if (((UserData*)Save::GetData())->m_stage_count == 2)
-			Draw::Draw(23, &src, &dst, c, 0.0f);
-		if (((UserData*)Save::GetData())->m_stage_count == 3)
-			Draw::Draw(35, &src, &dst, c, 0.0f);
+		//ゲージが消えそうになっていたら描画をやめる
+		if (gau->GetGauge() == 191)
+		{
+			if (((UserData*)Save::GetData())->m_stage_count == 1)
+				Draw::Draw(22, &src, &dst, c, 0.0f);
+			if (((UserData*)Save::GetData())->m_stage_count == 2)
+				Draw::Draw(23, &src, &dst, c, 0.0f);
+			if (((UserData*)Save::GetData())->m_stage_count == 3)
+				Draw::Draw(35, &src, &dst, c, 0.0f);
+		}
 	}
 
 	//ーーーーーーーーーーーーーーーーー聖火のもつとこーーーーーーーーーーーー
