@@ -80,6 +80,9 @@ void CObjRunner::Init()
 //アクション
 void CObjRunner::Action()
 {
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
 	//補正の情報を持ってくる
 	CObjCorrection* cor = (CObjCorrection*)Objs::GetObj(CORRECTION);
 
@@ -222,7 +225,7 @@ void CObjRunner::Action()
 			if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
 			{
 				//ジャンプしているときにSを押したとき、影も動くようにする
-				m_jamp_y_position += -m_speed - 0.9f;
+				m_jamp_y_position += -m_speed - 0.8f;
 			}
 		}
 		if (Input::GetVKey('S') == true && m_py < 536)//下移動
@@ -235,6 +238,7 @@ void CObjRunner::Action()
 			{
 				m_vy += m_speed - m_jamp_speed;
 				//ジャンプしているときにSを押したとき、影も動くようにする
+
 				m_jamp_y_position += m_speed + m_jamp_speed;
 			}
 		}
@@ -488,10 +492,6 @@ void CObjRunner::Action()
 		//チェックポイントに入ったら受け渡たすシーンを描画をする。
 	else if (m_check_control == true && m_jamp_control_2 == false)
 	{
-
-		//ブロック情報を持ってくる
-		CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
 		//チェックポイントを取得
 		CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
@@ -627,37 +627,52 @@ void CObjRunner::Action()
 		}
 		else
 		{
-			// チェックポイントが指定のいちに行くまでは移動量を0にする
-			if (m_px < 499 && m_px > 490)
-			{
-				m_vx = 0.0f;
-			}
-			else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
-				m_vx -= 0.3f; //強制スクロール用移動量
-			else
-				m_vx -= 0.6f; //強制スクロール用移動量
+				// チェックポイントが指定のいちに行くまでは移動量を0にする
+				if (m_px < 499 && m_px > 490)
+				{
+					m_vx = 0.0f;
+				}
+				else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
+					m_vx -= 0.3f; //強制スクロール用移動量
+				else
+					m_vx -= 0.6f; //強制スクロール用移動量
 
-			//摩擦
-			m_vx += -(m_vx * 0.15f);
+				//摩擦
+				m_vx += -(m_vx * 0.15f);
 
-			//HitBoxの位置の変更
-			CHitBox* hit = Hits::GetHitBox(this);
-			hit->SetPos(m_px + 18.0f, m_py);
+				//HitBoxの位置の変更
+				CHitBox* hit = Hits::GetHitBox(this);
+				hit->SetPos(m_px + 18.0f, m_py);
 
-			//位置の更新
-			m_px += m_vx;
-			m_py += m_vy;
+				//位置の更新
+				m_px += m_vx;
+				m_py += m_vy;
 		}
 	}
 	else if (m_jamp_control_2 == true) //ジャンプしてなければ通常移動　してれば遅くする
 	{
-		//Xの移動量を０にする
-		m_vx = 0.0f;
+		//スクロールが止まったら移動量を０にする
+		if (check->GetX() + block->GetScroll() < 400)
+		{
+			//Xの移動量を０にする
+			m_vx = 0.0f;
+		}
+		else if (m_stick_fire == false) //火がついているときはスクロールに合わせた速度に。
+			m_vx -= 0.3f; //強制スクロール用移動量
+		else
+			m_vx -= 0.6f; //強制スクロール用移動量
+
+		//摩擦
+		m_vx += -(m_vx * 0.15f);
 
 		//ジャンプしたときに記録した場所に行くまで落ちる
 		if (m_py >= m_jamp_y_position)
 			m_jamp_control_2 = false;
 			m_py += m_jamp_y_1;
+
+			//位置の更新
+			m_px += m_vx;
+			m_py += m_vy;
 	}
 }
 
