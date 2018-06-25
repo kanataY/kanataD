@@ -127,7 +127,7 @@ void CObjCrates::HitBox()
 			m_time++; //一定時間たったら木箱を消す。
 			if (m_time > 69)
 			{
-				((UserData*)Save::GetData())->m_point += 55000;
+				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 			}
