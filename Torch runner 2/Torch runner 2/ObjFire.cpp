@@ -47,7 +47,7 @@ void CObjFire::Action()
 
 	if (m_time < 2)//
 	{
-		if (m_fire_hit == 0)
+		if (m_fire_hit != 2)
 		{
 			Audio::Start(2);
 		}
@@ -81,7 +81,6 @@ void CObjFire::Action()
 		//ランナーについている火が消えたなら
 		if (runner->GetStickFire() == false)
 		{
-			Audio::Stop(2);
 			this->SetStatus(false);		//自身に削除命令を出す
 		}
 	}

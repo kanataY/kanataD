@@ -25,7 +25,7 @@ public:
 	bool  GetCheckTransfer() { return m_check_transfer; }//チェックポイントに到達して火をうつしているかどうかを渡す
 	bool  GetDeath() { return m_death; }				//ランナーが死んでいるかどうかを入れる。
 	bool  GetStickFire() {return m_stick_fire;}			//ランナーに火がついているかどうかを調べる変数
-	bool  GetJamp() { return m_jamp_control; }			//ジャンプしているかどうかを渡す
+	bool  GetJamp() { return m_jamp_control_2; }			//ジャンプしているかどうかを渡す
 	void  SetRain(bool rain) { m_rain = rain; }			//雨取得用
 	void  SetRainTime(bool rain_time) { m_rain_time = rain_time; }//雨の降っている時間取得
 	void  SetX(float x) { m_px = x; }					//m_px,m_pyの値をほかのcppでもいじれるようにする

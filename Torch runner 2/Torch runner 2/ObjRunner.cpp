@@ -1048,7 +1048,7 @@ void CObjRunner::HitBox()
 		if (m_hole_control == false)  //穴に落ちている場合（当たっている）
 		{
 			//スマホ少年と当たった場合
-			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr && m_jamp_control == false)
+			if (hit->CheckObjNameHit(OBJ_SMARTPHONE) != nullptr && m_jamp_control_2 == false)
 			{
 				if ((sumaho->GetX() + block->GetScroll()) < m_px)
 				{
@@ -1094,7 +1094,7 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_PUDDLE) != nullptr)
 	{
 		//ランナーに火がついてるなら消える
-		if(m_jamp_control == false) //ジャンプしているときは火は消えない
+		if(m_jamp_control_2 == false) //ジャンプしているときは火は消えない
 			m_stick_fire = false;
 	}
 	//雨が降った場合

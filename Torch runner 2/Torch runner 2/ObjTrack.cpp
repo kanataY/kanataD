@@ -78,7 +78,13 @@ void CObjTrack::Action()
 	//トラックのプップー音
 	if (m_time_warning == 64)
 	{
-		Audio::Start(6);
+			//ブロック情報を持ってくる
+			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+			//マップ番号を取ってくる　
+			if (block->GetMap(m_rx, m_ry +1) != 7 && block->GetMap(m_rx, m_ry + 1) != 8)//水たまりが下にあるなら増やす
+			{
+				Audio::Start(6);
+			}
 	}
 
 	//警告が終わった後出てくる
