@@ -13,7 +13,10 @@ public:
 	void Init();	//イニシャライズ
 	void Action();	//アクション
 	void Draw();	//ドロー
+	int GetTime() { return m_time; }
+	bool GetRankingInFlag() { return m_ranking_in_floag; }
 private:
 	bool m_key_flag;//キーフラグ
 	int   m_time;	//時間管理
+	bool m_ranking_in_floag;//ランキング入りを果たしたかどうかフラグ
 };

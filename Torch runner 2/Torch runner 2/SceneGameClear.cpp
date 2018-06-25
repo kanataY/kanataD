@@ -45,9 +45,6 @@ void CSceneGameClear::InitScene()
 	//外部グラフィックファイルを読み込み5番に登録(1024ピクセル)
 	Draw::LoadImageW(L"Image\\back\\Clear\\clear.png", 6, TEX_SIZE_1024);
 	
-
-
-	
 	Audio::LoadAudio(1, L"BGM&SE\\BGMClear_.wav", BACK_MUSIC);
 	
 
@@ -59,5 +56,6 @@ void CSceneGameClear::InitScene()
 //実行中メソッド
 void CSceneGameClear::Scene()
 {
+
 
 }

@@ -17,27 +17,9 @@ using namespace GameL;
 //イニシャライズ
 void CObjRanking::Init()
 {
-	//値交換用変数
-	int w;
-
-	//バブルソート
-	for (int i = 0; i < RANKING_MAX_COUNT - 1; i++)
-	{
-		for (int j = i + 1; j < RANKING_MAX_COUNT; j++)
-		{
-			if (((UserData*)Save::GetData())->m_ranking[i] < ((UserData*)Save::GetData())->m_ranking[j])
-			{
-				//値の変更
-				w = ((UserData*)Save::GetData())->m_ranking[i];
-				((UserData*)Save::GetData())->m_ranking[i] = ((UserData*)Save::GetData())->m_ranking[j];
-				((UserData*)Save::GetData())->m_ranking[j] = w;
-			}
-		}
-	}
-
 	//戻るときの文字のサイズ
 	//バイト数が１のとき0.5	２のとき1.0とする
-	m_return_size = 0;
+	float m_interval = 6.5f;
 }
 
 //アクション
@@ -53,13 +35,42 @@ void CObjRanking::Action()
 //ドロー
 void CObjRanking::Draw()
 {
-	//描画カラー情報
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
 
 	//ランキング専用背景描画
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
 
+	//最大桁数格納用変数
+	int max_number = 0;
+
+	//ランキングごとの桁数を格納用変数
+	int number[RANKING_MAX_COUNT];
+
+	//数値の最大桁数を調べる(左ぞろえをするため)
+	for (int ranking_count = 0; ranking_count < RANKING_MAX_COUNT; ranking_count++)
+	{
+		//ランニングのranking_count番の数値を格納
+		int ranking = ((UserData*)Save::GetData())->m_ranking[ranking_count];
+		//数値が9桁～1桁の間で何桁あるかなどを調べる
+		for (int num_max = 100000000, digit = 9; num_max >= 1; num_max /= 10, digit--)
+		{
+			//桁数を調べる
+			if ((ranking / num_max != 0 && ranking > 0) || num_max == 1)
+			{
+				//桁を格納
+				number[ranking_count] = digit;
+				//桁が最大桁数以上なら上書き
+				if (max_number < digit)
+				{
+					max_number = digit;
+				}
+				break;
+			}
+		}
+	}
+
+	//背景の描画----------------------------------
 	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
@@ -74,29 +85,20 @@ void CObjRanking::Draw()
 
 	//描画
 	Draw::Draw(1, &src, &dst, c, 0.0f);
-
-	wchar_t str[128];
+	//-----------------------------------------------------------------
 
 	//ランキングを文字列化
-	for (int ranking_count = 0; ranking_count < 3; ranking_count++)
+	for (int ranking_count = 0; ranking_count < RANKING_MAX_COUNT - 1; ranking_count++)
 	{
 		//ランキングのranking_count番の数値を格納
 		int ranking = ((UserData*)Save::GetData())->m_ranking[ranking_count];
-
-		//順位描画
-		DrawNumber(128.0f* ranking_count + 128.0f, 64.0f + 64.0f, 64.0f, ranking_count + 1);
 		
+		//順位描画
+		DrawNumber(128.0f* ranking_count + 128.0f, 64.0f + 64.0f, 64.0f, ranking_count + 1, m_interval, c);
 		//ランキングの値描画処理
-		DrawNumber(128.0f* ranking_count + 128.0f, 64.0f + 164.0f, 64.f, ranking);
+		DrawNumber(128.0f* ranking_count + 128.0f, 224.0f + (max_number - number[ranking_count]) * 64.0f, 64.0f, ranking, m_interval, c);
 	}
-
-	//戻るときに使う文字設定
-	swprintf_s(str, L"ZkeyでMenuへ");
-	
-	//戻るときに使う文字を描画
-	Font::StrDraw(str, 5, 580, RETURN_SIZE, c);
-
-	//位の描画
+	//位の描画-------------------------------------------------------------
 	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f;
@@ -126,67 +128,35 @@ void CObjRanking::Draw()
 	dst.m_bottom = dst.m_top + 56.0f;
 	//描画
 	Draw::Draw(2, &src, &dst, c, 0.0f);
+	//------------------------------------------------------------------------------
+
+	float cc[4] = { 0.0f,0.0f,0.0f,1.0f };
+
+	Font::StrDraw(L"ZkeyでMenuへ", 5, 580, 20, cc);
+
 }
 
-//文字列のサイズを返す関数
-//引数１　wchar_t *str	:ワイルド文字列
-//戻り値	引数で取ったワイルド文字列をマルチ文字列に変換してマルチ文字列にしたときのメモリ情報を返す
-//マルチ文字列の長さが1のとき0.5　２のとき1を加算していった数字を返す	
-float CObjRanking::StringSize(wchar_t *str)
-{
-	//マルチ文字列の変数を作成
-	char wcs[100];
-	//変換された文字数を記録する変数(wcstombs_s関数でしか使わない)
-	size_t ret;
 
-	//何かわからない
-	setlocale(LC_CTYPE, "jpn");
-
-	//ワイルド文字列をマルチ文字列に変換
-	wcstombs_s(&ret, wcs, 100, str, _TRUNCATE);
-
-	//*pにwcsの先頭ポインタを渡す
-	char *p = wcs;
-
-	//バイト数
-	float bytes_count = 0.0000f;
-
-	//文字数分ループ
-	while (*p != '\0')
-	{
-		//バイト数を確認
-		switch (_mbclen((BYTE*)p))
-		{
-			//バイト数が１のときbytes_countに0.5を加算
-		case 1:
-			*(p++);
-			bytes_count += 0.5;
-			break;
-			//バイト数が２のときbytes_countに1.0を加算
-		case 2:
-			*(p++);
-			*(p++);
-			bytes_count += 1.0;
-			break;
-		default:
-			//error
-			break;
-		}
-	}
-
-	return bytes_count;
-}
-
-void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int num)
+//数字を描画関数
+//引数1	float dst_top	:Y位置情報	
+//引数2	float dst_left	:X位置情報
+//引数3	float dst_size	:描画させる値の大きさ
+//引数4	int num			:描画させる値
+//引数5	float　interval	:値と値の間の間隔幅を狭める値(大きすぎたらやばいことになるよ)
+//引数6	float c[4]		:描画カラー情報
+//数値を描画させる(Drawで描画)
+void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int num, float interval, float c[4])
 {
 	//数字の数　　例）1568なら数字の数は4
 	int numeric_number = 0;
 
-	//数字を分解した情報格納用 & 初期化
+	//数字を分解した情報格納用
 	int num_decomposition[100] = { 0 };
 
 	//一桁でないかどうか	false=一桁　true=一桁では無い　
 	bool not_one_digits = false;
+
+	float a = 10.0f;
 
 	//引数numが9桁～1桁の間で何桁あるかなどを調べる
 	for (int num_max = 100000000; num_max >= 1; num_max /= 10)
@@ -203,13 +173,11 @@ void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int 
 			not_one_digits = true;
 		}
 	}
-	//描画カラー情報
-	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
 
-	//引数numの桁数が０だったら
+				//引数numの桁数が０だったら
 	if (numeric_number == 0)
 	{
 		//桁数を１増やす
@@ -218,75 +186,75 @@ void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int 
 		num_decomposition[0] = 0;
 	}
 	//桁数分ループする
-	for (int i = 0; i < numeric_number; i++)
+	for (int number = 0; number < numeric_number; number++)
 	{
 		//桁ごとに数字調べる
-		switch (num_decomposition[i])
+		switch (num_decomposition[number])
 		{
-		case 0://0の時0の画像描画
+		case 0:
 			//切り取り位置の設定
 			src.m_top = 0.0f;
 			src.m_left = 0.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 1://1の時1の画像描画
+		case 1:
 			//切り取り位置の設定
 			src.m_top = 0.0f;
 			src.m_left = 64.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 2://2の時2の画像描画
+		case 2:
 			//切り取り位置の設定
 			src.m_top = 0.0f;
 			src.m_left = 64.0f * 2;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 3://3の時3の画像描画
+		case 3:
 			//切り取り位置の設定
 			src.m_top = 64.0f;
 			src.m_left = 0.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 4://4の時4の画像描画
+		case 4:
 			//切り取り位置の設定
 			src.m_top = 64.0f;
 			src.m_left = 64.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 5://5の時5の画像描画
+		case 5:
 			//切り取り位置の設定
 			src.m_top = 64.0f;
 			src.m_left = 64.0f * 2;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 6://6の時6の画像描画
+		case 6:
 			//切り取り位置の設定
 			src.m_top = 64.0f * 2;
 			src.m_left = 0.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 7://7の時7の画像描画
+		case 7:
 			//切り取り位置の設定
 			src.m_top = 64.0f * 2;
 			src.m_left = 64.0f;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 8://8の時8の画像描画
+		case 8:
 			//切り取り位置の設定
 			src.m_top = 64.0f * 2;
 			src.m_left = 64.0f * 2;
 			src.m_right = src.m_left + 64.0f;
 			src.m_bottom = src.m_top + 64.0f;
 			break;
-		case 9://9の時9の画像描画
+		case 9:
 			//切り取り位置の設定
 			src.m_top = 64.0f * 3;
 			src.m_left = 0.0f;
@@ -297,7 +265,7 @@ void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int 
 
 		//表示位置の設定
 		dst.m_top = dst_top;
-		dst.m_left = i * dst_size + dst_left;
+		dst.m_left = number * dst_size + dst_left - (number * a);
 		dst.m_right = dst.m_left + dst_size;
 		dst.m_bottom = dst.m_top + dst_size;
 
@@ -305,4 +273,3 @@ void CObjRanking::DrawNumber(float dst_top, float dst_left, float dst_size, int 
 		Draw::Draw(0, &src, &dst, c, 0.0f);
 	}
 }
-

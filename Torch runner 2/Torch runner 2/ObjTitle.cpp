@@ -15,6 +15,12 @@ using namespace GameL;
 //イニシャライズ
 void CObjTitle::Init()
 {
+
+	m_key_flag = 0;
+	m_key_control = false;
+	m_enter_control = false;
+	m_scene_start_control = 0;
+
 	//ゲーム実行して一回のみ
 	static bool init_point = false;
 	if (init_point == false)
@@ -24,16 +30,17 @@ void CObjTitle::Init()
 		{
 			((UserData*)Save::GetData())->m_ranking[i] = 0;
 		}
+
+		//ロード
+		Save::Open();//同フォルダ「UserData」からデータ取得
+
 		init_point = true;
 	}
 
-	//スコアを0にする
+	//スコアを0で初期化する
 	((UserData*)Save::GetData())->m_point = 0;
 
-	m_key_flag = 0;
-	m_key_control = false;
-	m_enter_control = false;
-	m_scene_start_control = 0;
+	
 }
 
 //アクション

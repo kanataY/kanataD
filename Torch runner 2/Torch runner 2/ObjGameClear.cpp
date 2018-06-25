@@ -3,7 +3,6 @@
 #include "GameL\DrawTexture.h"
 #include "GameL\WinInputs.h"
 #include "GameL\SceneManager.h"
-#include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
 #include "GameL\Audio.h"
 
@@ -15,11 +14,15 @@ using namespace GameL;
 //イニシャライズ
 void CObjGameClear::Init()
 {
+	m_ranking_in_floag = false;
 	m_time = 0;
 	m_ani_time = 0;
 	m_ani_frame = 0;
 	m_ani_max_time = 5;
 	m_o_tap_flag = false;
+
+	//ランキングに入れる
+	Ranking();
 }
 
 //アクション
@@ -40,31 +43,36 @@ void CObjGameClear::Action()
 			//音楽スタート
 			Audio::Start(1);
 		}
-	}
 
-	//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
-	m_ani_time++;//フレーム動作感覚タイムを進める
-	if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
-	{
-		m_ani_frame++;//フレームを進める
-		m_ani_time = 0;
-	}
-	if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
-	{
-		m_ani_frame = 0;
-	}
-	//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
-	//メニュー画面へ
-	if (Input::GetVKey('A') == true)
-	{
-		Scene::SetScene(new CSceneMenu());
-	}
+		//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+		m_ani_time++;//フレーム動作感覚タイムを進める
+		if (m_ani_time > m_ani_max_time)//フレーム動作感覚タイムが最大まで行ったら
+		{
+			m_ani_frame++;//フレームを進める
+			m_ani_time = 0;
+		}
+		if (m_ani_frame == 4)//フレームが最後まで進んだら戻す
+		{
+			m_ani_frame = 0;
+		}
+		//アニメーション終了－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
-	//ランキング画面へ
-	if (Input::GetVKey('S') == true)
-	{
-		Scene::SetScene(new CSceneRanking());
+		//メニュー画面へ
+		if (Input::GetVKey('A') == true)
+		{
+			//ランキングに反映したスコアを初期化する
+			((UserData*)Save::GetData())->m_point = 0;
+			Scene::SetScene(new CSceneMenu());
+		}
+
+		//ランキング画面へ
+		if (Input::GetVKey('S') == true)
+		{
+			//ランキングに反映したスコアを初期化する
+			((UserData*)Save::GetData())->m_point = 0;
+			Scene::SetScene(new CSceneRanking());
+		}
 	}
 }
 
@@ -156,6 +164,7 @@ void CObjGameClear::Draw()
 		}
 		else
 		{
+
 			//背景の描画--------------------------------------------------------------------
 			//切り取り位置
 			src.m_top = 0.0f;
@@ -217,6 +226,45 @@ void CObjGameClear::Draw()
 			Font::StrDraw(L"Sでランキングへ", 500, 490, 24, c);
 		}
 	}
-	
+}
 
+//Ranking関数---------------------------------------------
+//内容
+//最終スコアがランキングのどこにランクインしたどうかを調べてランキングに入れる関数
+void CObjGameClear::Ranking()
+{
+	//値交換用
+	int w;
+	//名前交換用
+	wchar_t name[RANKING_MAX_COUNT];
+
+	//スコアをランキングの最後に入れる
+	((UserData*)Save::GetData())->m_ranking[RANKING_MAX_COUNT - 1] = ((UserData*)Save::GetData())->m_point;
+
+	//ランキング変動確認
+	//バブルソート
+	for (int i = 0; i < RANKING_MAX_COUNT - 1; i++)
+	{
+		for (int j = i + 1; j < RANKING_MAX_COUNT; j++)
+		{
+			if (((UserData*)Save::GetData())->m_ranking[i] < ((UserData*)Save::GetData())->m_ranking[j])
+			{
+				//値の変更
+				w = ((UserData*)Save::GetData())->m_ranking[i];
+				((UserData*)Save::GetData())->m_ranking[i] = ((UserData*)Save::GetData())->m_ranking[j];
+				((UserData*)Save::GetData())->m_ranking[j] = w;
+				
+				//スコアがランキング入りを果たしたかどうか
+				if (j == RANKING_MAX_COUNT - 1)
+				{
+					m_ranking_in_floag = true;
+				}
+			}
+		}
+	}
+
+	//ステージ1で初期化する
+	((UserData*)Save::GetData())->m_stage_count = 1;
+
+	Save::Seve();//セーブ
 }

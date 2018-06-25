@@ -324,10 +324,10 @@
       <Filter>ソース ファイル\Scene\OPERATION</Filter>
     </ClInclude>
     <ClInclude Include="SceneRanking.h">
-      <Filter>ソース ファイル\Scene</Filter>
+      <Filter>ソース ファイル\Scene\RANKING</Filter>
     </ClInclude>
     <ClInclude Include="SceneMenu.h">
-      <Filter>ソース ファイル\Scene\GAMEOVER</Filter>
+      <Filter>ソース ファイル\Scene\GAMEMENU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
