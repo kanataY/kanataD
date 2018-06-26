@@ -40,6 +40,7 @@ private:
 	int  m_avoidance_time;  //回避するときのタイムで管理する。
 	int  m_crates_hit;      //木箱のどこに当たったかを調べる変数
 	bool m_crates_vy;       //木箱に当たった際に移動するYの量を一定にするための変数
+	float m_posture;		//オカマの向く向き
 	//制御系
 	bool m_fire_control; //火が付いた時の制御
 	bool m_homing;       //ホーミングする回数を制御
@@ -48,6 +49,8 @@ private:
 	bool m_rebagacha_cotrol_u; // Uレバガチャを制御
 	bool m_rebagacha_cotrol_d; // Dレバガチャを制御
 	bool m_crates_jamp; //木箱をジャンプして回避
+	bool m_himei;				//悲鳴のSEを一回だけにする
+	bool m_kiss;				//キス
 
 	//-アニメーション
 	int m_ani_time; //アニメーションフレーム動作感覚

@@ -4,6 +4,7 @@
 #include "GameL\SceneManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "GameHead.h"
 #include "ObjOkama.h"
@@ -44,6 +45,11 @@ void CObjOkama::Init()
 	m_rebagacha_cotrol_u = false;
 	m_rebagacha_cotrol_d = false;
 	m_crates_jamp = false;
+	m_posture = 0.0f;
+
+	m_himei = false;
+	m_kiss = false;
+
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
@@ -157,7 +163,8 @@ void CObjOkama::Action()
 				float br = bor;
 
 				//ランナーのほうにホーミングする
-
+				if(m_px + block->GetScroll()  < runner->GetX())
+					m_posture = 1.0f;
 
 				//移動方向をランナーの方向にする
 				m_vx = cos(3.14f / 180 * ar);
@@ -195,6 +202,7 @@ void CObjOkama::Action()
 			m_r_time++;
 			if (m_r_time > 5) //しばらくしたら消える
 			{
+				Audio::Stop(10);
 				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
@@ -293,6 +301,7 @@ void CObjOkama::Action()
 			}
 			else
 				((UserData*)Save::GetData())->m_point += 150;
+			Audio::Stop(10);
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
@@ -333,8 +342,8 @@ void CObjOkama::Draw()
 
 			//表示位置の設定
 			dst.m_top = 0.0f + m_py;
-			dst.m_left = 0.0f + m_px + block->GetScroll();
-			dst.m_right = 64.0f + m_px + block->GetScroll();
+			dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
+			dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
 			dst.m_bottom = 64.0f + m_py;
 
 			//描画
@@ -415,8 +424,8 @@ void CObjOkama::Draw()
 
 				//表示位置の設定
 				dst.m_top = 0.0f + m_py;
-				dst.m_left = 0.0f + m_px + block->GetScroll();
-				dst.m_right = 64.0f + m_px + block->GetScroll();
+				dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
+				dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
 				dst.m_bottom = 64.0f + m_py;
 
 				//描画
@@ -436,8 +445,8 @@ void CObjOkama::Draw()
 
 				//表示位置の設定
 				dst.m_top = 0.0f + m_py;
-				dst.m_left = 0.0f + m_px + block->GetScroll();
-				dst.m_right = 64.0f + m_px + block->GetScroll();
+				dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
+				dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
 				dst.m_bottom = 64.0f + m_py;
 
 				//描画
@@ -527,26 +536,19 @@ void CObjOkama::HitBox()
 	//穴に落ちた時オカマを殺す。
 	if (runner->GetHoleFallCon() == true && m_hug == true)
 	{
+		Audio::Stop(10);
 		this->SetStatus(false);		//自身に削除命令を出す
 		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 	}
 
-	if (m_hug == true) //抱きついている
-	{
-		//まだ炎がついてない状態
-		if (m_fire_control == false)
-		{
-			////聖火と当たっている場合
-			//if (hit->CheckObjNameHit(OBJ_TORCH) != nullptr)
-			//{
-			//	cor->FireDisplay(m_px, m_py); //炎を発生させる
-			//	m_fire_control = true;
-			//}
-		}
-	}
 	//炎がついてる状態
 	if (m_fire_control == true)
 	{
+		if (m_himei == false)
+		{
+			Audio::Start(9);    //悲鳴
+			m_himei = true;
+		}
 		m_vx = 0.0f;
 		m_vy = 0.0f;
 		if (fire != nullptr)
@@ -555,6 +557,7 @@ void CObjOkama::HitBox()
 		}
 		if (m_time_fire > 65) //炎が消えたらオカマも消えるようにする
 		{
+			Audio::Stop(10);
 			((UserData*)Save::GetData())->m_point += 1000;
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
@@ -602,6 +605,12 @@ void CObjOkama::HitBox()
 			//レバガチャーーーーーーーーーーーーーーーーーー
 			if (m_hug == true) // 抱きついている
 			{
+				if (m_kiss == false)
+				{
+					Audio::Start(10);//キス
+					m_kiss = true;
+				}
+
 				m_px = runner->GetX() + 20.0f - block->GetScroll(); //オカマの位置を調整
 				m_py = runner->GetY(); //Yの位置をランナーに合わせる
 

@@ -4,6 +4,7 @@
 #include "GameL\SceneManager.h"
 #include "GameL\HitBoxManager.h"
 #include "GameL\UserData.h"
+#include "GameL\Audio.h"
 
 #include "GameHead.h"
 #include "ObjCheckPoint.h"
@@ -77,7 +78,13 @@ void CObjCheckPoint::Action()
 				m_ani_change = 33;
 			else
 				m_ani_change = 20; //˜r‚ğU‚è‰º‚ë‚·
+			if (m_time < 2)
+			{
+				Audio::Start(7);
+				Audio::Start(8);
+			}
 		}
+		
 
 		if (m_time > 50)	   //U‚è‰º‚ë‚µ‚Ä‚µ‚Î‚ç‚­‚½‚Á‚½‚ç‘–‚èo‚·
 		{

@@ -48,6 +48,7 @@ void CObjRunner::Init()
 	m_check_vx = false;
 	m_rain = false;
 	m_rain_time = false;
+	m_gool = false;
 
 	jamp_memo = 0.0f;
 	m_jamp_control = false;
@@ -123,6 +124,7 @@ void CObjRunner::Action()
 	}
 	else if (gau->GetGauge() == 192 && m_jamp_control_2 == false)
 	{
+		Audio::Stop(1);
 		//ステージ1なら
 		if (((UserData*)Save::GetData())->m_stage_count == 1)
 			m_ani_change = 25;//ステージ1の死亡シーン
@@ -175,6 +177,9 @@ void CObjRunner::Action()
 				//ジャンプしたときにそのまま行ってしまうので戻す。
 				if (m_py <= 277) //道路より上に行かないようにする
 					m_py = 277;
+
+				m_vx = 0.0f; //復活した後動くのを防ぐ
+				m_vy = 0.0f;
 
 				m_stick_fire = false;
 				m_hole_fall = 0.0;    //ランナーの描画をもとに戻す
@@ -282,8 +287,11 @@ void CObjRunner::Action()
 
 						m_torch_control = true;
 						//聖火を出現させる 
-						CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
-						Objs::InsertObj(torch, OBJ_TORCH, 20);
+						if (m_jamp_control_2 == false)
+						{
+							CObjTorch* torch = new CObjTorch(m_px + 32.0f, m_py + 28.0f);
+							Objs::InsertObj(torch, OBJ_TORCH, 20);
+						}
 					}
 				}
 				else
@@ -503,6 +511,13 @@ void CObjRunner::Action()
 		//チェックポイントに入ったら受け渡たすシーンを描画をする。
 		else if (m_check_control == true && m_jamp_control_2 == false)
 		{
+			if (m_gool == false)
+			{
+				Audio::Start(7);
+				Audio::Start(8);
+				m_gool = true;
+			}
+
 			//チェックポイントを取得
 			CObjCheckPoint* check = (CObjCheckPoint*)Objs::GetObj(OBJ_CHECK_POINT);
 
@@ -838,7 +853,7 @@ void CObjRunner::Draw()
 		Draw::Draw(m_ani_change, &src, &dst, c, 0.0f);
 	}
 	
-	//--------------------------------無敵点滅-----------------------------------
+	//--------------------------------無敵点滅-----------------------------------　
 	if (m_invincible > 0 && m_death == false)
 	{
 		//切り取り位置の設定 //足の先が上から見えていたので１.0ｆから
@@ -854,7 +869,7 @@ void CObjRunner::Draw()
 		dst.m_bottom = 64.0f + m_py;
 
 		//ゲージが消えそうになっていたら描画をやめる
-		if (gau->GetGauge() == 191)
+		if (gau->GetGauge() < 191)
 		{
 			if (((UserData*)Save::GetData())->m_stage_count == 1)
 				Draw::Draw(22, &src, &dst, c, 0.0f);
@@ -1115,11 +1130,14 @@ void CObjRunner::HitBox()
 	//炎に当たった場合
 	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
 	{
-		m_stick_fire = true;
-
+		//一個だけ火が付く
+		if(m_stick_fire == false)
+		{
 		//炎
 		CObjFire* fi = new CObjFire(m_px, m_py, 2);
 		Objs::InsertObj(fi, OBJ_FIRE, 999);
+		m_stick_fire = true;
+		}
 	}
 
 	//水に当たった場合

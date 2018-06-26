@@ -135,6 +135,10 @@ void CSceneMain::InitScene()
 	Audio::LoadAudio(4, L"BGM&SE\\rakka_.wav", EFFECT); // 落ちる音
 	Audio::LoadAudio(5, L"BGM&SE\\water_.wav", EFFECT); // 水に落ちた音
 	Audio::LoadAudio(6, L"BGM&SE\\track_.wav", EFFECT); // トラック
+	Audio::LoadAudio(7, L"BGM&SE\\gool.wav", EFFECT); // チェックポイントの歓声
+	Audio::LoadAudio(8, L"BGM&SE\\gool2.wav", EFFECT); // チェックポイントの歓声2
+	Audio::LoadAudio(9, L"BGM&SE\\himei.wav", EFFECT); // オカマの悲鳴
+	Audio::LoadAudio(10, L"BGM&SE\\kiss.wav", EFFECT); // オカマのキス
 
 
 	////ボリュームを1.5増やす

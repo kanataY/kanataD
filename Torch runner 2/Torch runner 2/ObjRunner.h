@@ -67,6 +67,7 @@ private:
 	bool m_check_vx;				//チェックポイントによってスクロールができなくなったかどうか
 	bool m_rain;					//雨を降らす
 	bool m_rain_time;				//雨が降った時の時間
+	bool m_gool;					//チェックポイントに入った時の歓声を一回だけにする
 	//ジャンプ系（調整するので消すor帰る）
 	float jamp_memo; //ジャンプするさいに主人公がどこにいたかを調べる
 	bool m_jamp_control; //ジャンプしているかどうかを調べる（制御する）

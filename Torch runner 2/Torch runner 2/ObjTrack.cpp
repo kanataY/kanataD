@@ -181,6 +181,13 @@ void CObjTrack::HitBox()
 				{
 					//ランナーを後ろに移動させる
 					runner->SetVX(-9.0f);
+
+					// ランナーに火がついていたら移動量を倍くらいにして調整する
+					if (runner->GetStickFire() == true)
+					{
+						//ランナーを後ろに移動させる
+						runner->SetVX(-15.0f);
+					}
 				}
 			}
 			//m_ani_cangeが1の時トラック2の仕様にする
@@ -191,6 +198,12 @@ void CObjTrack::HitBox()
 				{
 					//ランナーを後ろに移動させる
 					runner->SetVX(-20.0f);
+					// ランナーに火がついていたら移動量を倍くらいにして調整する
+					if (runner->GetStickFire() == true)
+					{
+						//ランナーを後ろに移動させる
+						runner->SetVX(-28.0f);
+					}
 				}
 			}
 		}
