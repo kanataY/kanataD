@@ -47,7 +47,7 @@ void CObjRunner::Init()
 	m_stick_fire = false;
 	m_check_vx = false;
 	m_rain = false;
-	m_rain_time = false;
+	m_rain_time = true;
 	m_gool = false;
 
 	jamp_memo = 0.0f;
@@ -1131,7 +1131,7 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
 	{
 		//ˆêŒÂ‚¾‚¯‰Î‚ª•t‚­
-		if(m_stick_fire == false)
+		if(m_stick_fire == false && m_rain_time == true)
 		{
 		//‰Š
 		CObjFire* fi = new CObjFire(m_px, m_py, 2);

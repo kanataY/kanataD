@@ -301,7 +301,6 @@ void CObjOkama::Action()
 			}
 			else
 				((UserData*)Save::GetData())->m_point += 150;
-			Audio::Stop(10);
 			this->SetStatus(false);		//©g‚Éíœ–½—ß‚ğo‚·
 			Hits::DeleteHitBox(this);	//Š—L‚·‚éHitBox‚Éíœ‚·‚é
 		}
