@@ -129,10 +129,11 @@ void CObjRanking::Draw()
 	//•`‰æ
 	Draw::Draw(2, &src, &dst, c, 0.0f);
 	//------------------------------------------------------------------------------
-
-	float cc[4] = { 0.0f,0.0f,0.0f,1.0f };
-
-	Font::StrDraw(L"Zkey‚ÅMenu‚Ö", 5, 580, 20, cc);
+	wchar_t str[128];
+	//–ß‚é‚Æ‚«‚Ég‚¤•¶šİ’è
+	swprintf_s(str, L"Zkey‚ÅMenu‚Ö");
+	//–ß‚é‚Æ‚«‚Ég‚¤•¶š‚ğ•`‰æ
+	Font::StrDraw(str, 5, 580, 20, c);
 
 }
 
