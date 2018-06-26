@@ -305,6 +305,21 @@ void CObjOkama::Action()
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
 		}
 
+		//ハグしているときランナーが左端に行ったとき死ぬ
+		if (runner->GetDeath() == true && m_hug == true)
+		{
+			Audio::Stop(10);		//キスの音を消す
+			//炎がついてる状態
+			if (m_fire_control == true)
+			{
+				((UserData*)Save::GetData())->m_point += 1000;	//スコアを増やす
+			}
+			else
+				((UserData*)Save::GetData())->m_point += 150;	//スコアを増やす
+			this->SetStatus(false);		//自身に削除命令を出す
+			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		}
+
 		//位置の更新
 		m_px += m_vx;
 		m_py += m_vy;
