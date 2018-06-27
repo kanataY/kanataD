@@ -29,6 +29,7 @@ void CObjBlock::Init()
 	m_bx2 = 800.0f;
 	m_rain = false;
 
+	m_scroll_image = false;
 	m_scroll = 0.0f;
 	m_scroll_run = 800.0f;
 }
@@ -53,8 +54,10 @@ void CObjBlock::Action()
 	float m_check_x = 999.0f;
 	//チェックポイントが出現しているなら位置をとる
 	if (check != nullptr)
-		m_check_x = check->GetX() + m_scroll ;
-
+	{
+		m_check_x = check->GetX() + m_scroll;
+		m_scroll_image = true;
+	}
 	//チェックポイントの描画がすべてWindowに収まっている場合
 	if (m_check_x < 400.0f)
 	{
@@ -116,7 +119,6 @@ void CObjBlock::Action()
 				m_bx2 = 800.0f;
 		}
 	}
-	
 
 	//マップ関連ーーーーーーーーーー
 	float line = 0.0f;
@@ -243,23 +245,42 @@ void CObjBlock::Draw()
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
+	if (m_scroll_image == true&&(((UserData*)Save::GetData))->m_stage_count==3)
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 1024.0f;
+		src.m_bottom = 1024.0f;
 
-	//切り取り位置の設定
-	src.m_top =0.0f;
-	src.m_left = 0.0f;
-	src.m_right = 1024.0f;
-	src.m_bottom = 1024.0f;
+		//表示位置の設定
+		//背景１
+		dst.m_top = 0.0f;
+		dst.m_left = 0.0f + m_bx1;
+		dst.m_right = 806.0f + m_bx1;
+		dst.m_bottom = 700.0f;
 
-	//表示位置の設定
-	//背景１
-	dst.m_top = 0.0f ;
-	dst.m_left = 0.0f + m_bx1;
-	dst.m_right = 806.0f + m_bx1;
-	dst.m_bottom = 700.0f ;
+		//描
+		Draw::Draw(28, &src, &dst, c, 0.0f);
+	}
+	else
+	{
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 1024.0f;
+		src.m_bottom = 1024.0f;
 
-	//描
-	Draw::Draw(1, &src, &dst, c, 0.0f);
+		//表示位置の設定
+		//背景１
+		dst.m_top = 0.0f;
+		dst.m_left = 0.0f + m_bx1;
+		dst.m_right = 806.0f + m_bx1;
+		dst.m_bottom = 700.0f;
 
+		//描
+		Draw::Draw(0, &src, &dst, c, 0.0f);
+	}
 	//背景２
 	dst.m_top = 0.0f;
 	dst.m_left = 0.0f + m_bx2;
@@ -267,7 +288,7 @@ void CObjBlock::Draw()
 	dst.m_bottom = 700.0f;
 
 	//描画
-	Draw::Draw(2, &src, &dst, c, 0.0f);
+	Draw::Draw(1, &src, &dst, c, 0.0f);
 }
 
 //調べたいマップの位置にあるマップ番号を返す

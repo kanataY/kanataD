@@ -42,7 +42,7 @@ void CObjTrack::Init()
 	}
 	if (block->GetMap(m_rx, m_ry) == 8)//マップ上にトラック2があった時
 	{
-		m_ani_change = 27;//27にする
+		m_ani_change = 23;//23にする
 	}
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 128, 68, ELEMENT_ENEMY, OBJ_TRACK, 1);
@@ -131,7 +131,6 @@ void CObjTrack::Action()
 //描画
 void CObjTrack::Draw()
 {
-	//-----------背景-----------
 	//描画カラー情報
 	float c[4] = { 1.0f,1.0f,1.0f,1.0f };
 
@@ -140,8 +139,6 @@ void CObjTrack::Draw()
 
 	//ブロック情報を持ってくる
 	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-	//m_ani_changeが0の時トラックの描画
-
 	//切り取り位置の設定
 	src.m_top = 0.0f;
 	src.m_left = 0.0f + m_ani_frame * 128.0f;
@@ -191,7 +188,7 @@ void CObjTrack::HitBox()
 				}
 			}
 			//m_ani_cangeが1の時トラック2の仕様にする
-			if (m_ani_change == 27)
+			if (m_ani_change == 23)
 			{
 				//トラックのY軸の位置+65.0fよりランナーの位置が上なら
 				if (m_py + 65.0f > runner->GetY())

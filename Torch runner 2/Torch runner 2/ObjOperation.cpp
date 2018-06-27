@@ -49,8 +49,8 @@ void CObjOperation::Action()
 		//エンターキーを押してない状態であれば
 		if (m_enter_control == false)
 		{
-			//シーンフラグの数値が0の時
-			if (m_scene_flag == 0)
+			//シーンフラグの数値が3じゃない時
+			if (m_scene_flag!=3)
 			{
 				//エンターキーを押してない時
 				if (m_enter_control == false)
@@ -61,20 +61,8 @@ void CObjOperation::Action()
 				}
 			}
 
-			//シーンフラグの数値が1の時
-			else if (m_scene_flag == 1)
-			{
-				//エンターキーを押してない時
-				if (m_enter_control == false)
-				{
-					//エンターキーを押した状態と判定する
-					m_enter_control = true;
-					m_scene_flag++;
-				}
-			}
-
-			//シーンフラグの数値が2の時
-			else if (m_scene_flag == 2)
+			//シーンフラグの数値が３の時
+			else
 			{
 				//エンターキーを押してない時
 				if (m_enter_control == false)
@@ -101,8 +89,8 @@ void CObjOperation::Action()
 		//Zキーを押してない状態であれば
 		if (m_zkey_control == false)
 		{
-			//シーンフラグの数値が1の時
-			if (m_scene_flag == 2)
+			//シーンフラグの数値が0じゃない時
+			if (m_scene_flag !=0)
 			{
 
 				//Zキーを押してないなら
@@ -110,25 +98,12 @@ void CObjOperation::Action()
 				{
 					//Zキーを押した状態と判定する
 					m_zkey_control = true;
-					m_scene_flag = 1;
-				}
-
-			}
-			//シーンフラグの数値が1の時
-			if (m_scene_flag == 1)
-			{
-				
-				//Zキーを押してないなら
-				if (m_zkey_control == false)
-				{
-					//Zキーを押した状態と判定する
-					m_zkey_control = true;
-					m_scene_flag = 0;
+					m_scene_flag --;
 				}
 
 			}
 			//シーンフラグの数値が0の時
-			if (m_scene_flag == 0)
+			else
 			{
 				//Zキーを押してない時
 				if (m_zkey_control == false)
@@ -365,6 +340,34 @@ void CObjOperation::Draw()
 		//----------------------------------------------------------------------------------------
 
 		//進ときに使う文字設定
+		swprintf_s(str, L"Enterkeyで次へ");
+		//進ときに使う文字を描画
+		Font::StrDraw(str, 655, 580, 20, c);
+		//戻るときに使う文字設定
+		swprintf_s(str, L"Zkeyで前へ");
+		//戻るときに使う文字を描画
+		Font::StrDraw(str, 5, 580, 20, c);
+	}
+	//---------------------------------------------------------
+	if (m_scene_flag == 3)
+	{
+		//背景--------------------------------------------------
+		//切り取り位置設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 1024.0f;
+		src.m_bottom = 1024.0f;
+
+		//描画位置設定
+		dst.m_top = 0.0f;
+		dst.m_left = 0.0f;
+		dst.m_right = 800.0f;
+		dst.m_bottom = 600.0f;
+		//2番目に登録しているsrc・dst・cで描画する
+		Draw::Draw(6, &src, &dst, c, 0.0f);
+		//--------------------------------------------------------------
+
+		//進ときに使う文字設定
 		swprintf_s(str, L"EnterkeyでMenuへ");
 		//進ときに使う文字を描画
 		Font::StrDraw(str, 635, 580, 20, c);
@@ -372,9 +375,5 @@ void CObjOperation::Draw()
 		swprintf_s(str, L"Zkeyで前へ");
 		//戻るときに使う文字を描画
 		Font::StrDraw(str, 5, 580, 20, c);
-
-
 	}
-	//---------------------------------------------------------
-
 }

@@ -89,7 +89,7 @@ void CObjCrates::Draw()
 	dst.m_bottom = 64.0f + m_py;
 
 	//•`‰æ
-	Draw::Draw(4, &src, &dst, c, 0.0f);
+	Draw::Draw(7, &src, &dst, c, 0.0f);
 }
 
 void CObjCrates::HitBox()
