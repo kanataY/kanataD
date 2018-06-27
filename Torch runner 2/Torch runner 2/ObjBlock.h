@@ -35,8 +35,8 @@ private:
 	float m_scroll; //スクロール位置
 	float m_scroll_run; //ランナーの位置でスクを変えるようの変数
 
+	int m_scroll_num;
+
 	int m_map[10][MAP_X_MAX];//マップ情報
 	int m_map_Record[10][MAP_X_MAX];//マップ情報記録役
-
-	bool m_scroll_image;
 };
