@@ -37,4 +37,6 @@ private:
 
 	int m_map[10][MAP_X_MAX];//マップ情報
 	int m_map_Record[10][MAP_X_MAX];//マップ情報記録役
+
+	bool m_scroll_image;
 };

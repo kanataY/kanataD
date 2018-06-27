@@ -91,7 +91,7 @@ void CObjRain::Draw()
 	dst.m_bottom = 600.0f + m_py;
 
 	//ï`âÊ
-	Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+	Draw::Draw(12 + m_ani_frame, &src, &dst, c, 0.0f);
 
 	//ÉXÉeÅ[ÉWÇRÇ»ÇÁ âJÇëùÇ‚Ç∑
 	if (((UserData*)Save::GetData())->m_stage_count == 3)
@@ -103,7 +103,7 @@ void CObjRain::Draw()
 		dst.m_bottom = 600.0f + m_py;
 
 		//ï`âÊ
-		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+		Draw::Draw(12 + m_ani_frame, &src, &dst, c, 0.0f);
 
 		//ï\é¶à íuÇÃê›íË
 		dst.m_top = 0.0f + m_py + 10.0f;
@@ -112,7 +112,7 @@ void CObjRain::Draw()
 		dst.m_bottom = 600.0f + m_py+10.0f;
 
 		//ï`âÊ
-		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+		Draw::Draw(12 + m_ani_frame, &src, &dst, c, 0.0f);
 
 		//ï\é¶à íuÇÃê›íË
 		dst.m_top = 0.0f + m_py;
@@ -121,6 +121,6 @@ void CObjRain::Draw()
 		dst.m_bottom = 600.0f + m_py;
 
 		//ï`âÊ
-		Draw::Draw(10 + m_ani_frame, &src, &dst, c, 0.0f);
+		Draw::Draw(12 + m_ani_frame, &src, &dst, c, 0.0f);
 	}
 }

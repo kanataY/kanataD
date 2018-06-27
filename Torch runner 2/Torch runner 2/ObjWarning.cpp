@@ -81,5 +81,5 @@ void CObjWarning::Draw()
 	dst.m_bottom = 64.0f + m_py;
 
 	//•`‰æ
-	Draw::Draw(24, &src, &dst, c, 0.0f);
+	Draw::Draw(22, &src, &dst, c, 0.0f);
 }

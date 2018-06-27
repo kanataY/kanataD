@@ -381,15 +381,15 @@ void  CHitBoxManager::DrawHitBox()
 		else if((*itr)->GetStatus()->e==9)	{ col[0]=0.0f;col[1]=0.0f;col[2]=0.0f; }
 		else if((*itr)->GetStatus()->e==10)	{ col[0]=1.0f;col[1]=1.0f;col[2]=1.0f; }
 		else								{ col[0]=0.5f;col[1]=0.5f;col[2]=0.5f; }
-		
-		//“–‚½‚è”»’è•`‰æ
-		CDrawTexture::DrawHitBox(
-			(*itr)->GetHitBox()->x,
-			(*itr)->GetHitBox()->y,
-			(*itr)->GetHitBox()->h,
-			(*itr)->GetHitBox()->w,
-			col
-		);
+		//
+		////“–‚½‚è”»’è•`‰æ
+		//CDrawTexture::DrawHitBox(
+		//	(*itr)->GetHitBox()->x,
+		//	(*itr)->GetHitBox()->y,
+		//	(*itr)->GetHitBox()->h,
+		//	(*itr)->GetHitBox()->w,
+		//	col
+		//);
 
 	}
 }

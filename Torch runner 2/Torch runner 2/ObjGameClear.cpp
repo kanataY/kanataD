@@ -240,8 +240,6 @@ void CObjGameClear::Ranking()
 {
 	//値交換用
 	int w;
-	//名前交換用
-	wchar_t name[RANKING_MAX_COUNT];
 
 	//スコアをランキングの最後に入れる
 	((UserData*)Save::GetData())->m_ranking[RANKING_MAX_COUNT - 1] = ((UserData*)Save::GetData())->m_point;

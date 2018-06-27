@@ -142,7 +142,7 @@ void CObjPuddle::Draw()
 	dst.m_bottom = 64.0f * m_drow_down + m_py;
 
 	//•`‰æ
-	Draw::Draw(7, &src, &dst, c, 0.0f);
+	Draw::Draw(10, &src, &dst, c, 0.0f);
 }
 
 //“–‚½‚è”»’èŠÖ˜A

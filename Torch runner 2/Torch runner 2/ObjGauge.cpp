@@ -70,5 +70,5 @@ void CObjGauge::Draw()
 	dst.m_bottom = 32.0f + m_py;
 
 	//•`‰æ
-	Draw::Draw(3, &src, &dst, c, 0.0f);
+	Draw::Draw(6, &src, &dst, c, 0.0f);
 }

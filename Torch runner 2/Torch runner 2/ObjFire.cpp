@@ -127,7 +127,7 @@ void CObjFire::Draw()
 		dst.m_bottom = 50.0f + m_py - 10.0f;
 
 		//描画
-		Draw::Draw(6, &src, &dst, c, 0.0f);
+		Draw::Draw(9, &src, &dst, c, 0.0f);
 
 		//表示位置の設定
 		dst.m_top = 0.0f + m_py + 30.0f;
@@ -136,7 +136,7 @@ void CObjFire::Draw()
 		dst.m_bottom = 50.0f + m_py + 30.0f;
 
 		//描画
-		Draw::Draw(6, &src, &dst, c, 0.0f);
+		Draw::Draw(9, &src, &dst, c, 0.0f);
 
 		//表示位置の設定
 		dst.m_top = 0.0f + m_py + 12.0f;
@@ -145,7 +145,7 @@ void CObjFire::Draw()
 		dst.m_bottom = 50.0f + m_py + 12.0f;
 
 		//描画
-		Draw::Draw(6, &src, &dst, c, 0.0f);
+		Draw::Draw(9, &src, &dst, c, 0.0f);
 	}
 
 	else //ランナーの場合は火を小さくしておしりにつける
@@ -157,6 +157,6 @@ void CObjFire::Draw()
 		dst.m_bottom = 25.0f + m_py + 18.0f;
 
 		//描画
-		Draw::Draw(6, &src, &dst, c, 0.0f);
+		Draw::Draw(9, &src, &dst, c, 0.0f);
 	}
 }

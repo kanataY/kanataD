@@ -30,10 +30,7 @@ void CObjCheckPoint::Init()
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
-	if (((UserData*)Save::GetData())->m_stage_count == 2)
-		m_ani_change = 32;
-	else
-		m_ani_change = 19;
+	m_ani_change = 29;//画像変更用
 
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 400, 800, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
@@ -74,10 +71,7 @@ void CObjCheckPoint::Action()
 		if (runner->GetCheckTransfer() == true)
 		{
 			m_time++;
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-				m_ani_change = 33;
-			else
-				m_ani_change = 20; //腕を振り下ろす
+			m_ani_change = 30;
 			if (m_time < 2)
 			{
 				Audio::Start(7);
@@ -89,10 +83,7 @@ void CObjCheckPoint::Action()
 		if (m_time > 50)	   //振り下ろしてしばらくたったら走り出す
 		{
 			m_pos = 1.0f;      //向きを変える
-			if (((UserData*)Save::GetData())->m_stage_count == 2)
-				m_ani_change = 32;
-			else
-				m_ani_change = 19; //走る描画に変える
+			m_ani_change = 29;
 
 			//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 			m_ani_time++;//フレーム動作感覚タイムを進める
@@ -148,7 +139,7 @@ void CObjCheckPoint::Draw()
 	dst.m_bottom = 256.0f + m_py * 3;
 
 	//描画
-	Draw::Draw(18, &src, &dst, c, 0.0f);
+	Draw::Draw(20, &src, &dst, c, 0.0f);
 
 	//ステージ３以外なら次のランナーを表示する
 	if (((UserData*)Save::GetData())->m_stage_count != 3)
@@ -185,7 +176,7 @@ void CObjCheckPoint::Draw()
 
 
 		//表示位置の設定
-		if (m_ani_change == 19 || m_ani_change == 32) //腕を振り下ろしていない
+		if (m_ani_change==29) //腕を振り下ろしていない
 		{
 			if (m_time > 50)
 			{
@@ -203,7 +194,7 @@ void CObjCheckPoint::Draw()
 			}
 
 			//描画
-			Draw::Draw(9, &src3, &dst3, c, 0.0f);
+			Draw::Draw(11, &src3, &dst3, c, 0.0f);
 		}
 		else //腕を振り下ろしている
 		{
@@ -213,7 +204,7 @@ void CObjCheckPoint::Draw()
 			dst3.m_bottom = 32.0f + m_py * 3.0f + 18.0f;
 
 			//描画
-			Draw::Draw(9, &src3, &dst3, c, 100.0f);
+			Draw::Draw(11, &src3, &dst3, c, 100.0f);
 		}
 
 		//－－－－－－－－－－－－－－－－－－炎ーーーーーーーーーーーーーー
@@ -228,7 +219,7 @@ void CObjCheckPoint::Draw()
 		src4.m_right = 64.0f + m_ani_frame * 64;
 		src4.m_bottom = 320.0f;
 
-		if (m_ani_change == 20 || m_ani_change == 33)//腕を振り下ろしていない
+		if (m_ani_change == 30)//腕を振り下ろしていない
 		{
 			//表示位置の設定
 			dst4.m_top = 0.0f + m_py* 3.0f + 26.0f;
@@ -237,7 +228,7 @@ void CObjCheckPoint::Draw()
 			dst4.m_bottom = 25.0f + m_py* 3.0f + 26.0f;
 
 			//描画
-			Draw::Draw(6, &src4, &dst4, c, 100.0f);
+			Draw::Draw(9, &src4, &dst4, c, 100.0f);
 		}
 		else if (m_time > 50)
 		{
@@ -248,7 +239,7 @@ void CObjCheckPoint::Draw()
 			dst4.m_bottom = 25.0f + m_py* 3.0f - 30.0f;
 
 			//描画
-			Draw::Draw(6, &src4, &dst4, c, 0.0f);
+			Draw::Draw(9, &src4, &dst4, c, 0.0f);
 		}
 	}
 }
