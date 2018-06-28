@@ -242,6 +242,7 @@ void CObjSmartphone::HitBox()
 				((UserData*)Save::GetData())->m_point += 600;
 				this->SetStatus(false);		//©g‚Éíœ–½—ß‚ğo‚·
 				Hits::DeleteHitBox(this);	//Š—L‚·‚éHitBox‚Éíœ‚·‚é
+				return;
 			}
 		}
 	}

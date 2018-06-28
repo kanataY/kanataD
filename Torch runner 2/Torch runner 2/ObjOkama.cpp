@@ -494,6 +494,7 @@ void CObjOkama::HitBox()
 		Audio::Stop(10);
 		this->SetStatus(false);		//自身に削除命令を出す
 		Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+		return;
 	}
 
 	//炎がついてる状態
@@ -516,6 +517,7 @@ void CObjOkama::HitBox()
 			((UserData*)Save::GetData())->m_point += 1000;
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			return;
 		}
 
 	}
