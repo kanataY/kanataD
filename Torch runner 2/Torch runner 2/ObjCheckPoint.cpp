@@ -30,7 +30,7 @@ void CObjCheckPoint::Init()
 	m_ani_time = 0;
 	m_ani_frame = 0;  //静止フレームを初期にする
 	m_ani_max_time = 5; //アニメーション間隔幅
-	m_ani_change = 30;//画像変更用
+	m_ani_change = 27;//画像変更用
 
 	//HitBox
 	Hits::SetHitBox(this, m_px, m_py, 400, 800, ELEMENT_ITEM, OBJ_CHECK_POINT, 1);
@@ -71,7 +71,7 @@ void CObjCheckPoint::Action()
 		if (runner->GetCheckTransfer() == true)
 		{
 			m_time++;
-			m_ani_change = 31;
+			m_ani_change = 28;
 			if (m_time < 2)
 			{
 				Audio::Start(7);
@@ -83,7 +83,7 @@ void CObjCheckPoint::Action()
 		if (m_time > 50)	   //振り下ろしてしばらくたったら走り出す
 		{
 			m_pos = 1.0f;      //向きを変える
-			m_ani_change = 30;
+			m_ani_change = 27;
 
 			//アニメーションーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
 			m_ani_time++;//フレーム動作感覚タイムを進める
@@ -176,7 +176,7 @@ void CObjCheckPoint::Draw()
 
 
 		//表示位置の設定
-		if (m_ani_change==30) //腕を振り下ろしていない
+		if (m_ani_change==27) //腕を振り下ろしていない
 		{
 			if (m_time > 50)
 			{
@@ -219,7 +219,7 @@ void CObjCheckPoint::Draw()
 		src4.m_right = 64.0f + m_ani_frame * 64;
 		src4.m_bottom = 320.0f;
 
-		if (m_ani_change == 31)//腕を振り下ろしていない
+		if (m_ani_change == 28)//腕を振り下ろしていない
 		{
 			//表示位置の設定
 			dst4.m_top = 0.0f + m_py* 3.0f + 26.0f;

@@ -268,7 +268,7 @@ void CObjBlock::Draw()
 		dst.m_bottom = 700.0f;
 
 		//•`‰æ
-		Draw::Draw(29, &src, &dst, c, 0.0f);
+		Draw::Draw(26, &src, &dst, c, 0.0f);
 	}
 	else
 	{

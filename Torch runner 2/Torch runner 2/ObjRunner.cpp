@@ -821,7 +821,7 @@ void CObjRunner::Draw()
 			dst.m_bottom = 68.0f + m_py;
 
 			//•`‰æ
-			Draw::Draw(28, &src, &dst, c, 1.0f);
+			Draw::Draw(25, &src, &dst, c, 1.0f);
 		}
 	}
 	//ƒWƒƒƒ“ƒv‚µ‚Ä‚éŽž
@@ -843,7 +843,7 @@ void CObjRunner::Draw()
 			dst.m_bottom = 68.0f + m_jamp_y_position;
 
 			//•`‰æ
-			Draw::Draw(28, &src, &dst, shadowcolor, 1.0f);
+			Draw::Draw(25, &src, &dst, shadowcolor, 1.0f);
 		}
 	}
 	//--------------------------------------------------------------

@@ -45,7 +45,7 @@ void CSceneMain::InitScene()
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2-1.png", 1, TEX_SIZE_1024); //背景2  
 		//外部グラフィックファイルを読み込み29番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 29, TEX_SIZE_1024); //背景最後
+		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 26, TEX_SIZE_1024); //背景最後
 		//----------------------------------------------------------------------------------
 
 		//ランナーの画像登録-------------------------------------------------------------------------------------
@@ -59,12 +59,21 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\hero\\runner_death.png", 5, TEX_SIZE_192);  //第一走者の死亡
 
 		//ランナ--------------------------------------------------------------------------------------
-		//外部グラフィックファイルを読み込み30番に登録(256ピクセル)
-		Draw::LoadImageW(L"Image\\hero\\youtuber.png", 30, TEX_SIZE_256);    //YouTuber
-		//外部グラフィックファイルを読み込み31番に登録(256ピクセル)
-		Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 31, TEX_SIZE_256);  //YouTuberの振りかざし
-		
+		//外部グラフィックファイルを読み込み27番に登録(256ピクセル)
+		Draw::LoadImageW(L"Image\\hero\\youtuber.png", 27, TEX_SIZE_256);    //YouTuber
+		//外部グラフィックファイルを読み込み28番に登録(256ピクセル)
+		Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 28, TEX_SIZE_256);  //YouTuberの振りかざし
 		//---------------------------------------------------------------------------------------------
+
+		//おかま系--------------------------------------------------------------------------------------------
+		//外部グラフィックファイルを読み込み14番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\okama.png", 14, TEX_SIZE_512);    //オカマ
+		//外部グラフィックファイルを読み込み15番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\okama2.png", 15, TEX_SIZE_512);    //オカマ(目がハート)
+		//外部グラフィックファイルを読み込み16番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\okama_hug.png", 16, TEX_SIZE_512);    //オカマハグ
+		//-----------------------------------------------------------------------------------－－－－－－－－－－－-------
+
 		break;
 
 	case 2://ステージが2の時
@@ -73,8 +82,8 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\back\\back\\back1-2.png", 0, TEX_SIZE_1024); //背景1
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2-2.png", 1, TEX_SIZE_1024); //背景2
-		//外部グラフィックファイルを読み込み29番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back_final2.png", 29, TEX_SIZE_1024); //背景最後
+		//外部グラフィックファイルを読み込み26番に登録(1024ピクセル)
+		Draw::LoadImageW(L"Image\\back\\back\\back_final2.png", 26, TEX_SIZE_1024); //背景最後
 		//---------------------------------------------------------------------------------------------
 
 		//ランナ--------------------------------------------------------------------------------------
@@ -86,12 +95,25 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\hero\\youtuber_invincible.png", 4, TEX_SIZE_256);    //YouTuberの点滅
 		//外部グラフィックファイルを読み込み5番に登録(192ピクセル)
 		Draw::LoadImageW(L"Image\\hero\\youtuber_death.png", 5, TEX_SIZE_192);    //YouTuberの死亡
-		//外部グラフィックファイルを読み込み2番に登録(256ピクセル)
+		//-------------------------------------------------------------------------------------
 
-		Draw::LoadImageW(L"Image\\hero\\grandfather.png", 30, TEX_SIZE_256);    //YouTuber
-		//外部グラフィックファイルを読み込み3番に登録(256ピクセル)
-		Draw::LoadImageW(L"Image\\hero\\grandfather_transfer.png", 31, TEX_SIZE_256);  //YouTuberの振りかざし
+		//ゴール地点のランナ--------------------------------------------------------------------------------------
+		//外部グラフィックファイルを読み込み27番に登録(256ピクセル)
+		Draw::LoadImageW(L"Image\\hero\\grandfather.png", 27, TEX_SIZE_256);    //おじいさん
+		//外部グラフィックファイルを読み込み28番に登録(256ピクセル)
+		Draw::LoadImageW(L"Image\\hero\\grandfather_transfer.png", 28, TEX_SIZE_256);  //おじいさんの振りかざし
 		//---------------------------------------------------------------------------------------------
+
+		//おかま系--------------------------------------------------------------------------------------------
+		//外部グラフィックファイルを読み込み14番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\fan.png", 14, TEX_SIZE_512);    //ファン
+		//外部グラフィックファイルを読み込み15番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\fan2.png", 15, TEX_SIZE_512);    //ファン目がハート
+		//外部グラフィックファイルを読み込み16番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\fan_hug.png", 16, TEX_SIZE_512);    //ファンハグ
+	
+		//---------------------------------------------------------------------------------------------
+
 		break;
 	case 3://ステージが3の時
 		//背景の画像登録-------------------------------------------------------------------
@@ -99,8 +121,8 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\back\\back\\back1.png", 0, TEX_SIZE_1024); //背景1
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2.png", 1, TEX_SIZE_1024); //背景2
-		//外部グラフィックファイルを読み込み28d番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back_final3.png", 29, TEX_SIZE_1024); //背景最後
+		//外部グラフィックファイルを読み込み26番に登録(1024ピクセル)
+		Draw::LoadImageW(L"Image\\back\\back\\back_final3.png", 26, TEX_SIZE_1024); //背景最後
 		//---------------------------------------------------------------------------------------------
 
 		//ランナ--------------------------------------------------------------------------------------
@@ -112,8 +134,18 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\hero\\grandfather_invincible.png", 4, TEX_SIZE_256);    //主人公3の無敵
 		//外部グラフィックファイルを読み込み5番に登録(256ピクセル)
 		Draw::LoadImageW(L"Image\\hero\\grandfather_death.png", 5, TEX_SIZE_192);    //主人公3の死亡
-		break;
+		//----------------------------------------------------------------------------------------
+
+		//おかま系--------------------------------------------------------------------------------------------
+		//外部グラフィックファイルを読み込み14番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\grandmother.png", 14, TEX_SIZE_512);    //ばあさん
+		//外部グラフィックファイルを読み込み15番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\grandmother2.png", 15, TEX_SIZE_512);    //ばあさん(目がハート)
+		//外部グラフィックファイルを読み込み16番に登録(512ピクセル)
+		Draw::LoadImageW(L"Image\\object\\grandmother_hug.png", 16, TEX_SIZE_512);    //ばあさんハグ
 		//---------------------------------------------------------------------------------------------
+
+		break;
 	}
 	
 	
@@ -133,12 +165,6 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\back\\Rain\\rain1.png", 12, TEX_SIZE_800);    //雨１
 	//外部グラフィックファイルを読み込み13番に登録(800ピクセル)
 	Draw::LoadImageW(L"Image\\back\\Rain\\a3.png", 13, TEX_SIZE_800);    //雨２
-	//外部グラフィックファイルを読み込み14番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\okama.png", 14, TEX_SIZE_512);    //オカマ
-	//外部グラフィックファイルを読み込み15番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\okama2.png", 15, TEX_SIZE_512);    //オカマ(目がハート)
-	//外部グラフィックファイルを読み込み16番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\okama_hug.png", 16, TEX_SIZE_512);    //オカマハグ
 	//外部グラフィックファイルを読み込み17番に登録(64ピクセル)
 	Draw::LoadImageW(L"Image\\object\\hole.png", 17, TEX_SIZE_64);    //穴
 	//外部グラフィックファイルを読み込み18番に登録(256ピクセル)
@@ -155,18 +181,8 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\object\\Track2.png", 23, TEX_SIZE_512);    //トラック2
 	//外部グラフィックファイルを読み込み24番に登録(128ピクセル)
 	Draw::LoadImageW(L"Image\\hero\\remaining.png", 24, TEX_SIZE_192);    //残機
-	//外部グラフィックファイルを読み込み25番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\fan.png", 25, TEX_SIZE_512);    //ファン
-	//外部グラフィックファイルを読み込み26番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 26, TEX_SIZE_512);    //ファンハグ
-	//外部グラフィックファイルを読み込み27番に登録(512ピクセル)
-	Draw::LoadImageW(L"Image\\object\\fan2.png", 27, TEX_SIZE_512);    //ファン目がハート
 	//外部グラフィックファイルを読み込み28番に登録(64ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\Shadow.png", 28, TEX_SIZE_64);    //影
-
-	
-	
-	
+	Draw::LoadImageW(L"Image\\hero\\Shadow.png", 25, TEX_SIZE_64);    //影
 
 	//主人公オブジェクト作成
 	CObjRunner* obj = new CObjRunner(remaining);
