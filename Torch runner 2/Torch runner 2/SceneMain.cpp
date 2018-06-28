@@ -44,8 +44,8 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\back\\back\\back1-1.png", 0, TEX_SIZE_1024); //背景1
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2-1.png", 1, TEX_SIZE_1024); //背景2  
-		//外部グラフィックファイルを読み込み28d番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 28, TEX_SIZE_1024); //背景最後
+		//外部グラフィックファイルを読み込み29番に登録(1024ピクセル)
+		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 29, TEX_SIZE_1024); //背景最後
 		//----------------------------------------------------------------------------------
 
 		//ランナーの画像登録-------------------------------------------------------------------------------------
@@ -59,10 +59,10 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\hero\\runner_death.png", 5, TEX_SIZE_192);  //第一走者の死亡
 
 		//ランナ--------------------------------------------------------------------------------------
-		//外部グラフィックファイルを読み込み2番に登録(256ピクセル)
-		Draw::LoadImageW(L"Image\\hero\\youtuber.png", 29, TEX_SIZE_256);    //YouTuber
-		//外部グラフィックファイルを読み込み3番に登録(256ピクセル)
-		Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 30, TEX_SIZE_256);  //YouTuberの振りかざし
+		//外部グラフィックファイルを読み込み30番に登録(256ピクセル)
+		Draw::LoadImageW(L"Image\\hero\\youtuber.png", 30, TEX_SIZE_256);    //YouTuber
+		//外部グラフィックファイルを読み込み31番に登録(256ピクセル)
+		Draw::LoadImageW(L"Image\\hero\\youtuber_transfer.png", 31, TEX_SIZE_256);  //YouTuberの振りかざし
 		
 		//---------------------------------------------------------------------------------------------
 		break;
@@ -73,8 +73,8 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\back\\back\\back1-2.png", 0, TEX_SIZE_1024); //背景1
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2-2.png", 1, TEX_SIZE_1024); //背景2
-		//外部グラフィックファイルを読み込み28d番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 28, TEX_SIZE_1024); //背景最後
+		//外部グラフィックファイルを読み込み29番に登録(1024ピクセル)
+		Draw::LoadImageW(L"Image\\back\\back\\back_final2.png", 29, TEX_SIZE_1024); //背景最後
 		//---------------------------------------------------------------------------------------------
 
 		//ランナ--------------------------------------------------------------------------------------
@@ -88,9 +88,9 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\hero\\youtuber_death.png", 5, TEX_SIZE_192);    //YouTuberの死亡
 		//外部グラフィックファイルを読み込み2番に登録(256ピクセル)
 
-		Draw::LoadImageW(L"Image\\hero\\grandfather.png", 29, TEX_SIZE_256);    //YouTuber
+		Draw::LoadImageW(L"Image\\hero\\grandfather.png", 30, TEX_SIZE_256);    //YouTuber
 		//外部グラフィックファイルを読み込み3番に登録(256ピクセル)
-		Draw::LoadImageW(L"Image\\hero\\grandfather_transfer.png", 30, TEX_SIZE_256);  //YouTuberの振りかざし
+		Draw::LoadImageW(L"Image\\hero\\grandfather_transfer.png", 31, TEX_SIZE_256);  //YouTuberの振りかざし
 		//---------------------------------------------------------------------------------------------
 		break;
 	case 3://ステージが3の時
@@ -100,7 +100,7 @@ void CSceneMain::InitScene()
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2.png", 1, TEX_SIZE_1024); //背景2
 		//外部グラフィックファイルを読み込み28d番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 28, TEX_SIZE_1024); //背景最後
+		Draw::LoadImageW(L"Image\\back\\back\\back_final3.png", 29, TEX_SIZE_1024); //背景最後
 		//---------------------------------------------------------------------------------------------
 
 		//ランナ--------------------------------------------------------------------------------------
@@ -159,8 +159,11 @@ void CSceneMain::InitScene()
 	Draw::LoadImageW(L"Image\\object\\fan.png", 25, TEX_SIZE_512);    //ファン
 	//外部グラフィックファイルを読み込み26番に登録(512ピクセル)
 	Draw::LoadImageW(L"Image\\object\\fan_hug.png", 26, TEX_SIZE_512);    //ファンハグ
-	//外部グラフィックファイルを読み込み27番に登録(64ピクセル)
-	Draw::LoadImageW(L"Image\\hero\\Shadow.png", 27, TEX_SIZE_64);    //影
+	//外部グラフィックファイルを読み込み27番に登録(512ピクセル)
+	Draw::LoadImageW(L"Image\\object\\fan2.png", 27, TEX_SIZE_512);    //ファン目がハート
+	//外部グラフィックファイルを読み込み28番に登録(64ピクセル)
+	Draw::LoadImageW(L"Image\\hero\\Shadow.png", 28, TEX_SIZE_64);    //影
+
 	
 	
 	

@@ -97,7 +97,7 @@ void CObjBlock::Action()
 			if (m_bx1 < -800.0f)
 			{
 				m_bx1 = 800.0f;
-				m_scroll_num++;
+				m_scroll_num++;//îwåi1Ç™èIÇÌÇÍÇŒÉJÉEÉìÉgÇ∑ÇÈ
 			}
 			//îwåi2ÇÃìÆçÏ
 			m_bx2 -= 4.0f;
@@ -113,7 +113,7 @@ void CObjBlock::Action()
 			if (m_bx1 < -800.0f)
 			{
 				m_bx1 = 800.0f;
-				m_scroll_num++;
+				m_scroll_num++;//îwåi1Ç™èIÇÌÇÍÇŒÉJÉEÉìÉgÇ∑ÇÈ
 			}
 			//îwåi2ÇÃìÆçÏ
 			m_bx2 -= 2.0f;
@@ -257,17 +257,18 @@ void CObjBlock::Draw()
 	src.m_left = 0.0f;
 	src.m_right = 1024.0f;
 	src.m_bottom = 1024.0f;
+	//îwåi1Ç™4âÒÉXÉNÉçÅ[ÉãÇµÇΩéû
 	if (m_scroll_num>=4)
 	{
 		//ï\é¶à íuÇÃê›íË
-		//îwåiÇP
+		//ÉSÅ|Éãîwåiï`âÊ
 		dst.m_top = 0.0f;
 		dst.m_left = 0.0f + m_bx1;
 		dst.m_right = 806.0f + m_bx1;
 		dst.m_bottom = 700.0f;
 
 		//ï`âÊ
-		Draw::Draw(28, &src, &dst, c, 0.0f);
+		Draw::Draw(29, &src, &dst, c, 0.0f);
 	}
 	else
 	{

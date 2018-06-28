@@ -338,45 +338,47 @@ void CObjOkama::Draw()
 
 	RECT_F src; //描画元切り取り位置
 	RECT_F dst; //描画先表示位置
-	
+
+	//ブロック情報を持ってくる
+	CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
+
+	//切り取り位置の設定
+	src.m_top = 0.0f;
+	src.m_left = 0.0f + m_ani_frame * 64;
+	src.m_right = 64.0f + m_ani_frame * 64;
+	src.m_bottom = 512.0f;
+
+	//表示位置の設定
+	dst.m_top = 0.0f + m_py;
+	dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
+	dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
+	dst.m_bottom = 64.0f + m_py;
+
+
+	//ステージが2の時だけ描画変更
 	if (((UserData*)Save::GetData())->m_stage_count == 2)
 	{
+		//ファンが抱き着いてない時の描画--------------------------------------------------------------------------
 		if (m_hug == false)
 		{
-
-			//ファンの通常の歩き----------------------------------------------------------------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f + m_ani_frame * 64;
-			src.m_right = 64.0f + m_ani_frame * 64;
-			src.m_bottom = 512.0f;
-
-			//ブロック情報を持ってくる
-			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
-			//表示位置の設定
-			dst.m_top = 0.0f + m_py;
-			dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
-			dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
-			dst.m_bottom = 64.0f + m_py;
-
-			//描画
-			Draw::Draw(25, &src, &dst, c, 0.0f);
+			//主人公を追尾してない時
+			if (m_homing == false)
+			{
+				//ファンの通常の歩き描画
+				Draw::Draw(25, &src, &dst, c, 0.0f);
+			}
+			else
+			{
+				//ファンのホーミング中の歩き描画
+				Draw::Draw(27, &src, &dst, c, 0.0f);
+			}
 		}
+		//---------------------------------------------------------------------------------------------
 	
 		//ファンが抱きついているときの描画-------------------------------------------------------------
 		if (m_hug == true)
 		{
-			//抱きついているファンちゃんの-----------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f + m_ani_frame * 64;
-			src.m_right = 64.0f + m_ani_frame * 64;
-			src.m_bottom = 512.0f;
-
-			//ブロック情報を持ってくる
-			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
+			
 			//表示位置の設定
 			dst.m_top = 0.0f + m_py;
 			dst.m_left = 0.0f + m_px + block->GetScroll();
@@ -385,101 +387,33 @@ void CObjOkama::Draw()
 
 			//描画
 			Draw::Draw(26, &src, &dst, c, 0.0f);
-
-			//十字キーの描画-------------------------------------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f + m_ani_key_frame * 64;
-			src.m_right = 64.0f + m_ani_key_frame * 64;
-			src.m_bottom = 256.0f;
-
-			//表示位置の設定
-			dst.m_top = -100.0f + m_py;
-			dst.m_left = 0.0f + m_px + block->GetScroll();
-			dst.m_right = 64.0f + m_px + block->GetScroll();
-			dst.m_bottom = -44.0f + m_py;
-
-			//十字キーの描画
-			Draw::Draw(18, &src, &dst, c, 0.0f);
-			//-----------------------------------------------------------------------------
-
-			//連打！！！の描画------------------------------------------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f;
-			src.m_right = 256.0f;
-			src.m_bottom = 256.0f;
-
-			//表示位置の設定
-			dst.m_top = -256.0f + m_py;
-			dst.m_left = -90.0f + m_px + block->GetScroll();
-			dst.m_right = 166.0f + m_px + block->GetScroll();
-			dst.m_bottom = 0.0f + m_py;
-
-			//連打！！の画像描画
-			Draw::Draw(19, &src, &dst, c, 0.0f);
-			//-----------------------------------------------------------------------------------
 		}
+		//-------------------------------------------------------------------------------------------------
 	}
+
+	//ステージが2じゃない時のおかまの描画------------------------------------------------------------------
 	else
 	{
+		//ハグしていない時
 		if (m_hug == false)
 		{
+			//ホーミングしてない時
 			if (m_homing == false)
 			{
-				//切り取り位置の設定
-				src.m_top = 0.0f;
-				src.m_left = 0.0f + m_ani_frame * 64;
-				src.m_right = 64.0f + m_ani_frame * 64;
-				src.m_bottom = 512.0f;
-
-				//ブロック情報を持ってくる
-				CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
-				//表示位置の設定
-				dst.m_top = 0.0f + m_py;
-				dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
-				dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
-				dst.m_bottom = 64.0f + m_py;
-
-				//描画
+				//通常の歩き描画
 				Draw::Draw(14, &src, &dst, c, 0.0f);
 			}
-
+			//ホーミングしているとき
 			else
 			{
-				//切り取り位置の設定
-				src.m_top = 0.0f;
-				src.m_left = 0.0f + m_ani_frame * 64;
-				src.m_right = 64.0f + m_ani_frame * 64;
-				src.m_bottom = 512.0f;
-
-				//ブロック情報を持ってくる
-				CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
-				//表示位置の設定
-				dst.m_top = 0.0f + m_py;
-				dst.m_left = (64.0f * m_posture) + m_px + block->GetScroll();
-				dst.m_right = (64 - 64.0f * m_posture) + m_px + block->GetScroll();
-				dst.m_bottom = 64.0f + m_py;
-
-				//描画
+				//目がハートの描画
 				Draw::Draw(15, &src, &dst, c, 0.0f);
 			}
 		}
 		//おかまが抱きついているときの描画-------------------------------------------------------------
 		if (m_hug == true)
 		{
-			//抱きついているおかまちゃんの-----------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f + m_ani_frame * 64;
-			src.m_right = 64.0f + m_ani_frame * 64;
-			src.m_bottom = 512.0f;
-
-			//ブロック情報を持ってくる
-			CObjBlock* block = (CObjBlock*)Objs::GetObj(OBJ_BLOCK);
-
+			
 			//表示位置の設定
 			dst.m_top = 0.0f + m_py;
 			dst.m_left = 0.0f + m_px + block->GetScroll();
@@ -488,43 +422,50 @@ void CObjOkama::Draw()
 
 			//描画
 			Draw::Draw(16, &src, &dst, c, 0.0f);
-
-			//十字キーの描画-------------------------------------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f + m_ani_key_frame * 64;
-			src.m_right = 64.0f + m_ani_key_frame * 64;
-			src.m_bottom = 256.0f;
-
-			//表示位置の設定
-			dst.m_top = -100.0f + m_py;
-			dst.m_left = 0.0f + m_px + block->GetScroll();
-			dst.m_right = 64.0f + m_px + block->GetScroll();
-			dst.m_bottom = -44.0f + m_py;
-
-			//十字キーの描画
-			Draw::Draw(18, &src, &dst, c, 0.0f);
-			//-----------------------------------------------------------------------------
-
-			//連打！！！の描画------------------------------------------------------------------
-			//切り取り位置の設定
-			src.m_top = 0.0f;
-			src.m_left = 0.0f;
-			src.m_right = 256.0f;
-			src.m_bottom = 256.0f;
-
-			//表示位置の設定
-			dst.m_top = -256.0f + m_py;
-			dst.m_left = -90.0f + m_px + block->GetScroll();
-			dst.m_right = 166.0f + m_px + block->GetScroll();
-			dst.m_bottom = 0.0f + m_py;
-
-			//連打！！の画像描画
-			Draw::Draw(19, &src, &dst, c, 0.0f);
-			//-----------------------------------------------------------------------------------
 		}
 	}
 	//-----------------------------------------------------------------------------------------------------
+
+
+	//連打の文字とキーボード描画--------------------------------------------------------------
+	if (m_hug == true)
+	{
+
+		//キーの描画-------------------------------------------------------------
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f + m_ani_key_frame * 64;
+		src.m_right = 64.0f + m_ani_key_frame * 64;
+		src.m_bottom = 256.0f;
+
+		//表示位置の設定
+		dst.m_top = -100.0f + m_py;
+		dst.m_left = 0.0f + m_px + block->GetScroll();
+		dst.m_right = 64.0f + m_px + block->GetScroll();
+		dst.m_bottom = -44.0f + m_py;
+
+		//十字キーの描画
+		Draw::Draw(18, &src, &dst, c, 0.0f);
+		//-----------------------------------------------------------------------------
+
+		//連打！！！の描画------------------------------------------------------------------
+		//切り取り位置の設定
+		src.m_top = 0.0f;
+		src.m_left = 0.0f;
+		src.m_right = 256.0f;
+		src.m_bottom = 256.0f;
+
+		//表示位置の設定
+		dst.m_top = -256.0f + m_py;
+		dst.m_left = -90.0f + m_px + block->GetScroll();
+		dst.m_right = 166.0f + m_px + block->GetScroll();
+		dst.m_bottom = 0.0f + m_py;
+
+		//連打！！の画像描画
+		Draw::Draw(19, &src, &dst, c, 0.0f);
+		//-----------------------------------------------------------------------------------
+	}
+	//---------------------------------------------------------------------------------------------------
 }
 
 void CObjOkama::HitBox()

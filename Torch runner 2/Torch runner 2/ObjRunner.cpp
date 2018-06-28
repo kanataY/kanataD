@@ -802,6 +802,7 @@ void CObjRunner::Draw()
 		}
 	}
 	//‰e-------------------------------------------------------------
+	//ƒWƒƒƒ“ƒv‚µ‚Ä‚¢‚È‚¢‚Æ‚«
 	if (m_jamp_control_2 == false)
 	{
 		//ŒŠ‚É—Ž‚¿‚Ä‚¢‚È‚¯‚ê‚Î•`‰æ
@@ -820,9 +821,10 @@ void CObjRunner::Draw()
 			dst.m_bottom = 68.0f + m_py;
 
 			//•`‰æ
-			Draw::Draw(27, &src, &dst, c, 1.0f);
+			Draw::Draw(28, &src, &dst, c, 1.0f);
 		}
 	}
+	//ƒWƒƒƒ“ƒv‚µ‚Ä‚éŽž
 	else
 	{
 		//ŒŠ‚É—Ž‚¿‚Ä‚¢‚È‚¯‚ê‚Î•`‰æ
@@ -841,7 +843,7 @@ void CObjRunner::Draw()
 			dst.m_bottom = 68.0f + m_jamp_y_position;
 
 			//•`‰æ
-			Draw::Draw(27, &src, &dst, shadowcolor, 1.0f);
+			Draw::Draw(28, &src, &dst, shadowcolor, 1.0f);
 		}
 	}
 	//--------------------------------------------------------------

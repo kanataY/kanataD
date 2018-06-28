@@ -64,7 +64,7 @@ void CObjGameClear::Action()
 		//ƒAƒjƒ[ƒVƒ‡ƒ“I—¹|||||||||||||||||||||||||||||||||||||||||||||
 
 		//ƒƒjƒ…[‰æ–Ê‚Ö
-		if (Input::GetVKey('A') == true)
+		if (Input::GetVKey('Z') == true)
 		{
 			//ƒ‰ƒ“ƒLƒ“ƒO‚É”½‰f‚µ‚½ƒXƒRƒA‚ğ‰Šú‰»‚·‚é
 			((UserData*)Save::GetData())->m_point = 0;
@@ -72,7 +72,7 @@ void CObjGameClear::Action()
 		}
 
 		//ƒ‰ƒ“ƒLƒ“ƒO‰æ–Ê‚Ö
-		if (Input::GetVKey('S') == true)
+		if (Input::GetVKey('X') == true)
 		{
 			//ƒ‰ƒ“ƒLƒ“ƒO‚É”½‰f‚µ‚½ƒXƒRƒA‚ğ‰Šú‰»‚·‚é
 			((UserData*)Save::GetData())->m_point = 0;
@@ -225,10 +225,10 @@ void CObjGameClear::Draw()
 			Font::StrDraw(str, 220, 380, 38, c);
 			//|||||||||||||||||||||||||||||||||
 			//ƒƒjƒ…[‘JˆÚà–¾
-			Font::StrDraw(L"A‚Åƒƒjƒ…[‚Ö", 180, 490, 24, c);
+			Font::StrDraw(L"Z‚Åƒƒjƒ…[‚Ö", 180, 490, 24, c);
 
 			//ƒ‰ƒ“ƒLƒ“ƒO‘JˆÚà–¾
-			Font::StrDraw(L"S‚Åƒ‰ƒ“ƒLƒ“ƒO‚Ö", 500, 490, 24, c);
+			Font::StrDraw(L"X‚Åƒ‰ƒ“ƒLƒ“ƒO‚Ö", 500, 490, 24, c);
 		}
 	}
 }
