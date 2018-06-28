@@ -43,7 +43,9 @@ void CSceneMain::InitScene()
 		//外部グラフィックファイルを読み込み0番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back1-1.png", 0, TEX_SIZE_1024); //背景1
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
-		Draw::LoadImageW(L"Image\\back\\back\\back2-1.png", 1, TEX_SIZE_1024); //背景2   
+		Draw::LoadImageW(L"Image\\back\\back\\back2-1.png", 1, TEX_SIZE_1024); //背景2  
+		//外部グラフィックファイルを読み込み28d番に登録(1024ピクセル)
+		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 28, TEX_SIZE_1024); //背景最後
 		//----------------------------------------------------------------------------------
 
 		//ランナーの画像登録-------------------------------------------------------------------------------------
@@ -71,6 +73,8 @@ void CSceneMain::InitScene()
 		Draw::LoadImageW(L"Image\\back\\back\\back1-2.png", 0, TEX_SIZE_1024); //背景1
 		//外部グラフィックファイルを読み込み1番に登録(1024ピクセル)
 		Draw::LoadImageW(L"Image\\back\\back\\back2-2.png", 1, TEX_SIZE_1024); //背景2
+		//外部グラフィックファイルを読み込み28d番に登録(1024ピクセル)
+		Draw::LoadImageW(L"Image\\back\\back\\back_final.png", 28, TEX_SIZE_1024); //背景最後
 		//---------------------------------------------------------------------------------------------
 
 		//ランナ--------------------------------------------------------------------------------------

@@ -392,7 +392,7 @@ void CObjRunner::Action()
 			{
 
 				m_ani_change = 2;//アニメーションを2に
-
+				m_stick_fire = false;//けつに火がついているフラグをオフにする
 				m_vx = 0.0f; //ランナーを移動させないようにする。
 				m_vy = 0.0f;
 			}
@@ -660,7 +660,7 @@ void CObjRunner::Draw()
 
 		//表示位置の設定
 		dst.m_top = 0.0f + m_py + (m_hole_fall / 3);   //穴に落ちた時は描画を小さくする
-		dst.m_left = 0.0f + m_px + (m_hole_fall / 3);
+		dst.m_left = 0.0f + m_px + (m_hole_fall /3);
 		dst.m_right = 64.0f + m_px - m_hole_fall;
 		dst.m_bottom = 64.0f + m_py - m_hole_fall;
 
@@ -804,37 +804,45 @@ void CObjRunner::Draw()
 	//影-------------------------------------------------------------
 	if (m_jamp_control_2 == false)
 	{
-		//切り取り位置の設定
-		src.m_top = 0.0f;
-		src.m_left = 0.0f;
-		src.m_right = 64.0f;
-		src.m_bottom = 64.0f;
+		//穴に落ちていなければ描画
+		if (m_hole_control == false)
+		{
+			//切り取り位置の設定
+			src.m_top = 0.0f;
+			src.m_left = 0.0f;
+			src.m_right = 64.0f;
+			src.m_bottom = 64.0f;
 
-		//表示位置の設定
-		dst.m_top =	60.0f + m_py;
-		dst.m_left = -30.0f + m_px;
-		dst.m_right = 55.0f + m_px;
-		dst.m_bottom = 68.0f + m_py;
+			//表示位置の設定
+			dst.m_top = 60.0f + m_py;
+			dst.m_left = -30.0f + m_px;
+			dst.m_right = 55.0f + m_px;
+			dst.m_bottom = 68.0f + m_py;
 
-		//描画
-		Draw::Draw(27, &src, &dst, c, 1.0f);
+			//描画
+			Draw::Draw(27, &src, &dst, c, 1.0f);
+		}
 	}
 	else
 	{
-		//切り取り位置の設定
-		src.m_top = 0.0f;
-		src.m_left = 0.0f;
-		src.m_right = 64.0f;
-		src.m_bottom = 64.0f;
+		//穴に落ちていなければ描画
+		if (m_hole_control == false)
+		{
+			//切り取り位置の設定
+			src.m_top = 0.0f;
+			src.m_left = 0.0f;
+			src.m_right = 64.0f;
+			src.m_bottom = 64.0f;
 
-		//表示位置の設定
-		dst.m_top = 60.0f+ m_jamp_y_position; 
-		dst.m_left = -30.0f + m_px;
-		dst.m_right = 55.0f + m_px;
-		dst.m_bottom = 68.0f + m_jamp_y_position;
+			//表示位置の設定
+			dst.m_top = 60.0f + m_jamp_y_position;
+			dst.m_left = -30.0f + m_px;
+			dst.m_right = 55.0f + m_px;
+			dst.m_bottom = 68.0f + m_jamp_y_position;
 
-		//描画
-		Draw::Draw(27, &src, &dst, shadowcolor, 1.0f);
+			//描画
+			Draw::Draw(27, &src, &dst, shadowcolor, 1.0f);
+		}
 	}
 	//--------------------------------------------------------------
 	//残機-------------------------------------------------------------------------------
@@ -953,12 +961,12 @@ void CObjRunner::HitBox()
 	if (hit->CheckObjNameHit(OBJ_FIRE) != nullptr)
 	{
 		//一個だけ火が付く
-		if(m_stick_fire == false && m_rain_time == true)
+		if (m_stick_fire == false && m_rain_time == true)
 		{
-		//炎
-		CObjFire* fi = new CObjFire(m_px, m_py, 2);
-		Objs::InsertObj(fi, OBJ_FIRE, 999);
-		m_stick_fire = true;
+
+			CObjFire* fi = new CObjFire(m_px, m_py, 2);
+			Objs::InsertObj(fi, OBJ_FIRE, 999);
+			m_stick_fire = true;
 		}
 	}
 
