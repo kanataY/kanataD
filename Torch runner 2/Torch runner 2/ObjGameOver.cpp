@@ -67,6 +67,7 @@ void CObjGameOver::Action()
 		//メニューに移行
 		Scene::SetScene(new CSceneMenu());
 	}
+
 	//ランキング画面へ
 	if (Input::GetVKey('X') == true)
 	{
