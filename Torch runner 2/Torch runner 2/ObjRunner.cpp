@@ -312,13 +312,6 @@ void CObjRunner::Action()
 				}
 			}
 
-			//ジャンプ量
-			if (m_stick_fire == true)  //ランナーに火がついていたらジャンプ量を増やす
-			{
-				m_jamp_y_1 = 2.4f;
-				m_jamp_y_2 = 1.2f;
-			}
-
 			if (m_jamp_control == true)//ジャンプしている
 			{
 				m_time++;

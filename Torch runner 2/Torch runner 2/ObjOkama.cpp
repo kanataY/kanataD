@@ -206,6 +206,7 @@ void CObjOkama::Action()
 				((UserData*)Save::GetData())->m_point += 300;
 				this->SetStatus(false);		//自身に削除命令を出す
 				Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+				return;
 			}
 		}
 		//ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
@@ -303,6 +304,7 @@ void CObjOkama::Action()
 				((UserData*)Save::GetData())->m_point += 150;
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			return;
 		}
 
 		//ハグしているときランナーが左端に行ったとき死ぬ
@@ -318,6 +320,7 @@ void CObjOkama::Action()
 				((UserData*)Save::GetData())->m_point += 150;	//スコアを増やす
 			this->SetStatus(false);		//自身に削除命令を出す
 			Hits::DeleteHitBox(this);	//所有するHitBoxに削除する
+			return;
 		}
 
 		//位置の更新
