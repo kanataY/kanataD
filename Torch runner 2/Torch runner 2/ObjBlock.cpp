@@ -140,90 +140,40 @@ void CObjBlock::Action()
 		//列の中から１を探す
 		if (m_map[i][ex] == 1)
 		{
-			//木箱を生成
-			CObjCrates* crates = new CObjCrates(ex*64, i*64);
-			Objs::InsertObj(crates, OBJ_CRATES, 19);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
+			
 		}
 		//列の中から２を探す
 		if (m_map[i][ex] == 2)
 		{
-			//スマホ少年を生成
-			CObjSmartphone* sma = new CObjSmartphone(ex * 64, i * 64);
-			Objs::InsertObj(sma, OBJ_SMARTPHONE, 15);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
+			
 		}
 
 		//列の中から3を探す
 		if (m_map[i][ex] == 3)
 		{
-			//穴を生成
-			CObjHole* hole = new CObjHole(ex * 64, i * 64);
-			Objs::InsertObj(hole, OBJ_HOLE, 15);
-
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
+			
 		}
 
 		//列の中から4を探す
 		if (m_map[i][ex] == 4)
 		{
 			//オカマを生成
-			CObjOkama* sma = new CObjOkama(ex * 64, i * 64);
-			Objs::InsertObj(sma, OBJ_OKAMA, 16);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
+			
 		}
 
 		//列の中から5を探す
 		if (m_map[i][ex] == 5)
 		{
-			//水たまりを生成
-			CObjPuddle* pu = new CObjPuddle(ex * 64, i * 64);
-			Objs::InsertObj(pu, OBJ_PUDDLE, 15);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
+			
 		}
 
 		//列の中から6を探す
 		if (m_map[i][ex] == 6)
 		{
-			//チェックポイントを生成
-			CObjCheckPoint* che = new CObjCheckPoint(ex * 64, i * 64);
-			Objs::InsertObj(che, OBJ_CHECK_POINT, 1600);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
+			
 		}
 
-		//列の中から7を探す
-		if (m_map[i][ex] == 7)
-		{
-			//トラックを生成
-			CObjTrack* war = new CObjTrack(ex * 64, i * 64);
-			Objs::InsertObj(war, OBJ_TRACK, 20);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
-		}
-
-		//列の中から8を探す
-		if (m_map[i][ex] == 8)
-		{
-			//トラック2を生成
-			CObjTrack* war = new CObjTrack(ex * 64, i * 64);
-			Objs::InsertObj(war, OBJ_TRACK, 20);
-
-			//敵出現場所の値を0にする
-			m_map[i][ex] = 0;
-		}
+		
 	}
 
 	//雨のフラグがONになったなら雨を降らす
